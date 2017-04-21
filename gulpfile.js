@@ -18,7 +18,7 @@ gulp.task('build', function() {
   gulp.src( 'source/*.html'  ).pipe( gulp.dest( 'build' ) )
   gulp.src( 'source/images/**'  ).pipe( gulp.dest( 'build/images' ) )
   gulp.src( 'source/stylesheets/**'  ).pipe( gulp.dest( 'build/stylesheets' ) )
-  gulp.src('./source/*.js')
+  gulp.src(['./source/*/*.js','./source/*.js'])
     .on('error', errorHandler)
     .pipe($.babel({presets: ['es2015', 'react']}))
     .pipe(plumber({errorHandler: errorHandler}))
@@ -26,7 +26,8 @@ gulp.task('build', function() {
 })
 
 gulp.task('watch', function() {
-  gulp.watch('./source/*', ['build'])
+  gulp.watch('./source/**', ['build'])
+  gulp.watch('./source/*/**', ['build'])
 })
 
 gulp.task('default', ['build', 'watch'])

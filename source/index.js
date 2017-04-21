@@ -9,6 +9,7 @@ import menubar from 'menubar';
 import { app, ipcMain, globalShortcut, Menu } from 'electron';
 import notifier from 'node-notifier';
 import path from 'path'
+import fs from 'fs'
 
 const request = require('request');
 const mb = menubar({ icon: ACTIVE_MENUBAR_ICON, dir: __dirname });
@@ -28,7 +29,7 @@ const setTrayTitle = (title)=> {
 }
 const initMenu = ()=> {
   var template = [{
-      label: "Application",
+      label: "Application1",
       submenu: [
           { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
           { type: "separator" },
@@ -49,8 +50,8 @@ const initMenu = ()=> {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-const KEY_POMO_START    = 'ctrl+shift+m'
-const KEY_TOGGLE_WINDOW = 'ctrl+shift+p'
+const KEY_GO_LIST       = 'CmdOrCtrl+['
+const KEY_TOGGLE_WINDOW = 'ctrl+shift+n'
 
 mb.on('ready', function ready () {
 
@@ -60,32 +61,24 @@ mb.on('ready', function ready () {
   var openWindow = ()=> {
     mb.showWindow(mb.tray.getBounds());
   }
-
-  ipcMain.on('renderer_init', function(event, arg) {
-
-    var sender = event.sender
-
-    //
-    // Toggle window show and hide
-    //
-    // NOTE: Unregister shorcut key event.
-    //       Shortcut key is not left to the old webview after reload.
-    globalShortcut.unregister(KEY_TOGGLE_WINDOW);
-    globalShortcut.register(KEY_TOGGLE_WINDOW, ()=> {
-      if(mb.window.isVisible()) {
-        closeWindow();
-      } else {
-        openWindow();
-      }
-    });
-
-    //
-    // Start pomodoro recently track
-    globalShortcut.unregister(KEY_POMO_START);
-    globalShortcut.register(KEY_POMO_START, ()=> {
-      sender.send('pomo_start')
-    });
+  //
+  // Toggle window show and hide
+  //
+  // NOTE: Unregister shorcut key event.
+  //       Shortcut key is not left to the old webview after reload.
+  globalShortcut.unregister(KEY_TOGGLE_WINDOW);
+  globalShortcut.register(KEY_TOGGLE_WINDOW, ()=> {
+    if(mb.window.isVisible()) {
+      closeWindow();
+    } else {
+      openWindow();
+    }
   });
+  //globalShortcut.unregister(KEY_GO_LIST);
+  //globalShortcut.register(KEY_GO_LIST, ()=> {
+  //  console.log(mb)
+  //  mb.window.send('go_list')
+  //});
 
   //
   // Setting ipc event
@@ -102,8 +95,13 @@ mb.on('ready', function ready () {
   ipcMain.on('set_title', (event, text)=> {
     setTrayTitle(text.trim())
   });
-  ipcMain.on('mark_unread', (event, arg)=> {
-    switchIconUnread();
+  ipcMain.on('save', (event, arg)=> {
+    console.log(arg)
+    fs.writeFile('./hoge.md', arg, 'utf8', function (err) {
+      if (err) {
+        return console.log(err);
+      }
+    });
   });
   ipcMain.on('quit', (event, arg)=> {
     app.quit();
@@ -127,6 +125,6 @@ mb.on('ready', function ready () {
   mb.showWindow();
   mb.hideWindow();
   // NOTE: Comment out for display Dev tool
-  initMenu();
+  //initMenu();
   switchIconUnread();
 })
