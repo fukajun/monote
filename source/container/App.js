@@ -33,19 +33,20 @@ export default class App extends React.Component {
   }
 
   nativeKeyEvent(e) {
-    if( e.key >= '0' && e.key <= '9' ) {
-      let i = e.key
-      let item = store.list()[i]
-      if( !item ) {
-        return
-      }
+    if( e.metaKey || e.ctrlKey ) {
+      if( e.key >= '0' && e.key <= '9' ) {
+        let i = e.key
+        let item = store.list()[i]
+        if( !item ) {
+          return
+        }
 
-      // NOTE: Protect input number to textarea after move page.
-      let delay = 100
-      setTimeout(()=> {
-        this.history.replace(`/edit/${item.id}`);
-      }, delay);
-    }
+        // NOTE: Protect input number to textarea after move page.
+        let delay = 100
+        setTimeout(()=> {
+          this.history.replace(`/edit/${item.id}`);
+        }, delay);
+      }
 
     if( e.metaKey || e.ctrlKey ) {
       if(e.key === 'n') {
