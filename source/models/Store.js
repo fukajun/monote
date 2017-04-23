@@ -5,6 +5,24 @@ const DIR = process.env['HOME'] + '/.monotes'
 const ENCODING = 'utf-8'
 const TITLE_DELIMITER = "\n"
 
+class Item {
+  constructor({id, contents, ctime}) {
+    let title, body, first, last;
+    [first, ...last] = contents.split(TITLE_DELIMITER)
+    title = (first.length >= 1 ? first : '< Untitled >')
+    body = last.join(TITLE_DELIMITER)
+
+    this.id = id
+    this.title = title
+    this.ctime = ctime
+    this.body = body
+  }
+
+  line() {
+    return (this.body.replace(/[\r\n]/g, ''))
+  }
+}
+
 export default class Store {
   constructor() {
     if(!fs.existsSync(DIR)) {
@@ -40,18 +58,17 @@ export default class Store {
       return this.fileInfo(filename)
     })
 
-    let sortedList = list.sort((a, b)=>{ 
+    let sortedList = list.sort((a, b)=>{
       return ( b[sortAttribute].getTime() - a[sortAttribute].getTime() )
     })
     return sortedList
   }
 
   fileInfo(id) {
-    let body  = this.load(id)
-    let first = body.split(TITLE_DELIMITER)[0]
-    let title = (first.length >= 1 ? first : '< Untitled >')
+    let contents  = this.load(id)
     let stat  = this.fileStat(id)
-    return { id: id, title: title, ctime: stat['ctime'] }
+    let item = new Item({ id: id, contents: contents, ctime: stat['ctime'] })
+    return item
   }
 
   fileStat(id) {

@@ -19,8 +19,18 @@ export default class ListPage extends React.Component {
         {
           store.list().map((item)=> {
             let key = seq <= 9 ? `[${seq++}]` : ''
-            return (<li className='item' key={item.id}>
-               <Link to={`/edit/${item.id}`}>{item.title} {key}</Link>
+            console.log(item.line())
+            return (
+            <li className='item' key={item.id}>
+               <Link className='item-link' to={`/edit/${item.id}`}>
+                <div className='item-link-title'>
+                  {item.title} {key}
+                </div>
+                <br />
+                <div className='item-link-info'>
+                  <span className='item-link-body'>{item.line().substring(0, 200)}</span>
+                </div>
+              </Link>
             </li>)
           })
         }
