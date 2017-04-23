@@ -80,6 +80,7 @@ export default class App extends React.Component {
         <HashRouter ref='router'>
           <div>
             <div className='header'>
+              <input className='keyword' type='text' />
               <ul className='header-group-left'>
                 <Switch>
                    <Route exact path='/' render={()=> (<li className='header-item'><Link className='header-item-link' to='/new'>{'+'}</Link></li>) }/>
