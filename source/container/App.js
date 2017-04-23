@@ -48,7 +48,9 @@ export default class App extends React.Component {
         }, delay);
       }
 
-    if( e.metaKey || e.ctrlKey ) {
+      if( e.key === 'f' ) {
+        this.refs.keyword.focus()
+      }
       if(e.key === 'n') {
         this.history.push('/new')
       }
@@ -90,7 +92,7 @@ export default class App extends React.Component {
         <HashRouter ref='router'>
           <div>
             <div className='header'>
-              <input className='keyword' type='text' onChange={this.updateKeyword.bind(this)} />
+              <input ref='keyword' className='keyword' type='text' onChange={this.updateKeyword.bind(this)} />
               <ul className='header-group-left'>
                 <Switch>
                    <Route exact path='/' render={()=> (<li className='header-item'><Link className='header-item-link' to='/new'>{'+'}</Link></li>) }/>
