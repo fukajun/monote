@@ -16,7 +16,6 @@ export default class ListPage extends React.Component {
   render() {
     let seq = 0
     let word = this.props.location.search.split('=')[1]
-    console.log(word)
     return (<div>
       <ul className='items'>
         {
