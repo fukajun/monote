@@ -16,6 +16,12 @@ import ListPage from './ListPage.js'
 
 const store = new Store()
 export default class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.debounceUpdateKeyword = _u.debounce((word)=> {
+      this.history.replace(`/?word=${word}`)
+    }, 300)
+  }
 
   componentDidMount() {
     this.history = this.refs.router.history
@@ -64,6 +70,9 @@ export default class App extends React.Component {
     }
     ipcRenderer.send('quit')
   }
+  updateKeyword(e) {
+    this.debounceUpdateKeyword(e.target.value)
+  }
 
   reload() {
     if(!confirm('リロードしますか？')) {
@@ -80,7 +89,7 @@ export default class App extends React.Component {
         <HashRouter ref='router'>
           <div>
             <div className='header'>
-              <input className='keyword' type='text' />
+              <input className='keyword' type='text' onChange={this.updateKeyword.bind(this)} />
               <ul className='header-group-left'>
                 <Switch>
                    <Route exact path='/' render={()=> (<li className='header-item'><Link className='header-item-link' to='/new'>{'+'}</Link></li>) }/>

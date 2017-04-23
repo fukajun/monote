@@ -16,6 +16,7 @@ class Item {
     this.title = title
     this.ctime = ctime
     this.body = body
+    this.contents = contents
   }
 
   line() {
@@ -51,14 +52,17 @@ export default class Store {
     fs.unlinkSync(this.filePath(id))
   }
 
-  list() {
+  list(word="") {
     let sortAttribute = 'ctime'
 
     let list = fs.readdirSync(DIR).map((filename)=> {
       return this.fileInfo(filename)
     })
+    let filterdList = list.filter((item)=> {
+      return item.contents.match(new RegExp(word, 'i'))
+    })
 
-    let sortedList = list.sort((a, b)=>{
+    let sortedList = filterdList.sort((a, b)=>{
       return ( b[sortAttribute].getTime() - a[sortAttribute].getTime() )
     })
     return sortedList

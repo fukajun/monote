@@ -14,11 +14,13 @@ const store = new Store()
 
 export default class ListPage extends React.Component {
   render() {
-    var seq = 0
+    let seq = 0
+    let word = this.props.location.search.split('=')[1]
+    console.log(word)
     return (<div>
       <ul className='items'>
         {
-          store.list().map((item)=> {
+          store.list(word).map((item)=> {
             let key = seq <= 9 ? `[${seq++}]` : ''
             return (
             <li className='item' key={item.id}>
