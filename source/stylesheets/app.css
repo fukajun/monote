@@ -92,12 +92,14 @@ body {
   width: 100px;
   margin: 0px;
   padding: 0px;
+  padding-left: 10px;
 }
 .header-group-right {
   float: right;
   width: 60px;
   margin: 0px;
   padding: 0px;
+  padding-right: 10px;
 }
 
 .header-items {
@@ -111,7 +113,6 @@ body {
   width: 30px;
   line-height: 40px;
   cursor: pointer;
-  padding-left: 10px;
 }
 
 .header-item-link {
