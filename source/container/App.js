@@ -15,11 +15,20 @@ import EditorPage from './EditorPage.js'
 import ListPage from './ListPage.js'
 
 const store = new Store()
+
+// TODO: To helper
+function rootPath(word = '') {
+  return (word.length == 0 ? '/' : `/?word=${word}`)
+}
+
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      keyword: ''
+    }
     this.debounceUpdateKeyword = _u.debounce((word)=> {
-      this.history.replace(`/?word=${word}`)
+      this.history.replace(rootPath(word))
     }, 300)
   }
 
@@ -50,13 +59,14 @@ export default class App extends React.Component {
 
       if( e.key === 'f' ) {
         this.history.replace('/')
+        this.setState({keyword: ''})
         this.refs.keyword.focus()
       }
       if(e.key === 'n') {
         this.history.push('/new')
       }
       if( e.key === 'Enter' ) {
-        this.history.replace('/')
+        this.history.replace(rootPath(this.state.keyword))
       }
     }
   }
@@ -75,7 +85,9 @@ export default class App extends React.Component {
     ipcRenderer.send('quit')
   }
   updateKeyword(e) {
-    this.debounceUpdateKeyword(e.target.value)
+    let word = e.target.value
+    this.setState({keyword: word})
+    this.debounceUpdateKeyword(word)
   }
 
   reload() {
@@ -97,16 +109,16 @@ export default class App extends React.Component {
                     <li className='header-item'><Link className='header-item-link' to='/new'>{'+'}</Link></li>
                   </Route>
                   <Route path='/*'>
-                    <li className='header-item'><Link className='header-item-link' to='/'>{'<'}</Link></li>
+                    <li className='header-item'><Link className='header-item-link' to={rootPath(this.state.keyword)}>{'<'}</Link></li>
                   </Route>
                 </Switch>
               </ul>
 
               <Switch>
                 <Route exact path='/' >
-                  <input ref='keyword' className='keyword' type='text' onChange={this.updateKeyword.bind(this)} />
+                  <input ref='keyword' className='keyword' type='text' onChange={this.updateKeyword.bind(this)} value={this.state.keyword}/>
                 </Route>
-                <Route path='/*' >
+                <Route path='/edit' >
                   <span>Edit</span>
                 </Route>
               </Switch>
