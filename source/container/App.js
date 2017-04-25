@@ -49,6 +49,7 @@ export default class App extends React.Component {
       }
 
       if( e.key === 'f' ) {
+        this.history.replace('/')
         this.refs.keyword.focus()
       }
       if(e.key === 'n') {
@@ -84,27 +85,38 @@ export default class App extends React.Component {
     ipcRenderer.send('reload')
   }
 
-  //{ location.hash === '#/' ? (<a onClick={this.moveNew.bind(this)}>New</a>) : (<a onClick={this.moveList.bind(this)}>Back</a>) }
   render() {
-    console.log(location)
     return (
       <div>
         <HashRouter ref='router'>
           <div>
             <div className='header'>
-              <input ref='keyword' className='keyword' type='text' onChange={this.updateKeyword.bind(this)} />
               <ul className='header-group-left'>
                 <Switch>
-                   <Route exact path='/' render={()=> (<li className='header-item'><Link className='header-item-link' to='/new'>{'+'}</Link></li>) }/>
-                   <Route exact path='/new' render={()=> (<li className='header-item'><Link className='header-item-link' to='/'>{'<'}</Link></li>) }/>
-                   <Route exact path='/edit/:id' render={()=> (<li className='header-item'><Link className='header-item-link' to='/'>{'<'}</Link></li>) }/>
+                  <Route exact path='/' >
+                    <li className='header-item'><Link className='header-item-link' to='/new'>{'+'}</Link></li>
+                  </Route>
+                  <Route path='/*'>
+                    <li className='header-item'><Link className='header-item-link' to='/'>{'<'}</Link></li>
+                  </Route>
                 </Switch>
               </ul>
+
+              <Switch>
+                <Route exact path='/' >
+                  <input ref='keyword' className='keyword' type='text' onChange={this.updateKeyword.bind(this)} />
+                </Route>
+                <Route path='/*' >
+                  <span>Edit</span>
+                </Route>
+              </Switch>
+
               <ul className='header-group-right'>
                 <li className='header-item'><a className='header-item-link' onClick={this.reload.bind(this)}><i className='flaticon-refresh' /></a></li>
                 <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='flaticon-power-button' /></a></li>
               </ul>
             </div>
+
             <div className='content'>
               <Switch>
                 <Route exact path='/edit/:id' component={EditorPage} />
