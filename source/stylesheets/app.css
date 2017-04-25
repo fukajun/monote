@@ -39,7 +39,7 @@ body {
 }
 
 .item-link-info {
-  display: inline-block;
+  display: none;
   color: #aaaaaa;
   font-size: 12px;
   border-top: 0px;
