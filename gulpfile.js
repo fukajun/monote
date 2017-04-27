@@ -17,6 +17,7 @@ notifier.notify({title: 'gulp', message: 'start'})
 gulp.task('build', function() {
   gulp.src( 'source/*.html'  ).pipe( gulp.dest( 'build' ) )
   gulp.src( 'source/images/**'  ).pipe( gulp.dest( 'build/images' ) )
+  gulp.src( 'source/fonts/**'  ).pipe( gulp.dest( 'build/fonts' ) )
   gulp.src( 'source/stylesheets/**'  ).pipe( gulp.dest( 'build/stylesheets' ) )
   gulp.src(['./source/*/*.js','./source/*.js'])
     .on('error', errorHandler)
