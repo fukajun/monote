@@ -8,7 +8,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 //
 // Lib
-import Store from '../models/Store.js'
+import Store from '../models/FileStore.js'
 
 const store = new Store()
 
@@ -25,7 +25,7 @@ export default class ListPage extends React.Component {
             <li className='item' key={item.id}>
                <Link className='item-link' to={`/edit/${item.id}`}>
                 <div className='item-link-title'>
-                  {item.title} {key}
+                  {item.title()} {key}
                 </div>
                 <div className='item-link-ctime'>{moment(item.ctime).format("Y/M/D hh:mm")}</div>
                 <br />

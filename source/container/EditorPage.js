@@ -9,7 +9,7 @@ import _u from 'underscore'
 import { Link } from 'react-router-dom';
 //
 // Lib
-import Store from '../models/Store.js'
+import Store from '../models/FileStore.js'
 
 const store = new Store()
 
@@ -17,16 +17,15 @@ export default class EditorPage extends React.Component {
   constructor(props) {
     super(props)
 
-    let id, body
+    let item, id
     if(this.props.match.params.id) {
       id = this.props.match.params.id
-      body = store.load(id)
+      item = store.load(id)
     } else {
-      id = store.generateId()
-      body = ''
+      item = store.buildNewItem()
     }
 
-    this.state = { id, body }
+    this.state = { item }
 
     this.style = {
       container: {
@@ -35,8 +34,8 @@ export default class EditorPage extends React.Component {
       }
     }
 
-    this.debounceSave = _u.debounce((body)=> {
-      store.store(id, body)
+    this.debounceSave = _u.debounce((item)=> {
+      store.store(item)
     }, 300)
   }
 
@@ -45,8 +44,10 @@ export default class EditorPage extends React.Component {
   }
 
   change(e) {
-    this.setState({body: e.target.value})
-    this.debounceSave(e.target.value)
+    let newItem = _u.clone(this.state.item)
+    newItem.contents = e.target.value
+    this.setState({item: newItem})
+    this.debounceSave(newItem)
   }
 
   render() {
@@ -56,7 +57,7 @@ export default class EditorPage extends React.Component {
           ref='inputBody'
           style={this.style.container}
           onChange={this.change.bind(this)}
-          value={this.state.body}
+          value={this.state.item.contents}
       />
       </div>
     )
