@@ -4,6 +4,7 @@
   "main": "index.js",
   "description": "245cloud run on mac",
   "scripts": {
+    "dev": "gulp",
     "start": "cd ./build && NODE_ENV=development electron ./index.js",
     "build": "./build.sh"
   },
