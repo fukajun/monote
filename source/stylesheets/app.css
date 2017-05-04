@@ -92,6 +92,15 @@ body {
   text-align: center;
 }
 
+.header-title {
+  display: inline-block;
+  line-height: 40px;
+  width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .header-group-left {
   float: left;
   width: 100px;

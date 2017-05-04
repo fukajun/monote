@@ -9,7 +9,7 @@ import _u from 'underscore'
 import { Link } from 'react-router-dom';
 //
 // Lib
-import Store from '../models/FileStore.js'
+import Store from '../models/JsonStore.js'
 
 const store = new Store()
 
@@ -25,18 +25,12 @@ export default class EditorPage extends React.Component {
       item = store.buildNewItem()
     }
 
-    this.state = { item }
-
     this.style = {
       container: {
         width: '100%',
         height: '90%'
       }
     }
-
-    this.debounceSave = _u.debounce((item)=> {
-      store.store(item)
-    }, 300)
   }
 
   componentDidMount() {
@@ -44,10 +38,7 @@ export default class EditorPage extends React.Component {
   }
 
   change(e) {
-    let newItem = _u.clone(this.state.item)
-    newItem.contents = e.target.value
-    this.setState({item: newItem})
-    this.debounceSave(newItem)
+    this.props.onChange(e.target.value)
   }
 
   render() {
@@ -57,7 +48,7 @@ export default class EditorPage extends React.Component {
           ref='inputBody'
           style={this.style.container}
           onChange={this.change.bind(this)}
-          value={this.state.item.contents}
+          value={this.props.item.contents}
       />
       </div>
     )
