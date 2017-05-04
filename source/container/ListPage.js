@@ -7,6 +7,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import Tree from './Tree.js'
 //
 // Lib
 import Store from '../models/JsonStore.js'
@@ -17,7 +18,8 @@ export default class ListPage extends React.Component {
   render() {
     let seq = 0
     let word = this.props.keyword
-    return (<div>
+    return (<div className='list'>
+      <Tree currentDir={this.props.currentDir} list={this.props.fulllist} onClick={this.props.onClickDir}/>
       <ul className='items'>
         {
           this.props.list.map((item)=> {

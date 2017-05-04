@@ -1,3 +1,4 @@
+import Path from 'path';
 const TITLE_DELIMITER = "\n"
 const NOCONTENS_TITLE = '< Untitled >'
 
@@ -29,6 +30,18 @@ export default class Item {
 
   line() {
     return (this.body().replace(/[\r\n]/g, ''))
+  }
+
+  dir() {
+    return Path.basename(this.dirname)
+  }
+
+  dirname() {
+    return Path.dirname(this._normalizePath())
+  }
+  _normalizePath() {
+    let path = this._trimdPath()
+    return path[0] === '/' ? path : `/${path}`
   }
 
   _trimdPath() {
