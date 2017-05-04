@@ -1,31 +1,8 @@
-//
-// Renderer
 'use strict';
 
-// Vendor
-import { ipcRenderer } from 'electron';
 import React from 'react';
-import _u from 'underscore'
-import { Link } from 'react-router-dom';
-//
-// Lib
-import Store from '../models/JsonStore.js'
-
-const store = new Store()
 
 export default class EditorPage extends React.Component {
-  constructor(props) {
-    super(props)
-
-    let item, id
-    if(this.props.match.params.id) {
-      id = this.props.match.params.id
-      item = store.load(id)
-    } else {
-      item = store.buildNewItem()
-    }
-  }
-
   componentDidMount() {
     this.refs.inputContents.focus()
   }
