@@ -30,7 +30,8 @@ export default class JsonStore extends StoreBase {
     let filepath = this._filepath(id)
     let stat = fs.statSync(filepath);
     let contents  = fs.readFileSync(filepath, {encoding: ENCODING})
-    let json = JSON.parse(contents)
+    let convertedContents = this._convertOnRead(contents) // hook method
+    let json = JSON.parse(convertedContents)
     return { id: id, path: json.path, contents: json.contents, ctime: stat.ctime }
   }
 
@@ -56,5 +57,9 @@ export default class JsonStore extends StoreBase {
 
   _filepath(id) {
     return `${this.dirpath}/${id}`
+  }
+
+  _convertOnRead(contents) {
+    return contents
   }
 }

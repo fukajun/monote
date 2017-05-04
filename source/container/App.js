@@ -10,7 +10,7 @@ import { IndexRoute, Link, BrowserRouter, HashRouter, Route,  Switch, Redirect, 
 import _u from 'underscore'
 //
 // Lib
-import Store from '../models/JsonStore.js'
+import Store from '../models/TextLoadableJsonStore.js'
 import EditorPage from './EditorPage.js'
 import ListPage from './ListPage.js'
 
