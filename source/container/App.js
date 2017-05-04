@@ -26,11 +26,10 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       item: null,
-      keyword: '',
-      list: store.list()
+      keyword: ''
     }
     this.debounceUpdateKeyword = _u.debounce((word)=> {
-      this.setState({list: store.list(word)})
+      this.setState({keyword: word})
     }, 300)
     this.debounceSave = _u.debounce((item)=> {
       store.store(item)
@@ -42,7 +41,6 @@ export default class App extends React.Component {
     this.history.listen((location)=> {
       let context
       if (context = matchPath(location.pathname, {path: '/edit/:id', exact: true})) {
-        console.log(context.params.id)
         this.setState({item: store.load(context.params.id)})
       } else if (context = matchPath(location.pathname, {path: '/new'})) {
         this.setState({item: store.buildNewItem()})
@@ -59,7 +57,7 @@ export default class App extends React.Component {
     if( e.metaKey || e.ctrlKey ) {
       if( e.key >= '0' && e.key <= '9' ) {
         let i = e.key
-        let item = store.list()[i]
+        let item = store.list(this.state.keyword)[i]
         if( !item ) {
           return
         }
@@ -67,6 +65,7 @@ export default class App extends React.Component {
         // NOTE: Protect input number to textarea after move page.
         let delay = 100
         setTimeout(()=> {
+          this.setState({item: item})
           this.history.replace(`/edit/${item.id}`);
         }, delay);
       }
@@ -162,8 +161,10 @@ export default class App extends React.Component {
                 <Route exact path='/new' render={(context)=>
                   <EditorPage {...context} item={this.state.item} onChange={this.changeText.bind(this)} />
                 }/>
-                <Route path='/' render={(context)=>
-                  <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={this.state.list}/>
+                <Route path='/' render={(context)=> {
+                    let list = store.list(this.state.keyword)
+                    return <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={list}/>
+                  }
                 }/>
                 <Redirect from='*' to='/' />
               </Switch>
