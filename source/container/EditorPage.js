@@ -38,7 +38,7 @@ export default class EditorPage extends React.Component {
   }
 
   change(e) {
-    this.props.onChange(e.target.value)
+    this.props.onChange(this.refs.inputBody.value, this.refs.inputTitle.value)
   }
 
   render() {
@@ -49,7 +49,12 @@ export default class EditorPage extends React.Component {
           style={this.style.container}
           onChange={this.change.bind(this)}
           value={this.props.item.contents}
-      />
+        />
+        <input ref='inputTitle'
+          onChange={this.change.bind(this)}
+          value={this.props.item.path}
+          type='text'
+        />
       </div>
     )
   }

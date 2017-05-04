@@ -5,7 +5,7 @@ import Item from './Item.js'
 // StoreBase
 export default class StoreBase {
   buildNewItem() {
-    return new Item({id: sha1(Date.now()), contents: '' })
+    return new Item({id: sha1(Date.now()), path: '', contents: '' })
   }
 
   store(item) {
@@ -27,7 +27,7 @@ export default class StoreBase {
   }
 
   save(item) {
-    this._write(item.id, item.contents)
+    this._write(item.id, item.path, item.contents)
   }
 
   delete(item) {
@@ -35,12 +35,12 @@ export default class StoreBase {
   }
 
   _buildItem(attributes) {
-    return new Item({ id: attributes.id, contents: attributes.contents, ctime: attributes.ctime })
+    return new Item({ id: attributes.id, path: attributes.path, contents: attributes.contents, ctime: attributes.ctime })
   }
 
   _list(word) { }
   _read(id) { }
-  _write(id, contents) { }
+  _write(id, path, contents) { }
   _delete(id) { }
 }
 

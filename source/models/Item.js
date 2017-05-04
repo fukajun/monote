@@ -1,16 +1,24 @@
 const TITLE_DELIMITER = "\n"
+const NOCONTENS_TITLE = '< Untitled >'
 
 export default class Item {
-  constructor({id, contents, ctime}) {
+  constructor({id, path, contents, ctime}) {
     this.id = id
+    this.path = path
     this.ctime = ctime
     this.contents = contents
   }
 
   title() {
-    let first, last;
-    [first, ...last] = this._splitedContens()
-    return (first.length >= 1 ? first : '< Untitled >')
+    let path = this._trimdPath()
+    if(path.length >= 1) {
+      return path
+    }
+    let title = this._titleFromContents()
+    if (title.length >= 1) {
+      return title
+    }
+    return NOCONTENS_TITLE
   }
 
   body() {
@@ -21,6 +29,16 @@ export default class Item {
 
   line() {
     return (this.body().replace(/[\r\n]/g, ''))
+  }
+
+  _trimdPath() {
+    return (this.path || '').trim()
+  }
+
+  _titleFromContents() {
+    let first, last;
+    [first, ...last] = this._splitedContens()
+    return first.trim()
   }
 
   _splitedContens() {

@@ -31,12 +31,12 @@ export default class JsonStore extends StoreBase {
     let stat = fs.statSync(filepath);
     let contents  = fs.readFileSync(filepath, {encoding: ENCODING})
     let json = JSON.parse(contents)
-    return { id: id, contents: json.contents, ctime: stat.ctime }
+    return { id: id, path: json.path, contents: json.contents, ctime: stat.ctime }
   }
 
-  _write(id, contents) {
+  _write(id, path, contents) {
     let filepath = this._filepath(id)
-    let json_body = JSON.stringify({contents: contents})
+    let json_body = JSON.stringify({path: path, contents: contents})
     fs.writeFileSync(filepath, json_body, ENCODING)
   }
 

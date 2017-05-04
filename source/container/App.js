@@ -91,9 +91,10 @@ export default class App extends React.Component {
     this.history.push('/new')
   }
 
-  changeText(body) {
+  changeText(body, title) {
     let newItem = this.state.item
     newItem.contents = body
+    newItem.path = title
     this.setState({item: newItem})
     this.debounceSave(newItem)
   }
