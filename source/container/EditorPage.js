@@ -27,11 +27,11 @@ export default class EditorPage extends React.Component {
   }
 
   componentDidMount() {
-    this.refs.inputBody.focus()
+    this.refs.inputContents.focus()
   }
 
   change(e) {
-    this.props.onChange(this.refs.inputBody.value, this.refs.inputPath.value)
+    this.props.onChange(this.refs.inputContents.value, this.refs.inputPath.value)
   }
 
   render() {
@@ -39,7 +39,7 @@ export default class EditorPage extends React.Component {
       <div>
         <textarea
           className='editor-input-contents'
-          ref='inputBody'
+          ref='inputContents'
           onChange={this.change.bind(this)}
           value={this.props.item.contents}
         />
