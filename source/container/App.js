@@ -26,10 +26,11 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       item: null,
-      keyword: ''
+      keyword: '',
+      list: store.list()
     }
     this.debounceUpdateKeyword = _u.debounce((word)=> {
-      this.history.replace(rootPath(word))
+      this.setState({list: store.list(word)})
     }, 300)
     this.debounceSave = _u.debounce((item)=> {
       store.store(item)
@@ -156,14 +157,14 @@ export default class App extends React.Component {
             <div className='content'>
               <Switch>
                 <Route exact path='/edit/:id' render={(context)=>
-                  <EditorPage {...context} item={this.state.item} onChange={this.changeText.bind(this)} />}
-                />
+                  <EditorPage {...context} item={this.state.item} onChange={this.changeText.bind(this)} />
+                }/>
                 <Route exact path='/new' render={(context)=>
-                  <EditorPage {...context} item={this.state.item} onChange={this.changeText.bind(this)} />}
-                />
+                  <EditorPage {...context} item={this.state.item} onChange={this.changeText.bind(this)} />
+                }/>
                 <Route path='/' render={(context)=>
-                  <ListPage {...context} item={this.state.item}/>}
-                />
+                  <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={this.state.list}/>
+                }/>
                 <Redirect from='*' to='/' />
               </Switch>
             </div>
