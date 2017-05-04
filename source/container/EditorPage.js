@@ -24,13 +24,6 @@ export default class EditorPage extends React.Component {
     } else {
       item = store.buildNewItem()
     }
-
-    this.style = {
-      container: {
-        width: '100%',
-        height: '90%'
-      }
-    }
   }
 
   componentDidMount() {
@@ -45,12 +38,13 @@ export default class EditorPage extends React.Component {
     return (
       <div>
         <textarea
+          className='editor-input-contents'
           ref='inputBody'
-          style={this.style.container}
           onChange={this.change.bind(this)}
           value={this.props.item.contents}
         />
         <input ref='inputTitle'
+          className='editor-input-title'
           onChange={this.change.bind(this)}
           value={this.props.item.path}
           type='text'

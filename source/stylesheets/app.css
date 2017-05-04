@@ -167,7 +167,7 @@ body {
   border:0px solid;
 }
 
-textarea {
+.editor-input-contents {
   font-family: "VL-Gothic-Regular", "Osaka−等幅","Osaka-Mono";
   font-size: 12px;
   background-color: #f5f5f5;
@@ -175,9 +175,24 @@ textarea {
   color: #222;
   line-height: 20px;
   border:0px solid;
+  width: 100%;
+  height: 80%;
 }
-textarea:focus {
+
+.editor-input-contents:focus {
     outline: none !important;
     border:0px solid;
     /*box-shadow: 0 0 10px #719ECE;*/
+}
+
+.editor-input-title {
+  font-size: 12px;
+  font-family: "VL-Gothic-Regular", "Osaka−等幅","Osaka-Mono";
+  background-color: #f5f5f5;
+  width: 100%;
+  height: 30px;
+}
+
+.editor-input-title:focus {
+  outline: none !important;
 }
