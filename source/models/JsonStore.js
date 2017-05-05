@@ -1,6 +1,6 @@
 import fs from 'fs'
 import StoreBase from './StoreBase.js'
-const DIR = process.env['HOME'] + '/.monotes.dev'
+const DIR = process.env['HOME'] + '/.monotes'
 const ENCODING = 'utf-8'
 
 //
