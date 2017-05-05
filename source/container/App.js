@@ -27,6 +27,7 @@ export default class App extends React.Component {
     this.state = {
       item: null,
       currentDir: '',
+      isOpenTree: false,
       keyword: ''
     }
     this.debounceUpdateKeyword = _u.debounce((word)=> {
@@ -118,6 +119,10 @@ export default class App extends React.Component {
     this.setState({currentDir: dir})
   }
 
+  toggleTree() {
+    this.setState({isOpenTree: !this.state.isOpenTree})
+  }
+
   reload() {
     if(!confirm('リロードしますか？')) {
       return
@@ -134,7 +139,10 @@ export default class App extends React.Component {
               <ul className='header-group-left'>
                 <Switch>
                   <Route exact path='/' >
+                    <div>
                     <li className='header-item'><Link className='header-item-link' to='/new'>{'+'}</Link></li>
+                    <li className='header-item'><a className='header-item-link' onClick={this.toggleTree.bind(this)} >{'='}</a></li>
+                    </div>
                   </Route>
                   <Route path='/*'>
                     <li className='header-item'><Link className='header-item-link' to={rootPath(this.state.keyword)}>{'<'}</Link></li>
@@ -173,6 +181,7 @@ export default class App extends React.Component {
                     return (
                       <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={list}
                         fulllist={store.list()}
+                        isOpenTree={this.state.isOpenTree}
                         currentDir={this.state.currentDir}
                         onClickDir={this.changeDir.bind(this)}
                       />

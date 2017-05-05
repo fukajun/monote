@@ -20,7 +20,7 @@ export default class ListPage extends React.Component {
     let word = this.props.keyword
     return (
       <div className='list'>
-        <Tree currentDir={this.props.currentDir} list={this.props.fulllist} onClick={this.props.onClickDir}/>
+        { this.props.isOpenTree ? <Tree currentDir={this.props.currentDir} list={this.props.fulllist} onClick={this.props.onClickDir}/> : [] }
         <ul className='items'>
           {
             this.props.list.map((item)=> {
