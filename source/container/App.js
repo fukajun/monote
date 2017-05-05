@@ -26,6 +26,7 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       item: null,
+      currentDir: '',
       keyword: ''
     }
     this.debounceUpdateKeyword = _u.debounce((word)=> {
@@ -42,7 +43,7 @@ export default class App extends React.Component {
       let context
       if (context = matchPath(location.pathname, {path: '/edit/:id', exact: true})) {
         this.setState({item: store.load(context.params.id)})
-      } else if (context = matchPath(location.pathname, {path: '/new'})) {
+      }else if (context = matchPath(location.pathname, {path: '/new', exact: true})) {
         this.setState({item: store.buildNewItem()})
       }
     })
@@ -57,7 +58,7 @@ export default class App extends React.Component {
     if( e.metaKey || e.ctrlKey ) {
       if( e.key >= '0' && e.key <= '9' ) {
         let i = e.key
-        let item = store.list(this.state.keyword)[i]
+        let item = store.list(this.state.keyword, this.state.currentDir)[i]
         if( !item ) {
           return
         }
@@ -76,6 +77,7 @@ export default class App extends React.Component {
         this.refs.keyword.focus()
       }
       if(e.key === 'n') {
+        this.setState({item: store.buildNewItem()})
         this.history.push('/new')
       }
       if( e.key === 'Enter' ) {
@@ -110,6 +112,10 @@ export default class App extends React.Component {
     let word = e.target.value
     this.setState({keyword: word})
     this.debounceUpdateKeyword(word)
+  }
+
+  changeDir(dir) {
+    this.setState({currentDir: dir})
   }
 
   reload() {
@@ -163,8 +169,14 @@ export default class App extends React.Component {
                   <EditorPage {...context} item={this.state.item} onChange={this.changeText.bind(this)} />
                 }/>
                 <Route path='/' render={(context)=> {
-                    let list = store.list(this.state.keyword)
-                    return <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={list}/>
+                    let list = store.list(this.state.keyword, this.state.currentDir)
+                    return (
+                      <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={list}
+                        fulllist={store.list()}
+                        currentDir={this.state.currentDir}
+                        onClickDir={this.changeDir.bind(this)}
+                      />
+                    )
                   }
                 }/>
                 <Redirect from='*' to='/' />

@@ -125,6 +125,6 @@ mb.on('ready', function ready () {
   mb.showWindow();
   mb.hideWindow();
   // NOTE: Comment out for display Dev tool
-  initMenu();
+  //initMenu();
   switchIconUnread();
 })

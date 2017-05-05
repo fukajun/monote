@@ -17,8 +17,12 @@ export default class StoreBase {
     }
   }
 
-  list(word = "") {
-    return this._list(word).map( ((data)=> this._buildItem(data)) )
+  list(word = "", dir = '') {
+    let list = this._list(word).map( ((data)=> this._buildItem(data)) )
+    if (dir === '') {
+      return list
+    }
+    return list.filter((item)=> item.dirname() === dir)
   }
 
   load(id) {
