@@ -13,7 +13,7 @@ export default class EditorPage extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='editor'>
         <textarea
           className='editor-input-contents'
           ref='inputContents'
