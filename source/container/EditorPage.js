@@ -25,6 +25,7 @@ export default class EditorPage extends React.Component {
           onChange={this.change.bind(this)}
           value={this.props.item.path}
           type='text'
+          placeholder={'title OR /path/title'}
         />
       </div>
     )

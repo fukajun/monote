@@ -152,7 +152,7 @@ export default class App extends React.Component {
 
               <Switch>
                 <Route exact path='/' >
-                  <input ref='keyword' className='keyword' type='text' onChange={this.updateKeyword.bind(this)} value={this.state.keyword}/>
+                  <input ref='keyword' className='keyword' type='text' placeholder={'keyword'} onChange={this.updateKeyword.bind(this)} value={this.state.keyword}/>
                 </Route>
                 <Route path='/edit' >
                   <span className='header-title'>{this.state.item ? this.state.item.title() : ''}</span>
