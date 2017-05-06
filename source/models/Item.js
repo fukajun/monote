@@ -13,7 +13,7 @@ export default class Item {
   title() {
     let path = this._trimdPath()
     if(path.length >= 1) {
-      return path
+      return this._basename()
     }
     let title = this._titleFromContents()
     if (title.length >= 1) {
@@ -32,12 +32,13 @@ export default class Item {
     return (this.body().replace(/[\r\n]/g, ''))
   }
 
-  dir() {
-    return Path.basename(this.dirname)
-  }
 
   dirname() {
     return Path.dirname(this._normalizePath())
+  }
+
+  _basename() {
+    return Path.basename(this._normalizePath())
   }
   _normalizePath() {
     let path = this._trimdPath()

@@ -98,8 +98,7 @@ body {
 }
 
 .item-link-info {
-  display: none;
-  color: #aaaaaa;
+  color: #e5e5e5;
   font-size: 12px;
   border-top: 0px;
   list-style: none;
@@ -125,8 +124,8 @@ body {
   /*box-shadow:1px 1px 8px -2px #000 inset;*/
 }
 .item-link-body {
-  margin-left: 8px;
   line-height: 20px;
+  color: #aaa;
 }
 
 .header {

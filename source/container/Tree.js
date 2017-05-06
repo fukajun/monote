@@ -8,34 +8,32 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import _u from 'underscore'
 import Path from 'path';
+import DirCollection from '../models/DirCollection.js';
 
 export default class Tree extends React.Component {
   clickDir(dir) {
     this.props.onClick(dir)
   }
+  createListItem(name, path, isCurrent, length, level) {
+    let indent = Array(level).join(' ')
+    return (
+      <li className='tree-item' key={path}>
+         <a className='tree-link' onClick={this.clickDir.bind(this, path)}>
+          <div className='tree-link-title'>
+            {indent} {name}  ({ length }) {isCurrent ? '🌟' : ''}
+          </div>
+        </a>
+      </li>
+    )
+  }
   render() {
-    let dirs = this.props.list.map((item)=> item.dirname())
-    console.log(this.props.currentDir)
+    let collection = new DirCollection(this.props.list)
     return (
       <ul className='tree'>
-        <li className='tree-item' key={'-'}>
-           <a className='tree-link' onClick={this.clickDir.bind(this, '')}>
-            <div className='tree-link-title'>
-              {'-'} {this.props.currentDir === '' ? '🌟' : ''}
-            </div>
-          </a>
-        </li>
-        {
-          _u.uniq(dirs).sort().map((dir)=> {
-            let displayDir = dir === '/' ? 'TOP' : dir
+        { this.createListItem('ALL', '', (this.props.currentDir === ''), this.props.list.length, 0) }
+        { collection.list.map((dir)=> {
             return (
-              <li className='tree-item' key={dir}>
-                 <a className='tree-link' onClick={this.clickDir.bind(this, dir)}>
-                  <div className='tree-link-title'>
-                    {displayDir} {this.props.currentDir === dir ? '🌟' : ''}
-                  </div>
-                </a>
-              </li>
+              this.createListItem(dir.path, dir.path, (this.props.currentDir === dir.path), dir.items.length, 0)
             )
           })
         }

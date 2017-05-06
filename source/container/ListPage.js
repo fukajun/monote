@@ -34,7 +34,7 @@ export default class ListPage extends React.Component {
                     <div className='item-link-ctime'>{moment(item.ctime).format("Y/M/D hh:mm")}</div>
                     <br />
                     <div className='item-link-info'>
-                      <span className='item-link-body'>{item.line().substring(0, 200)}</span>
+                      <span className='item-link-body'>{item.dirname()}</span>
                     </div>
                   </Link>
                 </li>
