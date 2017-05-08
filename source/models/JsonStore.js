@@ -2,6 +2,7 @@ import fs from 'fs'
 import StoreBase from './StoreBase.js'
 const DIR = process.env['HOME'] + '/.monotes'
 const ENCODING = 'utf-8'
+import _u from 'underscore'
 
 //
 // JsonStore
@@ -17,10 +18,11 @@ export default class JsonStore extends StoreBase {
       (filename)=> (this._read(filename))
     )
     let sortAttribute = 'ctime'
-    let pattern = new RegExp(word, 'i')
+    let words = word.replace(/[ 　]/g, ' ').split(' ')
+    let patterns = words.map((word)=> new RegExp(word, 'i'))
 
     return list.filter(
-      (data)=> (data.contents.match(pattern))
+      (data)=> _u.all(patterns, (pattern)=> ((data.contents||'') + (data.path || '')).match(pattern))
     ).sort(
       (a, b)=> (b[sortAttribute].getTime() - a[sortAttribute].getTime())
     );
