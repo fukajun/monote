@@ -140,8 +140,8 @@ export default class App extends React.Component {
                 <Switch>
                   <Route exact path='/' >
                     <div>
-                    <li className='header-item'><Link className='header-item-link' to='/new'>{'+'}</Link></li>
-                    <li className='header-item'><a className='header-item-link' onClick={this.toggleTree.bind(this)} >{'='}</a></li>
+                    <li className='header-item'><a className='header-item-link' onClick={this.toggleTree.bind(this)} >{'≡'}</a></li>
+                    <li className='header-item'><Link className='header-item-link' to='/new'>{'＋'}</Link></li>
                     </div>
                   </Route>
                   <Route path='/*'>
