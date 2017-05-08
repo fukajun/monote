@@ -20,8 +20,7 @@ export default class DirCollection {
     this.items = list
     let checkDirs = {}
     this.items.forEach((item)=> {
-      let dir = checkDirs[item.dirname()] || ( checkDirs[item.dirname()] = new Dir(item.dirname())  )
-      console.log(dir)
+      let dir = checkDirs[item.dirpath()] || ( checkDirs[item.dirpath()] = new Dir(item.dirpath())  )
       dir.items.push(item)
     })
     this.list = _u.map(checkDirs, (k, v)=> k).sort((a,b)=> a.path > b.path)

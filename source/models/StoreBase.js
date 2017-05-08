@@ -22,7 +22,7 @@ export default class StoreBase {
     if (dir === '') {
       return list
     }
-    return list.filter((item)=> item.dirname() === dir)
+    return list.filter((item)=> item.dirpath() === dir)
   }
 
   load(id) {

@@ -11,15 +11,7 @@ export default class Item {
   }
 
   title() {
-    let path = this._trimdPath()
-    if(path.length >= 1) {
-      return this._basename()
-    }
-    let title = this._titleFromContents()
-    if (title.length >= 1) {
-      return title
-    }
-    return NOCONTENS_TITLE
+    return Path.basename(this.fullpath())
   }
 
   body() {
@@ -32,14 +24,31 @@ export default class Item {
     return (this.body().replace(/[\r\n]/g, ''))
   }
 
-
-  dirname() {
-    return Path.dirname(this._normalizePath())
+  fullpath() {
+    if(this._hasPath()) {
+      if(this._isDirPath()) {
+        return `${this._normalizePath()}${this._safeTitleFromContents()}`
+      } else {
+        return this._normalizePath()
+      }
+    } else {
+      return `/${this._safeTitleFromContents()}`
+    }
   }
 
-  _basename() {
-    return Path.basename(this._normalizePath())
+  dirpath() {
+    return Path.dirname(this.fullpath())
   }
+
+  _hasPath() {
+    return this._trimdPath().length >= 1
+  }
+
+  _isDirPath() {
+    let normalizedPath = this._normalizePath()
+    return (normalizedPath[normalizedPath.length - 1] === '/')
+  }
+
   _normalizePath() {
     let path = this._trimdPath()
     return path[0] === '/' ? path : `/${path}`
@@ -47,6 +56,16 @@ export default class Item {
 
   _trimdPath() {
     return (this.path || '').trim()
+  }
+
+  // For title
+  _safeTitleFromContents() {
+    let title = this._titleFromContents()
+    if (title.length >= 1) {
+      return `${title}`
+    } else {
+      return `${NOCONTENS_TITLE}`
+    }
   }
 
   _titleFromContents() {
