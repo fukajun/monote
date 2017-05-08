@@ -10,12 +10,6 @@ import ReactDom from 'react-dom';
 import App from './container/App.js';
 
 document.addEventListener("DOMContentLoaded", ()=> {
-
-  history.replaceState('test', null, '#/')
-  window.addEventListener('popstate',function(e){
-    console.log(location.hash);
-  });
-
   ReactDom.render(
     <App/>,
     document.querySelector('.app')

@@ -74,11 +74,6 @@ mb.on('ready', function ready () {
       openWindow();
     }
   });
-  //globalShortcut.unregister(KEY_GO_LIST);
-  //globalShortcut.register(KEY_GO_LIST, ()=> {
-  //  console.log(mb)
-  //  mb.window.send('go_list')
-  //});
 
   //
   // Setting ipc event
@@ -94,14 +89,6 @@ mb.on('ready', function ready () {
   });
   ipcMain.on('set_title', (event, text)=> {
     setTrayTitle(text.trim())
-  });
-  ipcMain.on('save', (event, arg)=> {
-    console.log(arg)
-    fs.writeFile('./hoge.md', arg, 'utf8', function (err) {
-      if (err) {
-        return console.log(err);
-      }
-    });
   });
   ipcMain.on('quit', (event, arg)=> {
     app.quit();
