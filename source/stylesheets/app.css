@@ -110,9 +110,9 @@ body {
 .item-link-ctime {
   float: right;
   display: inline-block;
-  background-color: #dfdfdf;
+  background-color: #efefef;
   color: #666;
-  border-radius: 10px;
+  border-radius: 3px;
   line-height: 20px;
   padding-left: 10px;
   padding-right: 10px;
