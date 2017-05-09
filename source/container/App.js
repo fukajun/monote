@@ -21,6 +21,10 @@ function rootPath(word = '') {
   return (word.length == 0 ? '/' : `/?word=${word}`)
 }
 
+function currentItemPath(path) {
+  return ((path[path.length - 1] || '').match(/^\/?$/) ? '' : `${path}/`)
+}
+
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -45,7 +49,7 @@ export default class App extends React.Component {
       if (context = matchPath(location.pathname, {path: '/edit/:id', exact: true})) {
         this.setState({item: store.load(context.params.id)})
       }else if (context = matchPath(location.pathname, {path: '/new', exact: true})) {
-        this.setState({item: store.buildNewItem()})
+        this.setState({item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) })})
       }
     })
     document.addEventListener("keydown", this.nativeKeyEvent.bind(this));

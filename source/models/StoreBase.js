@@ -4,8 +4,8 @@ import Item from './Item.js'
 //
 // StoreBase
 export default class StoreBase {
-  buildNewItem() {
-    return new Item({id: sha1(Date.now()), path: '', contents: '' })
+  buildNewItem(args = {}) {
+    return new Item({id: sha1(Date.now()), path: (args.path || ''), contents: (args.contents || '') })
   }
 
   store(item) {
