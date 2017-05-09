@@ -3,6 +3,7 @@
 'use strict';
 
 const ACTIVE_MENUBAR_ICON   = __dirname + '/images/active.png'
+const ACTIVE_INV_MENUBAR_ICON   = __dirname + '/images/active_invert.png'
 const INACTIVE_MENUBAR_ICON = __dirname + '/images/inactive.png'
 const NOTIFY_ICON           = __dirname + '/images/notify_icon.png'
 import menubar from 'menubar';
@@ -18,11 +19,11 @@ console.log(__dirname)
 //const mb = menubar({ icon: ACTIVE_MENUBAR_ICON  });
 mb.setOption('width', 500)
 
-const switchIconUnread = ()=> {
-  mb.tray.setImage(ACTIVE_MENUBAR_ICON )
+const switchIconOpen = ()=> {
+  mb.tray.setImage(ACTIVE_INV_MENUBAR_ICON)
 }
-const switchIconRead = ()=> {
-  mb.tray.setImage(ACTIVE_MENUBAR_ICON )
+const switchIconClose = ()=> {
+  mb.tray.setImage(ACTIVE_MENUBAR_ICON)
 }
 const setTrayTitle = (title)=> {
   mb.tray.setTitle(title)
@@ -101,17 +102,15 @@ mb.on('ready', function ready () {
     mb.showWindow();
   });
   mb.on('show', ()=> {
-    setTimeout(()=> {
-      switchIconRead();
-    }, 1000);
+    switchIconOpen();
   })
   mb.on('hide', ()=> {
-    switchIconRead();
+    switchIconClose();
   })
 
   mb.showWindow();
   mb.hideWindow();
   // NOTE: Comment out for display Dev tool
   initMenu();
-  switchIconUnread();
+  switchIconClose();
 })
