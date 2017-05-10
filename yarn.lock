@@ -1861,6 +1861,10 @@ lodash.isempty@^4.2.1:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.isempty/-/lodash.isempty-4.4.0.tgz#6f86cbedd8be4ec987be9aaf33c9684db1b31e7e"
 
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+
 lodash.isplainobject@^4.0.4:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
@@ -2396,6 +2400,12 @@ react-dom@^15.5.4:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "~15.5.7"
+
+react-resizable-box@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-resizable-box/-/react-resizable-box-2.0.4.tgz#60113dfef9f9e1ccb88a3ea9a386b3992e0431d8"
+  dependencies:
+    lodash.isequal "^4.5.0"
 
 react-router-dom@^4.1.1:
   version "4.1.1"

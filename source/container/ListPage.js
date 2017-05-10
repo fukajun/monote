@@ -5,6 +5,7 @@
 //
 // Vendor
 import React from 'react';
+import Resizable from 'react-resizable-box'
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Tree from './Tree.js'
@@ -15,12 +16,20 @@ import Store from '../models/JsonStore.js'
 const store = new Store()
 
 export default class ListPage extends React.Component {
+  resizeTree(e) {
+    this.props.onResizeTree(e.clientX)
+  }
   render() {
     let seq = 0
     let word = this.props.keyword
     return (
       <div className='list'>
-        { this.props.isOpenTree ? <Tree currentDir={this.props.currentDir} list={this.props.fulllist} onClick={this.props.onClickDir}/> : [] }
+        { this.props.isOpenTree ? (
+          <Resizable onResize={this.resizeTree.bind(this)} minWidth={this.props.treeMinWidth} width={this.props.treeWidth}>
+            <Tree currentDir={this.props.currentDir} list={this.props.fulllist} onClick={this.props.onClickDir}/>
+          </Resizable>
+          ) : [] }
+
         <ul className='items'>
           {
             this.props.list.map((item)=> {
