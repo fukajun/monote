@@ -14,6 +14,7 @@ import Store from '../models/TextLoadableJsonStore.js'
 import EditorPage from './EditorPage.js'
 import ListPage from './ListPage.js'
 
+const TREE_MIN_WIDTH = 200
 const store = new Store()
 
 // TODO: To helper
@@ -32,7 +33,8 @@ export default class App extends React.Component {
       item: null,
       currentDir: '',
       isOpenTree: false,
-      keyword: ''
+      keyword: '',
+      treeWidth: TREE_MIN_WIDTH
     }
     this.debounceUpdateKeyword = _u.debounce((word)=> {
       this.setState({keyword: word})
@@ -127,6 +129,12 @@ export default class App extends React.Component {
     this.setState({isOpenTree: !this.state.isOpenTree})
   }
 
+  resizeTree(width) {
+    if(width >= TREE_MIN_WIDTH) {
+      this.setState({treeWidth: width})
+    }
+  }
+
   reload() {
     if(!confirm('リロードしますか？')) {
       return
@@ -184,10 +192,13 @@ export default class App extends React.Component {
                     let list = store.list(this.state.keyword, this.state.currentDir)
                     return (
                       <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={list}
+                        treeMinWidth={TREE_MIN_WIDTH}
+                        treeWidth={this.state.treeWidth}
                         fulllist={store.list()}
                         isOpenTree={this.state.isOpenTree}
                         currentDir={this.state.currentDir}
                         onClickDir={this.changeDir.bind(this)}
+                        onResizeTree={this.resizeTree.bind(this)}
                       />
                     )
                   }

@@ -31,7 +31,7 @@ body {
   margin:0;
   padding: 0;
   background-color: #eee;
-  width: 150px;
+  width: 100%;
   height: 100%;
   overflow: auto;
   box-sizing: border-box;
@@ -126,6 +126,8 @@ body {
 }
 
 .header {
+  /* z-index: Resizable Componentの上にするため必要 */
+  z-index: 10;
   box-shadow: 0 0 5px #666;
   height: 40px;
   background-color: #eee;
