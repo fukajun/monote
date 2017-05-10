@@ -76,19 +76,25 @@ export default class App extends React.Component {
           this.setState({item: item})
           this.history.replace(`/edit/${item.id}`);
         }, delay);
+        return
       }
 
-      if( e.key === 'f' ) {
-        this.history.replace('/')
-        this.setState({keyword: ''})
-        this.refs.keyword.focus()
-      }
-      if(e.key === 'n') {
-        this.setState({item: store.buildNewItem()})
-        this.history.push('/new')
-      }
-      if( e.key === 'Enter' ) {
-        this.history.replace(rootPath(this.state.keyword))
+      switch(e.key) {
+        case 'i':
+          this.toggleTree()
+          break;
+        case 'f':
+          this.history.replace('/')
+          this.setState({keyword: ''})
+          this.refs.keyword.focus()
+          break;
+        case 'n':
+          this.setState({item: store.buildNewItem()})
+          this.history.push('/new')
+          break;
+        case 'Enter':
+          this.history.replace(rootPath(this.state.keyword))
+          break;
       }
     }
   }
