@@ -110,7 +110,9 @@ mb.on('ready', function ready () {
 
   mb.showWindow();
   mb.hideWindow();
-  // NOTE: Comment out for display Dev tool
-  initMenu();
+  if(process.env.NODE_ENV === 'production') {
+    // NOTE: Comment out for display Dev tool
+    initMenu();
+  }
   switchIconClose();
 })
