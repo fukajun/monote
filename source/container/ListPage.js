@@ -36,7 +36,7 @@ export default class ListPage extends React.Component {
               let key = seq <= 9 ? `[${seq++}]` : ''
               return (
                 <li className='item' key={item.id}>
-                   <div onClick={this.props.onClickStar.bind(this, item.id)} className={`item-pin ${item.pin ? 'on' : 'off'}`}><i className='fa fa-thumb-tack fa-rotate-45'/></div>
+                   <div onClick={this.props.onClickStar.bind(this, item.id)} className={`item-pin ${item.pin ? 'on' : 'off'}`}><i className='fa fa-thumb-tack'/></div>
                    <Link className='item-link' to={`/edit/${item.id}`}>
                     <div className='item-link-title'>
                       {item.title()} {key}
