@@ -158,12 +158,12 @@ export default class App extends React.Component {
                 <Switch>
                   <Route exact path='/' >
                     <div>
-                    <li className='header-item'><a className='header-item-link' onClick={this.toggleTree.bind(this)} >{'≡'}</a></li>
-                    <li className='header-item'><Link className='header-item-link' to='/new'>{'＋'}</Link></li>
+                    <li className='header-item'><a className='header-item-link' onClick={this.toggleTree.bind(this)} ><i className='fa fa-bars' /></a></li>
+                    <li className='header-item'><Link className='header-item-link' to='/new'><i className='fa fa-plus' /></Link></li>
                     </div>
                   </Route>
                   <Route path='/*'>
-                    <li className='header-item'><Link className='header-item-link' to={rootPath(this.state.keyword)}>{'<'}</Link></li>
+                    <li className='header-item'><Link className='header-item-link' to={rootPath(this.state.keyword)}><i className='fa fa-chevron-left' /></Link></li>
                   </Route>
                 </Switch>
               </ul>
@@ -181,8 +181,8 @@ export default class App extends React.Component {
               </Switch>
 
               <ul className='header-group-right'>
-                <li className='header-item'><a className='header-item-link' onClick={this.reload.bind(this)}><i className='flaticon-refresh' /></a></li>
-                <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='flaticon-power-button' /></a></li>
+                <li className='header-item'><a className='header-item-link' onClick={this.reload.bind(this)}><i className='fa fa-refresh' /></a></li>
+                <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='fa fa-power-off' /></a></li>
               </ul>
             </div>
 
