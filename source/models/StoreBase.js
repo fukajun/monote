@@ -1,5 +1,6 @@
 import sha1 from 'sha1'
 import Item from './Item.js'
+import _u from 'lodash'
 
 //
 // StoreBase

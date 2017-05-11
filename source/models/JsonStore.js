@@ -2,7 +2,7 @@ import fs from 'fs'
 import StoreBase from './StoreBase.js'
 const DIR = process.env['HOME'] + '/.monotes'
 const ENCODING = 'utf-8'
-import _u from 'underscore'
+import _u from 'lodash'
 
 //
 // JsonStore

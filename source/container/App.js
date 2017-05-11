@@ -7,7 +7,7 @@
 import React from 'react';
 import { ipcRenderer } from 'electron';
 import { IndexRoute, Link, BrowserRouter, HashRouter, Route,  Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
-import _u from 'underscore'
+import _u from 'lodash'
 //
 // Lib
 import Store from '../models/TextLoadableJsonStore.js'
