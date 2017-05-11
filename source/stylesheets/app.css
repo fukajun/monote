@@ -310,7 +310,7 @@ body {
   line-height: 25px;
 }
 .help-contents dt {
-  width: 200px;
+  width: 150px;
   float: left;
   clear: both;
 }
@@ -328,5 +328,6 @@ body {
   float: right;
   margin-right: 10px;
   margin-top: 10px;
+  cursor: pointer;
 }
 

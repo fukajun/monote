@@ -13,6 +13,7 @@ import _u from 'lodash'
 import Store from '../models/TextLoadableJsonStore.js'
 import EditorPage from './EditorPage.js'
 import ListPage from './ListPage.js'
+import Help from './Help.js'
 
 const TREE_MIN_WIDTH = 200
 const store = new Store()
@@ -34,6 +35,7 @@ export default class App extends React.Component {
       currentDir: '',
       isOpenTree: false,
       keyword: '',
+      help: false,
       treeWidth: TREE_MIN_WIDTH
     }
     this.debounceUpdateKeyword = _u.debounce((word)=> {
@@ -150,11 +152,12 @@ export default class App extends React.Component {
     this.setState({item: item})
   }
 
-  reload() {
-    if(!confirm('リロードしますか？')) {
-      return
-    }
-    ipcRenderer.send('reload')
+  openHelp() {
+    this.setState({ help: true })
+  }
+
+  closeHelp() {
+    this.setState({ help: false })
   }
 
   render() {
@@ -190,7 +193,7 @@ export default class App extends React.Component {
               </Switch>
 
               <ul className='header-group-right'>
-                <li className='header-item'><a className='header-item-link' onClick={this.reload.bind(this)}><i className='fa fa-question-circle' /></a></li>
+                <li className='header-item'><a className='header-item-link' onClick={this.openHelp.bind(this)}><i className='fa fa-question-circle' /></a></li>
                 <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='fa fa-power-off' /></a></li>
               </ul>
             </div>
@@ -224,22 +227,7 @@ export default class App extends React.Component {
             </div>
           </div>
         </HashRouter>
-        <div className='help-cover'>
-          <div className='help'>
-              <a className='help-close' onClick={this.closeHelp.bind(this)} ><i className='fa fa-close' /></ a>
-              <div className='help-contents' >
-                <h2 className='help-title'>Shortcut key</h2>
-                <dl>
-                  <dt>Ctrl + Shift + n :</dt> <dd>Toggle window</dd>
-                  <dt>Command + f :</dt>      <dd>Focust keywod box</dd>
-                  <dt>Command + i :</dt>      <dd>Toggle tree</dd>
-                  <dt>Command + Enter :</dt>  <dd>Back to List page</dd>
-                  <dt>Command + n :</dt>      <dd>Create new note</dd>
-                  <dt>Command + 0 〜 9 :</dt> <dd>Open each note</dd>
-                </dl>
-              </div>
-          </div>
-        </div>
+        { this.state.help ? (<Help onClose={this.closeHelp.bind(this)}/>) : null }
         </div>
     )
   }
