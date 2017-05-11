@@ -1,7 +1,7 @@
 #!/bin/bash
 DIST_DIR=./dist
 BUILD_DIR=./build
-
+NODE_ENV=production
 PKG_VERSION=`node -pe 'require("./package.json").version'`
 APP_NAME=`node -pe 'require("./package.json").name'`
 

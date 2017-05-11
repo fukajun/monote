@@ -7,6 +7,6 @@ export default class TextLoadableJsonStore extends JsonStore {
       return contents
     }
     // For Plain text
-    return JSON.stringify({path: '', contents: contents})
+    return JSON.stringify({path: '', contents: contents, ping: false})
   }
 }

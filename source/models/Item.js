@@ -3,11 +3,12 @@ const TITLE_DELIMITER = "\n"
 const NOCONTENS_TITLE = '< Untitled >'
 
 export default class Item {
-  constructor({id, path, contents, ctime}) {
+  constructor({id, path, contents, ctime, pin}) {
     this.id = id
     this.path = path
     this.ctime = ctime
     this.contents = contents
+    this.pin = pin
   }
 
   title() {
@@ -22,6 +23,14 @@ export default class Item {
 
   line() {
     return (this.body().replace(/[\r\n]/g, ''))
+  }
+
+  biggerThan(item) {
+    if(this.pin === item.pin) {
+      return this.ctime > item.ctime
+    } else {
+      return this.pin === true
+    }
   }
 
   fullpath() {
