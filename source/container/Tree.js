@@ -6,7 +6,7 @@
 // Vendor
 import React from 'react';
 import { Link } from 'react-router-dom';
-import _u from 'underscore'
+import _u from 'lodash'
 import Path from 'path';
 import DirCollection from '../models/DirCollection.js';
 

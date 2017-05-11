@@ -1,4 +1,4 @@
-import _u from 'underscore'
+import _u from 'lodash'
 import Path from 'path';
 class Dir {
   constructor(path) {

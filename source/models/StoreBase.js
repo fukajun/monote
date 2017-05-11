@@ -1,11 +1,13 @@
 import sha1 from 'sha1'
 import Item from './Item.js'
+import _u from 'lodash'
 
 //
 // StoreBase
 export default class StoreBase {
   buildNewItem(args = {}) {
-    return new Item({id: sha1(Date.now()), path: (args.path || ''), contents: (args.contents || ''), pin: false })
+    let attrs = _u.merge(this._defaultAttributes(), args)
+    return new Item(attrs)
   }
 
   store(item) {
@@ -32,7 +34,8 @@ export default class StoreBase {
   }
 
   save(item) {
-    this._write(item.id, item.path, item.contents, item.pin)
+    let updated_at = new Date()
+    this._write(item.id, item.path, item.contents, item.pin, item.modified_at, updated_at, item.created_at)
   }
 
   delete(item) {
@@ -40,7 +43,13 @@ export default class StoreBase {
   }
 
   _buildItem(attributes) {
-    return new Item({ id: attributes.id, path: attributes.path, contents: attributes.contents, ctime: attributes.ctime, pin: attributes.pin })
+    let attrs = _u.merge(this._defaultAttributes(), attributes)
+    return new Item(attrs)
+  }
+
+  _defaultAttributes() {
+    let now = new Date()
+    return {id: sha1(Date.now()), path: '', contents: '', pin: false, modified_at: now, updated_at: now, created_at: now }
   }
 
   _list(word) { }

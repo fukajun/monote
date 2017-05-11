@@ -22,6 +22,7 @@ export default class ListPage extends React.Component {
   render() {
     let seq = 0
     let word = this.props.keyword
+    let now = new Date() // momentjs tuning
     return (
       <div className='list'>
         { this.props.isOpenTree ? (
@@ -41,7 +42,7 @@ export default class ListPage extends React.Component {
                     <div className='item-link-title'>
                       {item.title()} {key}
                     </div>
-                    <div className='item-link-ctime'>{moment(item.ctime).format("Y/M/D hh:mm")}</div>
+                    <div className='item-link-ctime'>{moment(item.modified_at).from(now, true)}</div>
                     <br />
                     <div className='item-link-info'>
                       <span className='item-link-body'>{item.dirpath() === '/' ? '' : item.dirpath()}</span>

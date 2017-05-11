@@ -7,7 +7,7 @@
 import React from 'react';
 import { ipcRenderer } from 'electron';
 import { IndexRoute, Link, BrowserRouter, HashRouter, Route,  Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
-import _u from 'underscore'
+import _u from 'lodash'
 //
 // Lib
 import Store from '../models/TextLoadableJsonStore.js'
@@ -110,6 +110,7 @@ export default class App extends React.Component {
     let newItem = this.state.item
     newItem.contents = body
     newItem.path = title
+    newItem.modified_at = new Date()
     this.setState({item: newItem})
     this.debounceSave(newItem)
   }
