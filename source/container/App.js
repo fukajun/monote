@@ -30,7 +30,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      item: null,
+      item: store.buildNewItem(),
       currentDir: '',
       isOpenTree: false,
       keyword: '',
