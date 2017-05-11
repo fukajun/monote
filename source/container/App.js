@@ -141,6 +141,13 @@ export default class App extends React.Component {
     }
   }
 
+  toggleStar(id) {
+    let item = store.load(id)
+    item.pin = !item.pin
+    store.save(item)
+    this.setState({item: item})
+  }
+
   reload() {
     if(!confirm('リロードしますか？')) {
       return
@@ -205,6 +212,7 @@ export default class App extends React.Component {
                         currentDir={this.state.currentDir}
                         onClickDir={this.changeDir.bind(this)}
                         onResizeTree={this.resizeTree.bind(this)}
+                        onClickStar={this.toggleStar.bind(this)}
                       />
                     )
                   }
