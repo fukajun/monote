@@ -3,12 +3,14 @@ const TITLE_DELIMITER = "\n"
 const NOCONTENS_TITLE = '< Untitled >'
 
 export default class Item {
-  constructor({id, path, contents, ctime, pin}) {
-    this.id = id
-    this.path = path
-    this.ctime = ctime
-    this.contents = contents
-    this.pin = pin
+  constructor(attrs) {
+    this.id = attrs.id
+    this.path = attrs.path
+    this.ctime = attrs.ctime
+    this.contents = attrs.contents
+    this.pin = attrs.pin
+    this.updated_at = attrs.updated_at
+    this.created_at = attrs.created_at
   }
 
   title() {
@@ -27,7 +29,7 @@ export default class Item {
 
   biggerThan(item) {
     if(this.pin === item.pin) {
-      return this.ctime > item.ctime
+      return this.updated_at > item.updated_at
     } else {
       return this.pin === true
     }
