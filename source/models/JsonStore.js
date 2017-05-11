@@ -36,14 +36,15 @@ export default class JsonStore extends StoreBase {
             contents: json.contents,
             ctime: stat.ctime,
             pin: json.pin,
+            modified_at: json.modified_at ?  new Date(json.modified_at) : stat.ctime,
             updated_at: json.updated_at ?  new Date(json.updated_at) : stat.ctime,
             created_at: json.created_at ?  new Date(json.created_at) : stat.birthtime
     }
   }
 
-  _write(id, path, contents, pin, updated_at, created_at) {
+  _write(id, path, contents, pin, modified_at, updated_at, created_at) {
     let filepath = this._filepath(id)
-    let json_body = JSON.stringify({path: path, contents: contents, pin: pin, updated_at: updated_at, created_at: created_at})
+    let json_body = JSON.stringify({path, contents, pin, modified_at, updated_at, created_at})
     fs.writeFileSync(filepath, json_body, ENCODING)
   }
 

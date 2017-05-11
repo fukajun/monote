@@ -42,7 +42,7 @@ export default class ListPage extends React.Component {
                     <div className='item-link-title'>
                       {item.title()} {key}
                     </div>
-                    <div className='item-link-ctime'>{moment(item.updated_at).from(now, true)}</div>
+                    <div className='item-link-ctime'>{moment(item.modified_at).from(now, true)}</div>
                     <br />
                     <div className='item-link-info'>
                       <span className='item-link-body'>{item.dirpath() === '/' ? '' : item.dirpath()}</span>

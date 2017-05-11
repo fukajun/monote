@@ -9,6 +9,7 @@ export default class Item {
     this.ctime = attrs.ctime
     this.contents = attrs.contents
     this.pin = attrs.pin
+    this.modified_at = attrs.modified_at
     this.updated_at = attrs.updated_at
     this.created_at = attrs.created_at
   }
@@ -29,7 +30,7 @@ export default class Item {
 
   biggerThan(item) {
     if(this.pin === item.pin) {
-      return this.updated_at > item.updated_at
+      return this.modified_at > item.modified_at
     } else {
       return this.pin === true
     }

@@ -110,7 +110,7 @@ export default class App extends React.Component {
     let newItem = this.state.item
     newItem.contents = body
     newItem.path = title
-    newItem.updated_at = new Date()
+    newItem.modified_at = new Date()
     this.setState({item: newItem})
     this.debounceSave(newItem)
   }

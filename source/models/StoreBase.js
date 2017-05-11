@@ -34,7 +34,8 @@ export default class StoreBase {
   }
 
   save(item) {
-    this._write(item.id, item.path, item.contents, item.pin, item.updated_at, item.created_at)
+    let updated_at = new Date()
+    this._write(item.id, item.path, item.contents, item.pin, item.modified_at, updated_at, item.created_at)
   }
 
   delete(item) {
@@ -47,7 +48,8 @@ export default class StoreBase {
   }
 
   _defaultAttributes() {
-    return {id: sha1(Date.now()), path: '', contents: '', pin: false, updated_at: new Date(), created_at: new Date() }
+    let now = new Date()
+    return {id: sha1(Date.now()), path: '', contents: '', pin: false, modified_at: now, updated_at: now, created_at: now }
   }
 
   _list(word) { }
