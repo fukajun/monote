@@ -184,14 +184,13 @@ body {
   width: 60px;
   margin: 0px;
   padding: 0px;
-  padding-left: 10px;
+  padding-left: 20px;
 }
 .header-group-right {
   float: right;
   width: 60px;
   margin: 0px;
   padding: 0px;
-  padding-right: 10px;
 }
 
 .header-items {
