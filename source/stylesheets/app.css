@@ -98,8 +98,9 @@ body {
 
 .item-pin i{
   font-size: 14px;
-  line-height: 57px;
+  line-height: 40px;
   cursor: pointer;
+  -webkit-transform: rotate(45deg);
 }
 .item-pin.on i{
   color: #f66;
@@ -107,7 +108,6 @@ body {
 }
 .item-pin.off i{
   display: none;
-  -webkit-transform: rotate(45deg);
 }
 .item-pin.off:hover i{
   display: block;
