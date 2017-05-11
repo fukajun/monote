@@ -5,7 +5,7 @@ import Item from './Item.js'
 // StoreBase
 export default class StoreBase {
   buildNewItem(args = {}) {
-    return new Item({id: sha1(Date.now()), path: (args.path || ''), contents: (args.contents || '') })
+    return new Item({id: sha1(Date.now()), path: (args.path || ''), contents: (args.contents || ''), pin: false })
   }
 
   store(item) {
@@ -19,6 +19,7 @@ export default class StoreBase {
 
   list(word = "", dir = '') {
     let list = this._list(word).map( ((data)=> this._buildItem(data)) )
+    list = list.sort((a, b)=> (b.biggerThan(a) ? 1 : -1))
     if (dir === '') {
       return list
     }
@@ -31,7 +32,7 @@ export default class StoreBase {
   }
 
   save(item) {
-    this._write(item.id, item.path, item.contents)
+    this._write(item.id, item.path, item.contents, item.pin)
   }
 
   delete(item) {
@@ -39,7 +40,7 @@ export default class StoreBase {
   }
 
   _buildItem(attributes) {
-    return new Item({ id: attributes.id, path: attributes.path, contents: attributes.contents, ctime: attributes.ctime })
+    return new Item({ id: attributes.id, path: attributes.path, contents: attributes.contents, ctime: attributes.ctime, pin: attributes.pin })
   }
 
   _list(word) { }
