@@ -99,14 +99,15 @@ body {
 .item-pin i{
   font-size: 14px;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 12px;
   -webkit-transform: rotate(45deg);
 }
 .item-pin.on i{
-  color: #f66;
+  color: #f99;
   display: block;
 }
 .item-pin.off i{
+  color: #aaa;
   display: none;
 }
 .item-pin.off:hover i{
