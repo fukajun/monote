@@ -10,8 +10,8 @@ export default class Item {
     this.contents = attrs.contents
     this.pin = attrs.pin
     this.modified_at = attrs.modified_at
-    this.updated_at = attrs.updated_at
-    this.created_at = attrs.created_at
+    this.updated_at  = attrs.updated_at
+    this.created_at  = attrs.created_at
   }
 
   title() {
@@ -44,7 +44,7 @@ export default class Item {
         return this._normalizePath()
       }
     } else {
-      return `/${this._safeTitleFromContents()}`
+      return this._squeezeSlash(`/${this._safeTitleFromContents()}`)
     }
   }
 
@@ -88,5 +88,9 @@ export default class Item {
 
   _splitedContens() {
     return this.contents.split(TITLE_DELIMITER)
+  }
+
+  _squeezeSlash(str) {
+    return str.replace(/\/+/, '/')
   }
 }
