@@ -2,13 +2,19 @@
 
 import React from 'react';
 
+const CURSOR_POSITION = 0
 export default class EditorPage extends React.Component {
   componentDidMount() {
-    this.refs.inputContents.focus()
+    this._setCursorPosition(CURSOR_POSITION)
   }
 
   change(e) {
     this.props.onChange(this.refs.inputContents.value, this.refs.inputPath.value)
+  }
+  _setCursorPosition(pos) {
+    // NOTE: Important call order
+    this.refs.inputContents.setSelectionRange(pos , pos)
+    this.refs.inputContents.focus()
   }
 
   render() {
