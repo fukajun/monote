@@ -3,14 +3,21 @@
 import React from 'react';
 
 const CURSOR_POSITION = 0
+
 export default class EditorPage extends React.Component {
   componentDidMount() {
-    this._setCursorPosition(CURSOR_POSITION)
+    this._setCursorPosition(this.props.startPos || CURSOR_POSITION)
   }
 
   change(e) {
+    this.refs.inputContents.focus()
     this.props.onChange(this.refs.inputContents.value, this.refs.inputPath.value)
   }
+
+  moveCursor(e) {
+    this.props.onMoveCursor(this.refs.inputContents.selectionStart)
+  }
+
   _setCursorPosition(pos) {
     // NOTE: Important call order
     this.refs.inputContents.setSelectionRange(pos , pos)
@@ -24,6 +31,8 @@ export default class EditorPage extends React.Component {
           className='editor-input-contents'
           ref='inputContents'
           onChange={this.change.bind(this)}
+          onKeyDown={this.moveCursor.bind(this)}
+          onClick={this.moveCursor.bind(this)}
           value={this.props.item.contents}
         />
         <input ref='inputPath'

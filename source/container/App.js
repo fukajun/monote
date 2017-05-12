@@ -38,6 +38,9 @@ export default class App extends React.Component {
       help: false,
       treeWidth: TREE_MIN_WIDTH
     }
+    this.mem = {
+      editorCursorPositions: {}
+    }
     this.debounceUpdateKeyword = _u.debounce((word)=> {
       this.setState({keyword: word})
     }, 300)
@@ -160,7 +163,12 @@ export default class App extends React.Component {
     this.setState({ help: false })
   }
 
+  moveEditorCursor(pos) {
+    this.mem.editorCursorPositions[this.state.item.id] = pos;
+  }
+
   render() {
+    let editorProps = {item: this.state.item, startPos: this.mem.editorCursorPositions[this.state.item.id], onMoveCursor: this.moveEditorCursor.bind(this), onChange: this.changeText.bind(this)}
     return (
       <div>
         <HashRouter ref='router'>
@@ -201,10 +209,10 @@ export default class App extends React.Component {
             <div className='content'>
               <Switch>
                 <Route exact path='/edit/:id' render={(context)=>
-                  <EditorPage {...context} item={this.state.item} onChange={this.changeText.bind(this)} />
+                  <EditorPage {...context} {...editorProps} />
                 }/>
                 <Route exact path='/new' render={(context)=>
-                  <EditorPage {...context} item={this.state.item} onChange={this.changeText.bind(this)} />
+                  <EditorPage {...context} {...editorProps} />
                 }/>
                 <Route path='/' render={(context)=> {
                     let list = store.list(this.state.keyword, this.state.currentDir)
