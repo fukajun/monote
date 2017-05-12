@@ -103,6 +103,7 @@ export default class App extends React.Component {
       }
     }
   }
+
   moveList() {
     this.history.push('/')
   }
