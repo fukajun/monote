@@ -98,8 +98,8 @@ body {
 
 .item-pin i{
   font-size: 14px;
-  line-height: 40px;
   cursor: pointer;
+  margin-top: 15px;
   -webkit-transform: rotate(45deg);
 }
 .item-pin.on i{
