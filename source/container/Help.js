@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Help(props) {
   return (
-    <div className='help-cover'>
+    <div className='help-cover' onClick={props.onClose}>
       <div className='help'>
          <a className='help-close' onClick={props.onClose} ><i className='fa fa-close' /></ a>
          <div className='help-contents' >
