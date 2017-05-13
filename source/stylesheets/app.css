@@ -103,8 +103,13 @@ body {
   -webkit-transform: rotate(45deg);
 }
 .item-pin.on i{
-  color: #f99;
   display: block;
+}
+.item-pin.on.red {
+  color: #f99;
+}
+.item-pin.on.blue {
+  color: #99f;
 }
 .item-pin.off i{
   color: #aaa;
@@ -182,14 +187,14 @@ body {
 
 .header-group-left {
   float: left;
-  width: 60px;
+  width: 90px;
   margin: 0px;
   padding: 0px;
   padding-left: 20px;
 }
 .header-group-right {
   float: right;
-  width: 60px;
+  width: 90px;
   margin: 0px;
   padding: 0px;
 }
@@ -309,10 +314,10 @@ body {
 }
 
 .help-contents dt, .help-contents dd {
-  line-height: 25px;
+  line-height: 30px;
 }
 .help-contents dt {
-  width: 150px;
+  width: 200px;
   float: left;
   clear: both;
 }

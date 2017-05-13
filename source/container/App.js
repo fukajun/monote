@@ -14,9 +14,12 @@ import Store from '../models/TextLoadableJsonStore.js'
 import EditorPage from './EditorPage.js'
 import ListPage from './ListPage.js'
 import Help from './Help.js'
+import Config from './Config.js'
+import ConfigManager from '../models/ConfigManager.js'
 
 const TREE_MIN_WIDTH = 200
 const store = new Store()
+const configManager = new ConfigManager()
 
 // TODO: To helper
 function rootPath(word = '') {
@@ -30,12 +33,15 @@ function currentItemPath(path) {
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+    let configs = configManager.load()
     this.state = {
       item: store.buildNewItem(),
       currentDir: '',
       isOpenTree: false,
       keyword: '',
       help: false,
+      config: false,
+      configs: configs,
       treeWidth: TREE_MIN_WIDTH
     }
     this.mem = {
@@ -156,6 +162,19 @@ export default class App extends React.Component {
     this.setState({item: item})
   }
 
+  updateConfig(configs) {
+    this.setState({ configs: configs })
+    configManager.save(configs)
+  }
+
+  openConfig() {
+    this.setState({ config: true })
+  }
+
+  closeConfig() {
+    this.setState({ config: false })
+  }
+
   openHelp() {
     this.setState({ help: true })
   }
@@ -169,7 +188,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    let editorProps = {item: this.state.item, startPos: this.mem.editorCursorPositions[this.state.item.id], onMoveCursor: this.moveEditorCursor.bind(this), onChange: this.changeText.bind(this)}
+    let editorProps = {configs: this.state.configs, item: this.state.item, startPos: this.mem.editorCursorPositions[this.state.item.id], onMoveCursor: this.moveEditorCursor.bind(this), onChange: this.changeText.bind(this)}
     return (
       <div>
         <HashRouter ref='router'>
@@ -202,6 +221,7 @@ export default class App extends React.Component {
               </Switch>
 
               <ul className='header-group-right'>
+                <li className='header-item'><a className='header-item-link' onClick={this.openConfig.bind(this)}><i className='fa fa-cog' /></a></li>
                 <li className='header-item'><a className='header-item-link' onClick={this.openHelp.bind(this)}><i className='fa fa-question-circle' /></a></li>
                 <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='fa fa-power-off' /></a></li>
               </ul>
@@ -219,6 +239,7 @@ export default class App extends React.Component {
                     let list = store.list(this.state.keyword, this.state.currentDir)
                     return (
                       <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={list}
+                        configs={this.state.configs}
                         treeMinWidth={TREE_MIN_WIDTH}
                         treeWidth={this.state.treeWidth}
                         fulllist={store.list()}
@@ -236,7 +257,8 @@ export default class App extends React.Component {
             </div>
           </div>
         </HashRouter>
-        { this.state.help ? (<Help onClose={this.closeHelp.bind(this)}/>) : null }
+        { this.state.help   ? (<Help onClose={this.closeHelp.bind(this)}/>) : null }
+        { this.state.config ? (<Config onChange={this.updateConfig.bind(this)} configs={this.state.configs} onClose={this.closeConfig.bind(this)}/>) : null }
         </div>
     )
   }

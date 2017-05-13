@@ -6,7 +6,8 @@ const CURSOR_POSITION = 0
 
 export default class EditorPage extends React.Component {
   componentDidMount() {
-    this._setCursorPosition(this.props.startPos || CURSOR_POSITION)
+    let defaultCursorPosition = this.props.configs.cursorPosition === 'top' ? 0 : 999999
+    this._setCursorPosition(this.props.startPos || defaultCursorPosition)
   }
 
   change(e) {
