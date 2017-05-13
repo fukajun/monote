@@ -314,10 +314,10 @@ body {
 }
 
 .help-contents dt, .help-contents dd {
-  line-height: 25px;
+  line-height: 30px;
 }
 .help-contents dt {
-  width: 150px;
+  width: 200px;
   float: left;
   clear: both;
 }

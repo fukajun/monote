@@ -15,9 +15,11 @@ import EditorPage from './EditorPage.js'
 import ListPage from './ListPage.js'
 import Help from './Help.js'
 import Config from './Config.js'
+import ConfigManager from '../models/ConfigManager.js'
 
 const TREE_MIN_WIDTH = 200
 const store = new Store()
+const configManager = new ConfigManager()
 
 // TODO: To helper
 function rootPath(word = '') {
@@ -31,6 +33,7 @@ function currentItemPath(path) {
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+    let configs = configManager.load()
     this.state = {
       item: store.buildNewItem(),
       currentDir: '',
@@ -38,7 +41,7 @@ export default class App extends React.Component {
       keyword: '',
       help: false,
       config: false,
-      configs: {pinColor: 'red', cursorPosition: 'top'},
+      configs: configs,
       treeWidth: TREE_MIN_WIDTH
     }
     this.mem = {
@@ -159,8 +162,9 @@ export default class App extends React.Component {
     this.setState({item: item})
   }
 
-  updateConfig(v) {
-    this.setState({ configs: v })
+  updateConfig(configs) {
+    this.setState({ configs: configs })
+    configManager.save(configs)
   }
 
   openConfig() {
