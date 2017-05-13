@@ -43,15 +43,15 @@ export default class Config extends React.Component {
              <FormFields type='update' values={this.props.configs} onChange={this.props.onChange}>
                <div>
                <dt>Default cursor position</dt>
-               <dd>:
-                 <select name='cursorPosition'>
+               <dd>
+                 :  <select name='cursorPosition'>
                    <option value='top'>Top</option>
                    <option value='bottom'>Bottom</option>
                  </select>
                </dd>
                <dt>Color of pin</dt>
-               <dd>:
-                 <select name='pinColor'>
+               <dd>
+                 :  <select name='pinColor'>
                    <option value='red'>Red</option>
                    <option value='blue'>Blue</option>
                  </select>
