@@ -11,7 +11,6 @@ export default class EditorPage extends React.Component {
   }
 
   change(e) {
-    this.refs.inputContents.focus()
     this.props.onChange(this.refs.inputContents.value, this.refs.inputPath.value)
   }
 

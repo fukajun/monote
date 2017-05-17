@@ -18,9 +18,9 @@ export default class Tree extends React.Component {
     let indent = Array(level).join(' ')
     return (
       <li className='tree-item' key={path}>
-         <a className='tree-link' onClick={this.clickDir.bind(this, path)}>
+         <a className={`tree-link ${isCurrent ? 'active' : ''}`} onClick={this.clickDir.bind(this, path)}>
           <div className='tree-link-title'>
-            {indent} {name}  ({ length }) {isCurrent ? '🌟' : ''}
+            {indent} {name}  ({ length })
           </div>
         </a>
       </li>
