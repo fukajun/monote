@@ -296,6 +296,44 @@ body {
   outline: none !important;
 }
 
+.editor-bg {
+  /*display:none; [> 一時的にカバーを非表示 <]*/
+  margin-top: -40px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+.editor-cover {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column
+}
+
+.editor-cover-contents {
+  overflow-y: scroll;
+  font-size: 12px;
+  flex-basis: 15px;
+  flex-grow: 10;
+  margin-top: 40px;
+  white-space: pre-wrap;
+  padding: 15px;
+  line-height: 20px;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  color: rgba(0,0,0,0.0);
+}
+.editor-cover-path {
+  font-size: 12px;
+  flex-basis: 49px;
+  flex-grow: 0;
+}
+.editor-cover-contents a{
+  color: #999;
+  pointer-events: auto;
+}
+
 .help-cover {
   position: fixed;
   left: 0;
