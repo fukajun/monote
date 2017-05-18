@@ -5,7 +5,7 @@ import { shell } from 'electron';
 import _u from 'lodash'
 
 const CURSOR_POSITION = 0
-const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.?[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 
 export default class EditorPage extends React.Component {
   componentDidMount() {
