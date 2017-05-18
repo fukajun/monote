@@ -18,18 +18,20 @@ export default class EditorPage extends React.Component {
       this.setState({isScrolling: false})
     }, 100)
   }
+
   componentDidMount() {
     let defaultCursorPosition = this.props.configs.cursorPosition === 'top' ? 0 : 999999
     this._setCursorPosition(this.props.startPos || defaultCursorPosition)
   }
 
-  change(e) {
+  _changeContents(e) {
     this.props.onChange(this.refs.inputContents.value, this.refs.inputPath.value)
   }
 
   _handleScroll(e) {
     const scrollTop = e.target.scrollTop;
     this.refs.coverContents.scrollTop = scrollTop;
+
     // Disable url link in scrolling
     this.setState({isScrolling: true})
     this.debounceOnScroll()
@@ -40,7 +42,7 @@ export default class EditorPage extends React.Component {
     shell.openExternal(e.target.href);
   }
 
-  moveCursor(e) {
+  _moveCursor(e) {
     this.props.onMoveCursor(this.refs.inputContents.selectionStart)
   }
 
@@ -55,12 +57,12 @@ export default class EditorPage extends React.Component {
   }
 
   renderCoverContents() {
-    let i = 0;
-    let keyName = 'coverElement'
-    let urlStateClassName = this._isEnableUrl() ? 'active' : 'disable'
+    const keyName = 'coverElement'
+    const urlStateClassName = this._isEnableUrl() ? 'active' : 'disable'
+    let i = 0
     return (
       this.props.item.contents.split("\n").map((str)=> {
-        let lineElements = str.split(URL_PATTERN).map((el)=> {
+        const lineElements = str.split(URL_PATTERN).map((el)=> {
           if(el.match(URL_PATTERN)) {
             return <a key={`${keyName}-${i++}`} href={el}  className={`editor-cover-contents-url ${urlStateClassName}`} onClick={this._handleLinkClick.bind(this)}>{el}</a>
           }
@@ -74,6 +76,7 @@ export default class EditorPage extends React.Component {
   render() {
     let inputStateClassName = this.state.isScrolling ? 'disable' : 'active'
     let coverStateClassName = this.state.isScrolling ? 'active' : 'disable'
+
     return (
       <div className='editor'>
 
@@ -89,16 +92,16 @@ export default class EditorPage extends React.Component {
         <textarea
           className={`editor-input-contents ${inputStateClassName}`}
           ref='inputContents'
-          onChange={this.change.bind(this)}
-          onKeyDown={this.moveCursor.bind(this)}
-          onClick={this.moveCursor.bind(this)}
+          onChange={this._changeContents.bind(this)}
+          onKeyDown={this._moveCursor.bind(this)}
+          onClick={this._moveCursor.bind(this)}
           value={this.props.item.contents}
           onScroll={this._handleScroll.bind(this)}
         />
 
         <input ref='inputPath'
           className='editor-input-path'
-          onChange={this.change.bind(this)}
+          onChange={this._changeContents.bind(this)}
           value={this.props.item.path}
           type='text'
           placeholder={'title OR /directory/path/ OR /directory/path/title'}
