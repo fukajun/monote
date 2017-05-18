@@ -49,6 +49,7 @@ export default class EditorPage extends React.Component {
     this.refs.inputContents.setSelectionRange(pos , pos)
     this.refs.inputContents.focus()
   }
+
   _isEnableUrl() {
     return !this.state.isScrolling && this.props.isShowCover
   }
@@ -56,12 +57,12 @@ export default class EditorPage extends React.Component {
   renderCoverContents() {
     let i = 0;
     let keyName = 'coverElement'
-    let urlClassName = `editor-cover-contents-url ${this._isEnableUrl() ? 'active' : 'disable'}`
+    let urlStateClassName = this._isEnableUrl() ? 'active' : 'disable'
     return (
       this.props.item.contents.split("\n").map((str)=> {
         let lineElements = str.split(URL_PATTERN).map((el)=> {
           if(el.match(URL_PATTERN)) {
-            return <a key={`${keyName}-${i++}`} href={el}  className={urlClassName} onClick={this._handleLinkClick.bind(this)}>{el}</a>
+            return <a key={`${keyName}-${i++}`} href={el}  className={`editor-cover-contents-url ${urlStateClassName}`} onClick={this._handleLinkClick.bind(this)}>{el}</a>
           }
           return <span key={`${keyName}-${i++}`}  >{el}</span>
         })
@@ -71,12 +72,14 @@ export default class EditorPage extends React.Component {
   }
 
   render() {
+    let inputStateClassName = this.state.isScrolling ? 'disable' : 'active'
+    let coverStateClassName = this.state.isScrolling ? 'active' : 'disable'
     return (
       <div className='editor'>
 
         <div className='editor-bg'>
           <div className='editor-cover'>
-            <div ref='coverContents' className='editor-cover-contents' >
+            <div ref='coverContents' className={`editor-cover-contents ${coverStateClassName}`} >
               {this.renderCoverContents()}
             </div>
             <div className='editor-cover-path'></div>
@@ -84,7 +87,7 @@ export default class EditorPage extends React.Component {
         </div>
 
         <textarea
-          className='editor-input-contents'
+          className={`editor-input-contents ${inputStateClassName}`}
           ref='inputContents'
           onChange={this.change.bind(this)}
           onKeyDown={this.moveCursor.bind(this)}
