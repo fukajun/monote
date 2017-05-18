@@ -20,7 +20,6 @@ export default class EditorPage extends React.Component {
   _handleScroll(e) {
     const scrollTop = e.target.scrollTop;
     this.refs.coverContents.scrollTop = scrollTop;
-
   }
 
   _handleLinkClick(e) {
@@ -38,17 +37,18 @@ export default class EditorPage extends React.Component {
     this.refs.inputContents.focus()
   }
 
-  renderContents() {
+  renderCoverContents() {
     let i = 0;
+    let keyName = 'coverElement'
     return (
       this.props.item.contents.split("\n").map((str)=> {
-        let cStr = str.split(URL_PATTERN).map((el)=> {
-          if(el.match(URL_PATTERN)) {
-              return <a  key={`cover-html-${i++}`} href={el} onClick={this._handleLinkClick.bind(this)}>{el}</a>
+        let lineElements = str.split(URL_PATTERN).map((el)=> {
+          if(el.match(URL_PATTERN) && this.props.isShowCover) {
+            return <a key={`${keyName}-${i++}`} href={el} onClick={this._handleLinkClick.bind(this)}>{this.props.isShowCover ? el : ''}</a>
           }
-          return <span key={`cover-html-${i++}`}>{el}</span>
+          return <span key={`${keyName}-${i++}`}  >{el}</span>
         })
-        return (<span key={`cover-html-${i++}`}>{cStr}<br /></span>)
+        return (<span key={`${keyName}-${i++}`} >{lineElements}<br /></span>)
       })
     )
   }
@@ -60,9 +60,9 @@ export default class EditorPage extends React.Component {
         <div className='editor-bg'>
           <div className='editor-cover'>
             <div ref='coverContents' className='editor-cover-contents' >
-              {this.renderContents()}
+              {this.renderCoverContents()}
             </div>
-            <div className='editor-cover-path'> path </div>
+            <div className='editor-cover-path'></div>
           </div>
         </div>
 
@@ -75,6 +75,7 @@ export default class EditorPage extends React.Component {
           value={this.props.item.contents}
           onScroll={this._handleScroll.bind(this)}
         />
+
         <input ref='inputPath'
           className='editor-input-path'
           onChange={this.change.bind(this)}

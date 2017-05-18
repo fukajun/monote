@@ -297,7 +297,6 @@ body {
 }
 
 .editor-bg {
-  /*display:none; [> 一時的にカバーを非表示 <]*/
   margin-top: -40px;
   position: absolute;
   height: 100%;
@@ -324,6 +323,7 @@ body {
   box-sizing: border-box;
   color: rgba(0,0,0,0.0);
 }
+
 .editor-cover-path {
   font-size: 12px;
   flex-basis: 49px;

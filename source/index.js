@@ -102,6 +102,7 @@ mb.on('ready', function ready () {
     mb.showWindow();
   });
   mb.on('show', ()=> {
+    mb.window.send('windowShow')
     switchIconOpen();
   })
   mb.on('hide', ()=> {
