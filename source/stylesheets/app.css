@@ -329,9 +329,14 @@ body {
   flex-basis: 49px;
   flex-grow: 0;
 }
-.editor-cover-contents a{
-  color: #999;
+.editor-cover-contents-url.active {
+  color: #33f;
   pointer-events: auto;
+}
+.editor-cover-contents-url.disable {
+  color: #33f;
+  pointer-events: none;
+  text-decoration: none;
 }
 
 .help-cover {
