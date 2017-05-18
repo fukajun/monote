@@ -264,7 +264,6 @@ body {
   background-color: #fefefe;
   border:0px solid;
   box-sizing: border-box;
-  color: #333;
   flex-basis: 15px;
   flex-grow: 1;
   font-family: "VL-Gothic-Regular", "Osaka−等幅","Osaka-Mono";
@@ -273,6 +272,12 @@ body {
   overflow: scroll;
   padding: 15px;
   width: 100%;
+}
+.editor-input-contents.active {
+  color: #333;
+}
+.editor-input-contents.disable {
+  color: rgba(0,0,0,0);
 }
 
 .editor-input-contents:focus {
@@ -321,7 +326,12 @@ body {
   line-height: 20px;
   word-wrap: break-word;
   box-sizing: border-box;
+}
+.editor-cover-contents.disable {
   color: rgba(0,0,0,0.0);
+}
+.editor-cover-contents.active {
+  color: #333;
 }
 
 .editor-cover-path {
