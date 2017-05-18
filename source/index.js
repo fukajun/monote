@@ -17,7 +17,8 @@ const mb = menubar({ icon: ACTIVE_MENUBAR_ICON, dir: __dirname });
 console.log(__dirname)
 
 //const mb = menubar({ icon: ACTIVE_MENUBAR_ICON  });
-mb.setOption('width', 500)
+mb.setOption('width', 600)
+mb.setOption('height', 600)
 
 const switchIconOpen = ()=> {
   mb.tray.setImage(ACTIVE_INV_MENUBAR_ICON)
@@ -102,6 +103,7 @@ mb.on('ready', function ready () {
     mb.showWindow();
   });
   mb.on('show', ()=> {
+    mb.window.send('windowShow')
     switchIconOpen();
   })
   mb.on('hide', ()=> {

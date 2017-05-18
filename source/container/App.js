@@ -42,8 +42,12 @@ export default class App extends React.Component {
       help: false,
       config: false,
       configs: configs,
+      isShowCover: false,
       treeWidth: TREE_MIN_WIDTH
     }
+    ipcRenderer.on('windowShow', ()=> {
+      this.setState({isShowCover: false})
+    })
     this.mem = {
       editorCursorPositions: {}
     }
@@ -66,13 +70,24 @@ export default class App extends React.Component {
       }
     })
     document.addEventListener("keydown", this.nativeKeyEvent.bind(this));
+    document.addEventListener("keyup", this.nativeKeyup.bind(this));
   }
 
   componentWillUnmount() {
     document.removeEventListener("keydown", this.nativeKeyEvent.bind(this));
+    document.removeEventListener("keyup", this.nativeKeyup.bind(this));
   }
 
-  nativeKeyEvent(e) {
+  nativeKeyup(e) {
+    if(e.key === 'Alt') {
+      this.setState({isShowCover: false})
+    }
+  }
+
+  nativeKeyEvent(e, a) {
+    if( e.key === 'Alt') {
+      this.setState({isShowCover: true})
+    }
     if( e.metaKey || e.ctrlKey ) {
       if( e.key >= '0' && e.key <= '9' ) {
         let i = e.key
@@ -188,7 +203,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    let editorProps = {configs: this.state.configs, item: this.state.item, startPos: this.mem.editorCursorPositions[this.state.item.id], onMoveCursor: this.moveEditorCursor.bind(this), onChange: this.changeText.bind(this)}
+    let editorProps = {configs: this.state.configs, item: this.state.item, isShowCover: this.state.isShowCover, startPos: this.mem.editorCursorPositions[this.state.item.id], onMoveCursor: this.moveEditorCursor.bind(this), onChange: this.changeText.bind(this)}
     return (
       <div>
         <HashRouter ref='router'>

@@ -1,8 +1,11 @@
 'use strict';
 
 import React from 'react';
+import { shell } from 'electron';
+import _u from 'lodash'
 
 const CURSOR_POSITION = 0
+const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 
 export default class EditorPage extends React.Component {
   componentDidMount() {
@@ -12,6 +15,16 @@ export default class EditorPage extends React.Component {
 
   change(e) {
     this.props.onChange(this.refs.inputContents.value, this.refs.inputPath.value)
+  }
+
+  _handleScroll(e) {
+    const scrollTop = e.target.scrollTop;
+    this.refs.coverContents.scrollTop = scrollTop;
+  }
+
+  _handleLinkClick(e) {
+    e.preventDefault()
+    shell.openExternal(e.target.href);
   }
 
   moveCursor(e) {
@@ -24,9 +37,35 @@ export default class EditorPage extends React.Component {
     this.refs.inputContents.focus()
   }
 
+  renderCoverContents() {
+    let i = 0;
+    let keyName = 'coverElement'
+    return (
+      this.props.item.contents.split("\n").map((str)=> {
+        let lineElements = str.split(URL_PATTERN).map((el)=> {
+          if(el.match(URL_PATTERN) && this.props.isShowCover) {
+            return <a key={`${keyName}-${i++}`} href={el} onClick={this._handleLinkClick.bind(this)}>{this.props.isShowCover ? el : ''}</a>
+          }
+          return <span key={`${keyName}-${i++}`}  >{el}</span>
+        })
+        return (<span key={`${keyName}-${i++}`} >{lineElements}<br /></span>)
+      })
+    )
+  }
+
   render() {
     return (
       <div className='editor'>
+
+        <div className='editor-bg'>
+          <div className='editor-cover'>
+            <div ref='coverContents' className='editor-cover-contents' >
+              {this.renderCoverContents()}
+            </div>
+            <div className='editor-cover-path'></div>
+          </div>
+        </div>
+
         <textarea
           className='editor-input-contents'
           ref='inputContents'
@@ -34,7 +73,9 @@ export default class EditorPage extends React.Component {
           onKeyDown={this.moveCursor.bind(this)}
           onClick={this.moveCursor.bind(this)}
           value={this.props.item.contents}
+          onScroll={this._handleScroll.bind(this)}
         />
+
         <input ref='inputPath'
           className='editor-input-path'
           onChange={this.change.bind(this)}
