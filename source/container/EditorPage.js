@@ -8,6 +8,16 @@ const CURSOR_POSITION = 0
 const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.?[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 
 export default class EditorPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isScrolling: false
+    }
+
+    this.debounceOnScroll = _u.debounce(()=> {
+      this.setState({isScrolling: false})
+    }, 100)
+  }
   componentDidMount() {
     let defaultCursorPosition = this.props.configs.cursorPosition === 'top' ? 0 : 999999
     this._setCursorPosition(this.props.startPos || defaultCursorPosition)
@@ -20,6 +30,9 @@ export default class EditorPage extends React.Component {
   _handleScroll(e) {
     const scrollTop = e.target.scrollTop;
     this.refs.coverContents.scrollTop = scrollTop;
+    // Disable url link in scrolling
+    this.setState({isScrolling: true})
+    this.debounceOnScroll()
   }
 
   _handleLinkClick(e) {
@@ -36,11 +49,14 @@ export default class EditorPage extends React.Component {
     this.refs.inputContents.setSelectionRange(pos , pos)
     this.refs.inputContents.focus()
   }
+  _isEnableUrl() {
+    return !this.state.isScrolling && this.props.isShowCover
+  }
 
   renderCoverContents() {
     let i = 0;
     let keyName = 'coverElement'
-    let urlClassName = `editor-cover-contents-url ${this.props.isShowCover ? 'active' : 'disable'}`
+    let urlClassName = `editor-cover-contents-url ${this._isEnableUrl() ? 'active' : 'disable'}`
     return (
       this.props.item.contents.split("\n").map((str)=> {
         let lineElements = str.split(URL_PATTERN).map((el)=> {
