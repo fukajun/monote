@@ -131,6 +131,10 @@ body {
   list-style: none;
   padding-top: 13px;
   margin-left: 20px;
+  width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-link-info {
