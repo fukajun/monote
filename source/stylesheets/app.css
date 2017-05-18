@@ -343,10 +343,9 @@ body {
 //
 // cover-contents-item
 .editor-cover-contents-url {
-  color: #33f;
+  color: #99f;
 }
 .editor-cover-contents-url.active {
-  background-color: #fefefe;
   pointer-events: auto;
   text-decoration: none;
 }
