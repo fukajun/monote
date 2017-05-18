@@ -329,12 +329,22 @@ body {
   flex-basis: 49px;
   flex-grow: 0;
 }
-.editor-cover-contents-url.active {
+
+//
+// cover-contents-item
+.editor-cover-contents-url {
   color: #33f;
+}
+.editor-cover-contents-url.active {
+  background-color: #fefefe;
   pointer-events: auto;
+  text-decoration: none;
+}
+.editor-cover-contents-url.active:hover {
+  pointer-events: auto;
+  text-decoration: underline;
 }
 .editor-cover-contents-url.disable {
-  color: #33f;
   pointer-events: none;
   text-decoration: none;
 }
