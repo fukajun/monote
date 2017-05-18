@@ -5,7 +5,7 @@ import { shell } from 'electron';
 import _u from 'lodash'
 
 const CURSOR_POSITION = 0
-const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.?[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 
 export default class EditorPage extends React.Component {
   componentDidMount() {
@@ -40,11 +40,12 @@ export default class EditorPage extends React.Component {
   renderCoverContents() {
     let i = 0;
     let keyName = 'coverElement'
+    let urlClassName = `editor-cover-contents-url ${this.props.isShowCover ? 'active' : 'disable'}`
     return (
       this.props.item.contents.split("\n").map((str)=> {
         let lineElements = str.split(URL_PATTERN).map((el)=> {
-          if(el.match(URL_PATTERN) && this.props.isShowCover) {
-            return <a key={`${keyName}-${i++}`} href={el} onClick={this._handleLinkClick.bind(this)}>{this.props.isShowCover ? el : ''}</a>
+          if(el.match(URL_PATTERN)) {
+            return <a key={`${keyName}-${i++}`} href={el}  className={urlClassName} onClick={this._handleLinkClick.bind(this)}>{el}</a>
           }
           return <span key={`${keyName}-${i++}`}  >{el}</span>
         })
