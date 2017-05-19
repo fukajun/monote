@@ -157,6 +157,7 @@ export default class App extends React.Component {
   }
 
   changeDir(dir) {
+    this.setState({isOpenTree: false })
     this.setState({currentDir: dir})
   }
 
