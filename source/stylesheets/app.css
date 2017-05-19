@@ -344,7 +344,7 @@ body {
 
 /*cover-contents-item*/
 .editor-cover-contents-url {
-  color: #33f;
+  color: #66f;
 }
 .editor-cover-contents-url.active {
   pointer-events: auto;
