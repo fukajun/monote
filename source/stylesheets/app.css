@@ -428,3 +428,17 @@ body {
   cursor: pointer;
 }
 
+.footer-bar {
+  cursor: pointer;
+  background-color: rgba(200, 200,200, 0.3);
+  border-radius: 0 4px;
+  border-right: 1px solid #dfdfdf;
+  border-top: 1px solid #dfdfdf;
+  bottom: 0px;
+  content: 'hohooge';
+  font-size: 12px;
+  left: 0px;
+  padding: 5px;
+  position: absolute;
+}
+
