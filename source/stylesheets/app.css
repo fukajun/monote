@@ -332,6 +332,9 @@ body {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+.editor-cover-contents::-webkit-scrollbar {
+  display: none;
+}
 .editor-cover-contents.disable {
   color: rgba(0,0,0,0.0);
 }
