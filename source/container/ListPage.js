@@ -35,17 +35,18 @@ export default class ListPage extends React.Component {
         <ul className='items'>
           {
             this.props.list.map((item)=> {
-              let key = seq <= 9 ? `[${seq++}]` : ''
+              let key = seq <= 9 ? `${seq++}` : null
               return (
                 <li className='item' key={item.id}>
                    <div onClick={this.props.onClickStar.bind(this, item.id)} className={`item-pin ${item.pin ? 'on' : 'off'} ${pinColor}`}><i className='fa fa-thumb-tack'/></div>
                    <Link className='item-link' to={`/edit/${item.id}`}>
                     <div className='item-link-title'>
-                      {item.title()} {key}
+                      {item.title()}
                     </div>
                     <div className='item-link-ctime'>{moment(item.modified_at).from(now, true)}</div>
                     <br />
                     <div className='item-link-info'>
+                      { key ? <span className='item-link-key'>{key}</span> : null }
                       <span className='item-link-body'>{item.dirpath() === '/' ? '' : item.dirpath()}</span>
                     </div>
                   </Link>
