@@ -47,7 +47,7 @@ export default class RichTextarea extends React.Component {
   }
 
   _changeContents(e) {
-    this.props.onChange(e.tareget.value)
+    this.props.onChange(e.target.value)
   }
 
   renderCoverContents() {
@@ -84,7 +84,7 @@ export default class RichTextarea extends React.Component {
         <div className='editor-fg'>
           <textarea className={`editor-input-contents ${inputStateClassName}`}
             ref='inputContents'
-            onChange={this.props.onChange.bind(this)}
+            onChange={this._changeContents.bind(this)}
             onKeyDown={this._moveCursor.bind(this)}
             onClick={this._moveCursor.bind(this)}
             onScroll={this._syncScrollPosition.bind(this)}

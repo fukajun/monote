@@ -206,7 +206,8 @@ export default class App extends React.Component {
     let editorProps = {
       configs: this.state.configs, item: this.state.item, isEnableLink: this.state.isShowCover,
       startPosition: this.mem.editorCursorPositions[this.state.item.id],
-      onMoveCursor: this.moveEditorCursor.bind(this), onChange: this.changeText.bind(this)
+      onMoveCursor: this.moveEditorCursor.bind(this),
+      onChange: this.changeText.bind(this)
     }
     return (
       <div>
