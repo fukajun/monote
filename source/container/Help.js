@@ -14,6 +14,7 @@ export default function Help(props) {
              <dt>Command + Enter </dt>  <dd>: Back to List page</dd>
              <dt>Command + n </dt>      <dd>: Create new note</dd>
              <dt>Command + 0 〜 9 </dt> <dd>: Open each note</dd>
+             <dt>Option / Alt</dt> <dd>: Enable url link on Editor</dd>
            </dl>
          </div>
       </div>

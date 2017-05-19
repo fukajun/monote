@@ -262,23 +262,54 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  align-self:stretch;
+}
+
+/* .flex-child にも display: flex を指定し、 .flex-grandchildren から　height: 100% を取り除くことで回避可能です。*/
+.contents-editor {
+  position: relative;
+  flex: 1 0 10px;
+  display: flex; /* NOTE: flex-grandchild heigth 100% */
+}
+.path-editor {
+  flex: 0 0 40px;
+}
+
+/*
+ * rich-textarea
+ */
+.rich-textarea {
+  box-sizing: border-box;
+  width: 100%
+}
+.editor-bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+.editor-fg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 .editor-input-contents {
   background-color: #fefefe;
-  border:0px solid;
+  border-width: 0;
   box-sizing: border-box;
-  flex-basis: 15px;
-  flex-grow: 1;
   font-family: "VL-Gothic-Regular", "Osaka−等幅","Osaka-Mono";
   font-size: 12px;
+  height: 100%;
   line-height: 20px;
-  overflow: scroll;
+  overflow-y: scroll;
   padding: 15px;
+  resize: none;
   width: 100%;
 }
 .editor-input-contents.active {
-  color: #333;
+  color: #444;
 }
 .editor-input-contents.disable {
   color: rgba(0,0,0,0);
@@ -288,66 +319,32 @@ body {
     outline: none !important;
     border:0px solid;
 }
-
-.editor-input-path {
-  background-color: #fefefe;
+.editor-cover-contents {
+  background-color: transparent;
+  border-width: 0;
   box-sizing: border-box;
-  color: #333;
-  flex-basis: 15px;
-  flex-grow: 0;
   font-family: "VL-Gothic-Regular", "Osaka−等幅","Osaka-Mono";
   font-size: 12px;
-  padding: 15px;
-  width: 100%;
-}
-
-.editor-input-path:focus {
-  outline: none !important;
-}
-
-.editor-bg {
-  margin-top: -40px;
-  position: absolute;
   height: 100%;
-  width: 100%;
-  pointer-events: none;
-}
-.editor-cover {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column
-}
-
-.editor-cover-contents {
-  overflow-y: scroll;
-  font-size: 12px;
-  flex-basis: 15px;
-  flex-grow: 10;
-  margin-top: 40px;
-  white-space: pre-wrap;
-  padding: 15px;
   line-height: 20px;
+  overflow-y: scroll;
+  padding: 15px;
+  white-space: pre-wrap;
   word-wrap: break-word;
-  box-sizing: border-box;
+}
+.editor-cover-contents::-webkit-scrollbar {
+  display: none;
 }
 .editor-cover-contents.disable {
   color: rgba(0,0,0,0.0);
 }
 .editor-cover-contents.active {
-  color: #333;
+  color: #444;
 }
 
-.editor-cover-path {
-  font-size: 12px;
-  flex-basis: 49px;
-  flex-grow: 0;
-}
-
-//
-// cover-contents-item
+/*cover-contents-item*/
 .editor-cover-contents-url {
-  color: #99f;
+  color: #33f;
 }
 .editor-cover-contents-url.active {
   pointer-events: auto;
@@ -360,6 +357,28 @@ body {
 .editor-cover-contents-url.disable {
   pointer-events: none;
   text-decoration: none;
+}
+/*
+ * /rich-textarea
+ */
+
+.path-editor {
+  border-top; 1px solid;
+}
+
+.editor-input-path {
+  border-width: 0;
+  border-top-width: 1px;
+  background-color: #fefefe;
+  box-sizing: border-box;
+  color: #333;
+  font-family: "VL-Gothic-Regular", "Osaka−等幅","Osaka-Mono";
+  font-size: 12px;
+  padding: 15px;
+  width: 100%;
+}
+.editor-input-path:focus {
+  outline: none !important;
 }
 
 .help-cover {
