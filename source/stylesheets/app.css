@@ -309,7 +309,7 @@ body {
   width: 100%;
 }
 .editor-input-contents.active {
-  color: #333;
+  color: #444;
 }
 .editor-input-contents.disable {
   color: rgba(0,0,0,0);
@@ -339,7 +339,7 @@ body {
   color: rgba(0,0,0,0.0);
 }
 .editor-cover-contents.active {
-  color: #333;
+  color: #444;
 }
 
 /*cover-contents-item*/
