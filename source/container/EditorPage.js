@@ -3,10 +3,8 @@
 import React from 'react';
 import { shell } from 'electron';
 import _u from 'lodash'
-import RichTextarea from './RichTextarea.js'
 
-const CURSOR_POSITION = 0
-const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.?[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+import RichTextarea from './RichTextarea.js'
 
 export default class EditorPage extends React.Component {
   constructor(props) {
@@ -14,17 +12,20 @@ export default class EditorPage extends React.Component {
     let defaultCursorPosition = (this.props.configs.cursorPosition === 'top' ? 0 : 999999)
     this.startPosition = this.props.startPosition || defaultCursorPosition
   }
+
   _changeContents(contents) {
-    this.props.onChange(contents, this.refs.inputPath.value)
+    this.props.onChange(this.refs.inputContents.value, this.refs.inputPath.value)
   }
+
   render() {
     return (
       <div className='editor'>
         <div className='contents-editor'>
-          <RichTextarea
+          <RichTextarea ref='inputContents'
             value={this.props.item.contents}
             startPosition={this.startPosition}
             isEnableLink={this.props.isEnableLink}
+            onClickLink={this.props.onClickLink}
             onMoveCursor={this.props.onMoveCursor}
             onChange={this._changeContents.bind(this)}
           />

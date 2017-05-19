@@ -5,7 +5,7 @@
 //
 // Vendor
 import React from 'react';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import { IndexRoute, Link, BrowserRouter, HashRouter, Route,  Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
 import _u from 'lodash'
 //
@@ -202,11 +202,18 @@ export default class App extends React.Component {
     this.mem.editorCursorPositions[this.state.item.id] = pos;
   }
 
+  openLinkUrl(url) {
+    shell.openExternal(url);
+  }
+
   render() {
     let editorProps = {
-      configs: this.state.configs, item: this.state.item, isEnableLink: this.state.isShowCover,
+      configs: this.state.configs,
+      item: this.state.item,
+      isEnableLink: this.state.isShowCover,
       startPosition: this.mem.editorCursorPositions[this.state.item.id],
       onMoveCursor: this.moveEditorCursor.bind(this),
+      onClickLink: this.openLinkUrl.bind(this),
       onChange: this.changeText.bind(this)
     }
     return (

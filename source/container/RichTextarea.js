@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { shell } from 'electron';
 import _u from 'lodash'
 
 const CURSOR_POSITION = 0
@@ -10,14 +9,17 @@ const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.?[a-z]{2,6}\b[-a
 export default class RichTextarea extends React.Component {
   constructor(props) {
     super(props)
+    this.value = props.value
     this.state = { isScrolling: false }
     this.debounceOnScroll = _u.debounce(()=> {
       this.setState({isScrolling: false})
     }, 100)
   }
+
   componentDidMount() {
     this._setCursorPosition(this.props.startPosition)
   }
+
   _syncScrollPosition(e) {
     const scrollTop = e.target.scrollTop;
     this.refs.coverContents.scrollTop = scrollTop;
@@ -33,7 +35,7 @@ export default class RichTextarea extends React.Component {
 
   _handleOnLinkClick(e) {
     e.preventDefault()
-    shell.openExternal(e.target.href);
+    this.props.onClickLink(e.target.href)
   }
 
   _setCursorPosition(pos) {
@@ -47,6 +49,7 @@ export default class RichTextarea extends React.Component {
   }
 
   _changeContents(e) {
+    this.value = e.target.value
     this.props.onChange(e.target.value)
   }
 
