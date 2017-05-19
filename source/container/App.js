@@ -156,7 +156,12 @@ export default class App extends React.Component {
     this.debounceUpdateKeyword(word)
   }
 
+  backToAll() {
+    this.setState({currentDir: ''})
+  }
+
   changeDir(dir) {
+    this.setState({isOpenTree: false })
     this.setState({currentDir: dir})
   }
 
@@ -282,6 +287,12 @@ export default class App extends React.Component {
                 <Redirect from='*' to='/' />
               </Switch>
             </div>
+            <Switch>
+              <Route exact path='/' render={(context)=> {
+                  console.log(this.state.currentDir === '')
+                  return this.state.currentDir === '' ? null : <div className='footer-bar' onClick={this.backToAll.bind(this)} >Path: { this.state.currentDir } <i className='fa fa-times' /> </div>
+              } }/>
+            </Switch>
           </div>
         </HashRouter>
         { this.state.help   ? (<Help onClose={this.closeHelp.bind(this)}/>) : null }
