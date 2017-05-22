@@ -20,13 +20,20 @@ export default class RichTextarea extends React.Component {
     this._setCursorPosition(this.props.startPosition)
   }
 
-  _syncScrollPosition(e) {
+  _syncScrollPositionFromInput(e) {
     const scrollTop = e.target.scrollTop;
     this.refs.coverContents.scrollTop = scrollTop;
 
     // Disable url link in scrolling
     this.setState({isScrolling: true})
     this.debounceOnScroll()
+  }
+
+  _syncScrollPositionFromCover(e) {
+    if(this.props.isEnableLink) {
+      const scrollTop = e.target.scrollTop;
+      this.refs.inputContents.scrollTop = scrollTop;
+    }
   }
 
   _moveCursor(e) {
@@ -79,6 +86,7 @@ export default class RichTextarea extends React.Component {
 
         <div className='editor-bg'>
           <div className={`editor-cover-contents ${coverStateClassName}`}
+               onScroll={this._syncScrollPositionFromCover.bind(this)}
                ref='coverContents'  >
             {this.renderCoverContents()}
           </div>
@@ -90,7 +98,7 @@ export default class RichTextarea extends React.Component {
             onChange={this._changeContents.bind(this)}
             onKeyDown={this._moveCursor.bind(this)}
             onClick={this._moveCursor.bind(this)}
-            onScroll={this._syncScrollPosition.bind(this)}
+            onScroll={this._syncScrollPositionFromInput.bind(this)}
             value={this.props.value}
           />
         </div>
