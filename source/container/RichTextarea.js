@@ -71,8 +71,8 @@ export default class RichTextarea extends React.Component {
   }
 
   render() {
-    let inputStateClassName = this.state.isScrolling ? 'disable' : 'active'
-    let coverStateClassName = this.state.isScrolling ? 'active' : 'disable'
+    let inputStateClassName = this._isEnableUrl() ? 'disable' : 'active'
+    let coverStateClassName = this._isEnableUrl() ? 'active' : 'disable'
 
     return (
       <div className='rich-textarea'>
