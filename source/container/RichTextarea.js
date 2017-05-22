@@ -44,8 +44,8 @@ export default class RichTextarea extends React.Component {
     this.refs.inputContents.focus()
   }
 
-  _isEnableUrl() {
-    return !this.state.isScrolling && this.props.isEnableLink
+  _isHideInputContents() {
+    return this.state.isScrolling || this.props.isEnableLink
   }
 
   _changeContents(e) {
@@ -55,7 +55,7 @@ export default class RichTextarea extends React.Component {
 
   renderCoverContents() {
     const keyName = 'coverElement'
-    const urlStateClassName = this._isEnableUrl() ? 'active' : 'disable'
+    const urlStateClassName = this.props.isEnableLink ? 'active' : 'disable'
     let i = 0
     return (
       this.props.value.split("\n").map((str)=> {
@@ -63,7 +63,7 @@ export default class RichTextarea extends React.Component {
           if(el.match(URL_PATTERN)) {
             return <a key={`${keyName}-${i++}`} href={el}  className={`editor-cover-contents-url ${urlStateClassName}`} onClick={this._handleOnLinkClick.bind(this)}>{el}</a>
           }
-          return <span key={`${keyName}-${i++}`}  >{el}</span>
+          return <span key={`${keyName}-${i++}`} >{el}</span>
         })
         return (<span key={`${keyName}-${i++}`} >{lineElements}<br /></span>)
       })
@@ -71,8 +71,8 @@ export default class RichTextarea extends React.Component {
   }
 
   render() {
-    let inputStateClassName = this._isEnableUrl() ? 'disable' : 'active'
-    let coverStateClassName = this._isEnableUrl() ? 'active' : 'disable'
+    let inputStateClassName = this._isHideInputContents() ? 'disable' : 'active'
+    let coverStateClassName = 'active'
 
     return (
       <div className='rich-textarea'>
