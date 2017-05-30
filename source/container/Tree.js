@@ -10,17 +10,18 @@ import _u from 'lodash'
 import Path from 'path';
 import DirCollection from '../models/DirCollection.js';
 
+const INDENT = '  '
 export default class Tree extends React.Component {
   clickDir(dir) {
     this.props.onClick(dir)
   }
   createListItem(name, path, isCurrent, length, level) {
-    let indent = Array(level).join(' ')
+    let indent = Array(level).join(INDENT)
     return (
       <li className='tree-item' key={path}>
          <a className={`tree-link ${isCurrent ? 'active' : ''}`} onClick={this.clickDir.bind(this, path)}>
           <div className='tree-link-title'>
-            {indent} {name}  ({ length })
+            {indent}{name}  <span className='tree-link-item-size'>{ length }</span>
           </div>
         </a>
       </li>
@@ -33,7 +34,7 @@ export default class Tree extends React.Component {
         { this.createListItem('ALL', '', (this.props.currentDir === ''), this.props.list.length, 0) }
         { collection.list.map((dir)=> {
             return (
-              this.createListItem(dir.path, dir.path, (this.props.currentDir === dir.path), dir.items.length, 0)
+              this.createListItem(dir.slashedBasename(), dir.path, (this.props.currentDir === dir.path), dir.items.length, dir.level())
             )
           })
         }
