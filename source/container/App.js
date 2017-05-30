@@ -111,7 +111,7 @@ export default class App extends React.Component {
           break;
         case 'f':
           this.history.replace('/')
-          this.setState({keyword: ''})
+          this.refs.keyword.setSelectionRange(0 , 999999)
           this.refs.keyword.focus()
           break;
         case 'n':
