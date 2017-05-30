@@ -17,7 +17,7 @@ import Help from './Help.js'
 import Config from './Config.js'
 import ConfigManager from '../models/ConfigManager.js'
 
-const TREE_MIN_WIDTH = 200
+const TREE_MIN_WIDTH = 180
 const store = new Store()
 const configManager = new ConfigManager()
 

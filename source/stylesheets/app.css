@@ -63,6 +63,20 @@ body {
   background-color: #fefefe;
 }
 
+.tree-link-title {
+  white-space: pre-wrap;
+}
+.tree-link-item-size {
+  text-align: center;
+  display: inline-block;
+  float: right;
+  margin-right: 10px;
+  background-color: #fefefe;
+  color: #666;
+  border-radius: 4px;
+  width: 15px;
+  padding: 2px;
+}
 .items {
   margin: 0px;
   padding: 0px;
