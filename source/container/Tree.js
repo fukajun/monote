@@ -11,12 +11,16 @@ import Path from 'path';
 import DirCollection from '../models/DirCollection.js';
 
 const INDENT = '  '
+const NEST_MARK = '└ '
 export default class Tree extends React.Component {
   clickDir(dir) {
     this.props.onClick(dir)
   }
   createListItem(name, path, isCurrent, length, level) {
-    let indent = Array(level).join(INDENT)
+    let indent = ''
+    if(level >= 2) {
+      indent = Array(level).join(INDENT) + NEST_MARK
+    }
     return (
       <li className='tree-item' key={path}>
          <a className={`tree-link ${isCurrent ? 'active' : ''}`} onClick={this.clickDir.bind(this, path)}>

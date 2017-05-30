@@ -22,6 +22,9 @@ class Dir {
   slashedBasename() {
     return `/${this.basename()}`
   }
+  endSlashedBasename() {
+    return `${this.basename()}/`
+  }
 
 }
 

@@ -280,6 +280,7 @@ export default class App extends React.Component {
                         onClickDir={this.changeDir.bind(this)}
                         onResizeTree={this.resizeTree.bind(this)}
                         onClickStar={this.toggleStar.bind(this)}
+                        onClickClosePath={this.backToAll.bind(this)}
                       />
                     )
                   }
@@ -289,7 +290,7 @@ export default class App extends React.Component {
             </div>
             <Switch>
               <Route exact path='/' render={(context)=> {
-                return this.state.currentDir === '' ? null : <div className='footer-bar' onClick={this.backToAll.bind(this)} >Path: { this.state.currentDir } <i className='fa fa-times' /> </div>
+                return (true || this.state.currentDir === '') ? null : <div className='footer-bar' onClick={this.backToAll.bind(this)} >Path: { this.state.currentDir } <i className='fa fa-times' /> </div>
               } }/>
             </Switch>
           </div>

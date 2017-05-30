@@ -38,6 +38,7 @@ body {
   height: 100%;
   overflow: auto;
   color: #333;
+  -webkit-user-select: none;
 }
 
 .tree-item {
@@ -72,18 +73,41 @@ body {
   float: right;
   margin-right: 10px;
   background-color: #fefefe;
-  color: #666;
+  color: #999;
   border-radius: 4px;
   width: 15px;
   padding: 2px;
 }
+
+.list-contents {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 4;
+  height: 100%;
+}
+.list-current-dir {
+  background-color: #efefef;
+  flex-basis: 25px;
+  flex-grow: 0;
+  font-size: 12px;
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+.list-current-dir i {
+  cursor: pointer;
+  float: right;
+}
+
 .items {
+  flex-grow: 4;
   margin: 0px;
   padding: 0px;
-  flex-grow: 4;
   background-color: #fefefe;
   height: 100%;
   overflow: auto;
+  border-top: 1px solid #ddd;
 }
 
 .item {
