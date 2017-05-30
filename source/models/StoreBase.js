@@ -1,6 +1,7 @@
 import sha1 from 'sha1'
 import Item from './Item.js'
 import _u from 'lodash'
+import moment from 'moment';
 
 //
 // StoreBase
@@ -34,7 +35,7 @@ export default class StoreBase {
   }
 
   save(item) {
-    let updated_at = new Date()
+    let updated_at = this._now()
     this._write(item.id, item.path, item.contents, item.pin, item.modified_at, updated_at, item.created_at)
   }
 
@@ -47,9 +48,17 @@ export default class StoreBase {
     return new Item(attrs)
   }
 
+  _now() {
+    return moment().utc()
+  }
+
   _defaultAttributes() {
-    let now = new Date()
-    return {id: sha1(Date.now()), path: '', contents: '', pin: false, modified_at: now, updated_at: now, created_at: now }
+    let now = this._now()
+    return {id: this._newId(now), path: '', contents: '', pin: false, modified_at: now, updated_at: now, created_at: now }
+  }
+
+  _newId(now = this._now()) {
+    return moment(now).format("YYYYMMDDHHmmssSSS")
   }
 
   _list(word) { }
