@@ -1,5 +1,7 @@
 import React from 'react';
 import _u from 'lodash'
+import m_20170523_RenameFiles from '../migrate/m_20170523_RenameFiles.js'
+
 
 const TYPES = ['input', 'select']
 class FormFields extends React.Component {
@@ -55,6 +57,10 @@ export default class Config extends React.Component {
                    <option value='red'>Red</option>
                    <option value='blue'>Blue</option>
                  </select>
+               </dd>
+               <dt>Rename</dt>
+               <dd>
+                  <button onClick={(new m_20170523_RenameFiles()).run} >run</button>
                </dd>
                </div>
              </FormFields>

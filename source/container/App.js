@@ -289,8 +289,7 @@ export default class App extends React.Component {
             </div>
             <Switch>
               <Route exact path='/' render={(context)=> {
-                  console.log(this.state.currentDir === '')
-                  return this.state.currentDir === '' ? null : <div className='footer-bar' onClick={this.backToAll.bind(this)} >Path: { this.state.currentDir } <i className='fa fa-times' /> </div>
+                return this.state.currentDir === '' ? null : <div className='footer-bar' onClick={this.backToAll.bind(this)} >Path: { this.state.currentDir } <i className='fa fa-times' /> </div>
               } }/>
             </Switch>
           </div>
