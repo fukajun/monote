@@ -41,6 +41,7 @@
     "menubar": "^5.0.0",
     "moment": "^2.18.1",
     "node-notifier": "^4.4.0",
+    "qrcode.react": "^0.7.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-resizable-box": "^2.0.4",
