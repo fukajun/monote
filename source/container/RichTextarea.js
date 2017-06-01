@@ -65,7 +65,9 @@ export default class RichTextarea extends React.Component {
   }
 
   _blurHandler() {
-    this.props.onBlur()
+    if(this.props.onBlur){
+      this.props.onBlur()
+    }
   }
 
   renderCoverContents() {
