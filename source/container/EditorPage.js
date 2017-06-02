@@ -27,6 +27,7 @@ export default class EditorPage extends React.Component {
             isEnableLink={this.props.isEnableLink}
             onClickLink={this.props.onClickLink}
             onMoveCursor={this.props.onMoveCursor}
+            onSelect={this.props.onSelectContents}
             onChange={this._changeContents.bind(this)}
           />
         </div>

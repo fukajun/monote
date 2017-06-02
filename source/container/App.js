@@ -13,6 +13,7 @@ import _u from 'lodash'
 import Store from '../models/TextLoadableJsonStore.js'
 import EditorPage from './EditorPage.js'
 import ListPage from './ListPage.js'
+import QR from './QR.js'
 import Help from './Help.js'
 import Config from './Config.js'
 import ConfigManager from '../models/ConfigManager.js'
@@ -39,6 +40,8 @@ export default class App extends React.Component {
       currentDir: '',
       isOpenTree: false,
       keyword: '',
+      selectingText: '',
+      qr: false,
       help: false,
       config: false,
       configs: configs,
@@ -195,6 +198,13 @@ export default class App extends React.Component {
     this.setState({ config: false })
   }
 
+  openQR() {
+    this.setState({ qr: true })
+  }
+  closeQR() {
+    this.setState({ qr: false })
+  }
+
   openHelp() {
     this.setState({ help: true })
   }
@@ -203,8 +213,12 @@ export default class App extends React.Component {
     this.setState({ help: false })
   }
 
-  moveEditorCursor(pos) {
-    this.mem.editorCursorPositions[this.state.item.id] = pos;
+  moveEditorCursor(startPosition, endPosition) {
+    this.mem.editorCursorPositions[this.state.item.id] = startPosition;
+  }
+
+  selectEditorContents(selectingText) {
+    this.setState({selectingText: selectingText})
   }
 
   openLinkUrl(url) {
@@ -219,7 +233,8 @@ export default class App extends React.Component {
       startPosition: this.mem.editorCursorPositions[this.state.item.id],
       onMoveCursor: this.moveEditorCursor.bind(this),
       onClickLink: this.openLinkUrl.bind(this),
-      onChange: this.changeText.bind(this)
+      onChange: this.changeText.bind(this),
+      onSelectContents: this.selectEditorContents.bind(this)
     }
     return (
       <div>
@@ -244,18 +259,28 @@ export default class App extends React.Component {
                 <Route exact path='/' >
                   <input ref='keyword' className='keyword' type='text' placeholder={'keyword'} onChange={this.updateKeyword.bind(this)} value={this.state.keyword}/>
                 </Route>
-                <Route path='/edit' >
-                  <span className='header-title'>{this.state.item ? this.state.item.title() : ''}</span>
-                </Route>
-                <Route path='/new' >
+                <Route path='/(edit)?(new)?' >
                   <span className='header-title'>{this.state.item ? this.state.item.title() : ''}</span>
                 </Route>
               </Switch>
 
               <ul className='header-group-right'>
-                <li className='header-item'><a className='header-item-link' onClick={this.openConfig.bind(this)}><i className='fa fa-cog' /></a></li>
-                <li className='header-item'><a className='header-item-link' onClick={this.openHelp.bind(this)}><i className='fa fa-question-circle' /></a></li>
-                <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='fa fa-power-off' /></a></li>
+              <Switch>
+                <Route exact path='/' >
+                  <div>
+                    <li className='header-item'><a className='header-item-link' onClick={this.openConfig.bind(this)}><i className='fa fa-cog' /></a></li>
+                    <li className='header-item'><a className='header-item-link' onClick={this.openHelp.bind(this)}><i className='fa fa-question-circle' /></a></li>
+                    <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='fa fa-power-off' /></a></li>
+                  </div>
+                </Route>
+                <Route path='/(edit)?(new)?' >
+                  <div>
+                    <li className='header-item'><a className='header-item-link' onClick={this.openQR.bind(this)}><i className='fa fa-qrcode' /></a></li>
+                    <li className='header-item'><a className='header-item-link' onClick={this.openHelp.bind(this)}><i className='fa fa-question-circle' /></a></li>
+                    <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='fa fa-power-off' /></a></li>
+                  </div>
+                </Route>
+              </Switch>
               </ul>
             </div>
 
@@ -297,6 +322,7 @@ export default class App extends React.Component {
         </HashRouter>
         { this.state.help   ? (<Help onClose={this.closeHelp.bind(this)}/>) : null }
         { this.state.config ? (<Config onChange={this.updateConfig.bind(this)} configs={this.state.configs} onClose={this.closeConfig.bind(this)}/>) : null }
+        { this.state.qr     ? (<QR onClose={this.closeQR.bind(this)} value={this.state.selectingText}/>) : null }
         </div>
     )
   }

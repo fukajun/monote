@@ -37,7 +37,9 @@ export default class RichTextarea extends React.Component {
   }
 
   _moveCursor(e) {
-    this.props.onMoveCursor(this.refs.inputContents.selectionStart)
+    let { selectionStart, selectionEnd } = this.refs.inputContents
+    this.props.onSelect(this.value.slice(selectionStart, selectionEnd))
+    this.props.onMoveCursor(selectionStart, selectionEnd)
   }
 
   _handleOnLinkClick(e) {
@@ -58,6 +60,12 @@ export default class RichTextarea extends React.Component {
   _changeContents(e) {
     this.value = e.target.value
     this.props.onChange(e.target.value)
+  }
+
+  _blurHandler() {
+    if(this.props.onBlur){
+      this.props.onBlur()
+    }
   }
 
   renderCoverContents() {
@@ -99,6 +107,7 @@ export default class RichTextarea extends React.Component {
             onKeyDown={this._moveCursor.bind(this)}
             onClick={this._moveCursor.bind(this)}
             onScroll={this._syncScrollPositionFromInput.bind(this)}
+            onBlur={this._blurHandler.bind(this)}
             value={this.props.value}
           />
         </div>
