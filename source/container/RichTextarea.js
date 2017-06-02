@@ -38,9 +38,7 @@ export default class RichTextarea extends React.Component {
 
   _moveCursor(e) {
     let { selectionStart, selectionEnd } = this.refs.inputContents
-    if(selectionStart !== selectionEnd) {
-      this.props.onSelect(this.value.slice(selectionStart, selectionEnd))
-    }
+    this.props.onSelect(this.value.slice(selectionStart, selectionEnd))
     this.props.onMoveCursor(selectionStart, selectionEnd)
   }
 
