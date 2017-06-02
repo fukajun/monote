@@ -65,7 +65,11 @@ body {
 }
 
 .tree-link-title {
-  white-space: pre-wrap;
+  display: inline-block;
+  width: 80%;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .tree-link-item-size {
   text-align: center;

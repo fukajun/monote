@@ -24,9 +24,10 @@ export default class Tree extends React.Component {
     return (
       <li className='tree-item' key={path}>
          <a className={`tree-link ${isCurrent ? 'active' : ''}`} onClick={this.clickDir.bind(this, path)}>
-          <div className='tree-link-title'>
-            {indent}{name}  <span className='tree-link-item-size'>{ length }</span>
-          </div>
+          <span className='tree-link-title'>
+            {indent}{name}
+          </span>
+          <span className='tree-link-item-size'>{ length }</span>
         </a>
       </li>
     )
