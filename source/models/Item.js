@@ -18,6 +18,10 @@ export default class Item {
     return Path.basename(this.fullpath())
   }
 
+  isNew() {
+    return this.contents.length >= 1
+  }
+
   body() {
     let first, last;
     [first, ...last] = this._splitedContens()
