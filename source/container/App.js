@@ -88,9 +88,21 @@ export default class App extends React.Component {
   }
 
   nativeKeyEvent(e, a) {
-    if( e.key === 'Alt') {
-      this.setState({isShowCover: true})
+
+    switch(e.key) {
+      case 'Escape':
+        if(matchPath(this.history.location.pathname, {path: '/', exact: true})) {
+          this.setState({keyword: ''})
+          this.setState({currentDir: ''})
+          this.setState({isOpenTree: false})
+        }
+        break;
+      case 'Alt':
+        this.setState({isShowCover: true})
+        break;
+      return;
     }
+
     if( e.metaKey || e.ctrlKey ) {
       if( e.key >= '0' && e.key <= '9' ) {
         let i = e.key
@@ -107,7 +119,6 @@ export default class App extends React.Component {
         }, delay);
         return
       }
-
       switch(e.key) {
         case 'i':
           this.toggleTree()
@@ -122,18 +133,27 @@ export default class App extends React.Component {
           this.history.push('/new')
           break;
         case 'Enter':
-          this.history.replace(rootPath(this.state.keyword))
+          if(matchPath(this.history.location.pathname, {path: '/', exact: true})) {
+            this.moveEdit(this.state.item)
+          } else {
+            this.moveList()
+          }
           break;
+        return
       }
     }
   }
 
   moveList() {
-    this.history.push('/')
+    this.history.push(rootPath(this.state.keyword))
   }
 
   moveNew() {
     this.history.push('/new')
+  }
+
+  moveEdit(item) {
+    this.history.push(`/edit/${item.id}`)
   }
 
   changeText(body, title) {
