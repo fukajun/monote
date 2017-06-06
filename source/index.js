@@ -13,7 +13,7 @@ import path from 'path'
 import fs from 'fs'
 
 const request = require('request');
-const mb = menubar({ icon: ACTIVE_MENUBAR_ICON, dir: __dirname });
+const mb = menubar({ icon: ACTIVE_MENUBAR_ICON, minWidth: 500, dir: __dirname });
 console.log(__dirname)
 
 //const mb = menubar({ icon: ACTIVE_MENUBAR_ICON  });
