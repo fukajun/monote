@@ -4,7 +4,8 @@ import React from 'react';
 import _u from 'lodash'
 
 const CURSOR_POSITION = 0
-const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.?[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+// NOTE: pattern match as https://localhost:3000, https//192.168.1.1:3000, https://example.com
+const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.?[-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 
 export default class RichTextarea extends React.Component {
   constructor(props) {
