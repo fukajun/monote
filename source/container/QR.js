@@ -9,7 +9,7 @@ export default function QR(props) {
          <a className='help-close' onClick={props.onClose} ><i className='fa fa-close' /></ a>
          <div className='help-contents' >
            <h2 className='help-title'>QR Code</h2>
-           <QRCode value={value} size={256} className='qrcode' />
+           { value.length === 0 ? 'QRコード化したいテキストを選択してください。' : <QRCode value={value} size={256} className='qrcode' /> }
            <div> {value} </div>
          </div>
       </div>
