@@ -10,10 +10,7 @@ echo "version: ${PKG_VERSION}"
 # Clean npm_modules, *.js, *.html ...
 rm -rf ${BUILD_DIR}/*
 
-gulp build
-
-cp ./package.json ${BUILD_DIR}
-pushd ${BUILD_DIR} && npm install --production  && popd
+webpack -p
 
 electron-packager ${BUILD_DIR} "${APP_NAME}" \
   --overwrite \
