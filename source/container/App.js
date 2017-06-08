@@ -1,22 +1,16 @@
-//
-// Renderer
-'use strict';
-//
-//
-// Vendor
-import React from 'react';
-import { ipcRenderer, shell } from 'electron';
+import React from "react";
+import { ipcRenderer, shell } from "electron";
 import { IndexRoute, Link, BrowserRouter, HashRouter, Route,  Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
 import _u from 'lodash'
 //
 // Lib
-import Store from '../models/TextLoadableJsonStore.js'
-import EditorPage from './EditorPage.js'
-import ListPage from './ListPage.js'
-import QR from './QR.js'
-import Help from './Help.js'
-import Config from './Config.js'
-import ConfigManager from '../models/ConfigManager.js'
+import Store from '../models/TextLoadableJsonStore'
+import EditorPage from './EditorPage'
+import ListPage from './ListPage'
+import QR from './QR'
+import Help from './Help'
+import Config from './Config'
+import ConfigManager from '../models/ConfigManager'
 
 const TREE_MIN_WIDTH = 180
 const store = new Store()
@@ -24,18 +18,20 @@ const configManager = new ConfigManager()
 
 // TODO: To helper
 function rootPath(word = '') {
-  return (word.length == 0 ? '/' : `/?word=${word}`)
+  return (word.length === 0 ? '/' : `/?word=${word}`);
 }
 
 function currentItemPath(path) {
-  return ((path[path.length - 1] || '').match(/^\/?$/) ? '' : `${path}/`)
+  return ((path[path.length - 1] || '').match(/^\/?$/) ? '' : `${path}/`);
 }
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    let configs = configManager.load()
+
+    const configs = configManager.load()
     this.state = {
+      configs,
       item: store.buildNewItem(),
       currentDir: '',
       isOpenTree: false,
@@ -44,45 +40,51 @@ export default class App extends React.Component {
       qr: false,
       help: false,
       config: false,
-      configs: configs,
       isShowCover: false,
       treeWidth: TREE_MIN_WIDTH
-    }
-    ipcRenderer.on('windowShow', ()=> {
-      this.setState({isShowCover: false})
+    };
+    ipcRenderer.on('windowShow', () => {
+      this.setState({ isShowCover: false })
     })
-    this.mem = {
-      editorCursorPositions: {}
-    }
-    this.debounceUpdateKeyword = _u.debounce((word)=> {
-      this.setState({keyword: word})
-    }, 300)
-    this.debounceSave = _u.debounce((item)=> {
+    this.mem = { editorCursorPositions: {} };
+    this.debounceUpdateKeyword = _u.debounce((word) => {
+      this.setState({ keyword: word })
+    }, 300);
+    this.debounceSave = _u.debounce((item) => {
       store.store(item)
-    }, 300)
+    }, 300);
+
+    this.updateConfig = this.updateConfig.bind(this);
+    this.closeConfig = this.closeConfig.bind(this);
+    this.closeQR = this.closeQR.bind(this)
+    this.closeHelp = this.closeHelp.bind(this)
+    this.backToAll = this.backToAll.bind(this)
+    this.changeDir = this.changeDir.bind(this)
+    this.resizeTree = this.resizeTree.bind(this)
+    this.toggleStar = this.toggleStar.bind(this)
   }
 
   componentDidMount() {
     this.history = this.refs.router.history
-    this.history.listen((location)=> {
+    this.history.listen((location) => {
       let context
-      if (context = matchPath(location.pathname, {path: '/edit/:id', exact: true})) {
-        this.setState({item: store.load(context.params.id)})
-      }else if (context = matchPath(location.pathname, {path: '/new', exact: true})) {
-        this.setState({item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) })})
+      if (context = matchPath(location.pathname, { path: '/edit/:id', exact: true })) {
+        this.setState({ item: store.load(context.params.id) })
+      } else if (context = matchPath(location.pathname, {path: '/new', exact: true})) {
+        this.setState({ item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) })})
       }
     })
-    document.addEventListener("keydown", this.nativeKeyEvent.bind(this));
-    document.addEventListener("keyup", this.nativeKeyup.bind(this));
+    document.addEventListener('keydown', this.nativeKeyEvent.bind(this));
+    document.addEventListener('keyup', this.nativeKeyup.bind(this));
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.nativeKeyEvent.bind(this));
-    document.removeEventListener("keyup", this.nativeKeyup.bind(this));
+    document.removeEventListener('keydown', this.nativeKeyEvent.bind(this));
+    document.removeEventListener('keyup', this.nativeKeyup.bind(this));
   }
 
   nativeKeyup(e) {
-    if(e.key === 'Alt') {
+    if (e.key === 'Alt') {
       this.setState({isShowCover: false})
     }
   }
@@ -113,7 +115,7 @@ export default class App extends React.Component {
 
         // NOTE: Protect input number to textarea after move page.
         let delay = 100
-        setTimeout(()=> {
+        setTimeout(() => {
           this.setState({item: item})
           this.history.replace(`/edit/${item.id}`);
         }, delay);
@@ -258,92 +260,102 @@ export default class App extends React.Component {
     }
     return (
       <div>
-        <HashRouter ref='router'>
+        <HashRouter ref="router">
           <div>
-            <div className='header'>
-              <ul className='header-group-left'>
+            <div className="header">
+              <ul className="header-group-left">
                 <Switch>
-                  <Route exact path='/' >
+                  <Route exact path="/" >
                     <div>
-                    <li className='header-item'><a className='header-item-link' onClick={this.toggleTree.bind(this)} ><i className='fa fa-bars' /></a></li>
-                    <li className='header-item'><Link className='header-item-link' to='/new'><i className='fa fa-plus' /></Link></li>
+                    <li className="header-item"><a className="header-item-link" onClick={this.toggleTree.bind(this)} ><i className="fa fa-bars" /></a></li>
+                    <li className="header-item"><Link className="header-item-link" to="/new"><i className="fa fa-plus" /></Link></li>
                     </div>
                   </Route>
-                  <Route path='/*'>
-                    <li className='header-item'><Link className='header-item-link' to={rootPath(this.state.keyword)}><i className='fa fa-chevron-left' /></Link></li>
+                  <Route path="/*">
+                    <li className="header-item"><Link className="header-item-link" to={rootPath(this.state.keyword)}><i className="fa fa-chevron-left" /></Link></li>
                   </Route>
                 </Switch>
               </ul>
 
               <Switch>
-                <Route exact path='/' >
-                  <input ref='keyword' className='keyword' type='text' placeholder={'keyword'} onChange={this.updateKeyword.bind(this)} value={this.state.keyword}/>
+                <Route exact path="/" >
+                  <input ref="keyword" className="keyword" type="text" placeholder={"keyword"} onChange={this.updateKeyword.bind(this)} value={this.state.keyword} />
                 </Route>
-                <Route path='/(edit)?(new)?' >
-                  <span className='header-title'>{this.state.item ? this.state.item.title() : ''}</span>
+                <Route path="/(edit)?(new)?" >
+                  <span className="header-title">{this.state.item ? this.state.item.title() : ''}</span>
                 </Route>
               </Switch>
 
-              <ul className='header-group-right'>
+              <ul className="header-group-right">
               <Switch>
-                <Route exact path='/' >
+                <Route exact path="/" >
                   <div>
-                    <li className='header-item'><a className='header-item-link' onClick={this.openConfig.bind(this)}><i className='fa fa-cog' /></a></li>
-                    <li className='header-item'><a className='header-item-link' onClick={this.openHelp.bind(this)}><i className='fa fa-question-circle' /></a></li>
-                    <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='fa fa-power-off' /></a></li>
+                    <li className="header-item"><a className="header-item-link" onClick={this.openConfig.bind(this)}><i className="fa fa-cog" /></a></li>
+                    <li className="header-item"><a className="header-item-link" onClick={this.openHelp.bind(this)}><i className="fa fa-question-circle" /></a></li>
+                    <li className="header-item"><a className="header-item-link" onClick={this.quit.bind(this)}><i className="fa fa-power-off" /></a></li>
                   </div>
                 </Route>
-                <Route path='/(edit)?(new)?' >
+                <Route path="/(edit)?(new)?" >
                   <div>
-                    <li className='header-item'><a className='header-item-link' onClick={this.openQR.bind(this)}><i className='fa fa-qrcode' /></a></li>
-                    <li className='header-item'><a className='header-item-link' onClick={this.openHelp.bind(this)}><i className='fa fa-question-circle' /></a></li>
-                    <li className='header-item'><a className='header-item-link' onClick={this.quit.bind(this)}><i className='fa fa-power-off' /></a></li>
+                    <li className="header-item"><a className="header-item-link" onClick={this.openQR.bind(this)}><i className="fa fa-qrcode" /></a></li>
+                    <li className="header-item"><a className="header-item-link" onClick={this.openHelp.bind(this)}><i className="fa fa-question-circle" /></a></li>
+                    <li className="header-item"><a className="header-item-link" onClick={this.quit.bind(this)}><i className="fa fa-power-off" /></a></li>
                   </div>
                 </Route>
               </Switch>
               </ul>
             </div>
 
-            <div className='content'>
+            <div className="content">
               <Switch>
-                <Route exact path='/edit/:id' render={(context)=>
-                  <EditorPage {...context} {...editorProps} />
-                }/>
-                <Route exact path='/new' render={(context)=>
-                  <EditorPage {...context} {...editorProps} />
-                }/>
-                <Route path='/' render={(context)=> {
-                    let list = store.list(this.state.keyword, this.state.currentDir)
+                <Route
+                  exact
+                  path="/edit/:id"
+                  render={(context) => <EditorPage {...context} {...editorProps} /> }
+                />
+                <Route
+                  exact
+                  path="/new"
+                  render={(context) => <EditorPage {...context} {...editorProps} /> }
+                />
+                <Route path="/" render={(context) => {
+                    const list = store.list(this.state.keyword, this.state.currentDir)
                     return (
-                      <ListPage {...context} item={this.state.item} keyword={this.state.keyword} list={list}
+                      <ListPage {...context}
+                        item={this.state.item}
+                        keyword={this.state.keyword}
+                        list={list}
                         configs={this.state.configs}
                         treeMinWidth={TREE_MIN_WIDTH}
                         treeWidth={this.state.treeWidth}
                         fulllist={store.list()}
                         isOpenTree={this.state.isOpenTree}
                         currentDir={this.state.currentDir}
-                        onClickDir={this.changeDir.bind(this)}
-                        onResizeTree={this.resizeTree.bind(this)}
-                        onClickStar={this.toggleStar.bind(this)}
-                        onClickClosePath={this.backToAll.bind(this)}
+                        onClickDir={this.changeDir}
+                        onResizeTree={this.resizeTree}
+                        onClickStar={this.toggleStar}
+                        onClickClosePath={this.backToAll}
                       />
                     )
                   }
                 }/>
-                <Redirect from='*' to='/' />
+                <Redirect from="*" to="/" />
               </Switch>
             </div>
+
             <Switch>
-              <Route exact path='/' render={(context)=> {
-                return (true || this.state.currentDir === '') ? null : <div className='footer-bar' onClick={this.backToAll.bind(this)} >Path: { this.state.currentDir } <i className='fa fa-times' /> </div>
-              } }/>
+              <Route exact path="/" render={ () => {
+                return ( true || this.state.currentDir === '' ) ? null : <div className="footer-bar" onClick={this.backToAll}>Path: {this.state.currentDir}<i className="fa fa-times" /></div>
+              } } />
             </Switch>
+
           </div>
         </HashRouter>
-        { this.state.help   ? (<Help onClose={this.closeHelp.bind(this)}/>) : null }
-        { this.state.config ? (<Config onChange={this.updateConfig.bind(this)} configs={this.state.configs} onClose={this.closeConfig.bind(this)}/>) : null }
-        { this.state.qr     ? (<QR onClose={this.closeQR.bind(this)} value={this.state.selectingText}/>) : null }
-        </div>
-    )
+
+        { this.state.help ? <Help onClose={this.closeHelp} /> : null }
+        { this.state.config ? <Config onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
+        { this.state.qr ? <QR onClose={this.closeQR} value={this.state.selectingText} /> : null }
+      </div>
+    );
   }
 }
