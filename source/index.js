@@ -2,24 +2,27 @@
 // MainProcess
 'use strict';
 
-const ACTIVE_MENUBAR_ICON   = __dirname + '/images/active.png'
-const ACTIVE_INV_MENUBAR_ICON   = __dirname + '/images/active_invert.png'
-const INACTIVE_MENUBAR_ICON = __dirname + '/images/inactive.png'
-const NOTIFY_ICON           = __dirname + '/images/notify_icon.png'
+const { app, ipcMain, globalShortcut, Menu } = require('electron');
+const fs = require('fs');
+
 import menubar from 'menubar';
-import { app, ipcMain, globalShortcut, Menu } from 'electron';
-import notifier from 'node-notifier';
-import path from 'path'
-import fs from 'fs'
+import path from 'path';
+import _u from 'lodash';
 
-const request = require('request');
-const mb = menubar({ icon: ACTIVE_MENUBAR_ICON, minWidth: 500, dir: __dirname });
-console.log(__dirname)
+const ACTIVE_MENUBAR_ICON       = __dirname + '/images/active.png'
+const ACTIVE_INV_MENUBAR_ICON   = __dirname + '/images/active_invert.png'
+const INACTIVE_MENUBAR_ICON     = __dirname + '/images/inactive.png'
+const NOTIFY_ICON               = __dirname + '/images/notify_icon.png'
+const KEY_GO_LIST               = 'CmdOrCtrl+['
+const KEY_TOGGLE_WINDOW         = 'ctrl+shift+n'
 
-//const mb = menubar({ icon: ACTIVE_MENUBAR_ICON  });
-mb.setOption('width', 600)
-mb.setOption('height', 600)
+// NOTE: Icon option is needed because raise error from package of menubar.
+var menubarOptions = { icon: NOTIFY_ICON, minWidth: 500, width: 600, height: 600 };
+if(process.env.NODE_ENV === 'development') {
+  menubarOptions = _u.assign(menubarOptions, { showDockIcon: true })
+}
 
+const mb = menubar(menubarOptions);
 const switchIconOpen = ()=> {
   mb.tray.setImage(ACTIVE_INV_MENUBAR_ICON)
 }
@@ -48,14 +51,11 @@ const initMenu = ()=> {
           { label: "Select All", accelerator: "CmdOrCtrl+A",       selector: "selectAll:" }
       ]}
   ];
-
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-const KEY_GO_LIST       = 'CmdOrCtrl+['
-const KEY_TOGGLE_WINDOW = 'ctrl+shift+n'
 
-mb.on('ready', function ready () {
+mb.on('ready', function() {
 
   var closeWindow = ()=> {
     mb.hideWindow();
@@ -79,13 +79,6 @@ mb.on('ready', function ready () {
 
   //
   // Setting ipc event
-  ipcMain.on('notify', (event, title, message)=> {
-    notifier.notify({
-      title: title,
-      icon: NOTIFY_ICON,
-      message: message
-    })
-  });
   ipcMain.on('show_window', (event, arg)=> {
     openWindow();
   });
@@ -98,9 +91,6 @@ mb.on('ready', function ready () {
   ipcMain.on('reload', (event, arg)=> {
     let browserWindow = event.sender;
     browserWindow.reload()
-  });
-  notifier.on('click', (event, arg)=> {
-    mb.showWindow();
   });
   mb.on('show', ()=> {
     mb.window.send('windowShow')
