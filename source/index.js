@@ -1,6 +1,6 @@
+'use strict';
 //
 // MainProcess
-'use strict';
 
 const { app, ipcMain, globalShortcut, Menu } = require('electron');
 const fs = require('fs');
@@ -57,10 +57,10 @@ const initMenu = ()=> {
 
 mb.on('ready', function() {
 
-  var closeWindow = ()=> {
+  const closeWindow = ()=> {
     mb.hideWindow();
   }
-  var openWindow = ()=> {
+  const openWindow = ()=> {
     mb.showWindow(mb.tray.getBounds());
   }
   //
@@ -99,9 +99,9 @@ mb.on('ready', function() {
   mb.on('hide', ()=> {
     switchIconClose();
   })
-
   mb.showWindow();
   mb.hideWindow();
+
   if(process.env.NODE_ENV !== 'development') {
     // NOTE: Comment out for display Dev tool
     initMenu();
