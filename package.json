@@ -1,7 +1,7 @@
 {
   "name": "monote",
   "version": "1.1.0",
-  "main": "index.js",
+  "main": "main.js",
   "description": "Simple note app",
   "scripts": {
     "dev": "webpack --watch",
