@@ -1,20 +1,20 @@
-import React from "react";
-import { ipcRenderer, shell } from "electron";
-import { IndexRoute, Link, BrowserRouter, HashRouter, Route,  Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
-import _u from 'lodash'
+import React from 'react';
+import { ipcRenderer, shell } from 'electron';
+import { IndexRoute, Link, BrowserRouter, HashRouter, Route, Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
+import _u from 'lodash';
 //
 // Lib
-import Store from '../models/TextLoadableJsonStore'
-import EditorPage from './EditorPage'
-import ListPage from './ListPage'
-import QR from './QR'
-import Help from './Help'
-import Config from './Config'
-import ConfigManager from '../models/ConfigManager'
+import Store from '../models/TextLoadableJsonStore';
+import EditorPage from './EditorPage';
+import ListPage from './ListPage';
+import QR from './QR';
+import Help from './Help';
+import Config from './Config';
+import ConfigManager from '../models/ConfigManager';
 
-const TREE_MIN_WIDTH = 180
-const store = new Store()
-const configManager = new ConfigManager()
+const TREE_MIN_WIDTH = 180;
+const store = new Store();
+const configManager = new ConfigManager();
 
 // TODO: To helper
 function rootPath(word = '') {
@@ -27,9 +27,9 @@ function currentItemPath(path) {
 
 export default class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    const configs = configManager.load()
+    const configs = configManager.load();
     this.state = {
       configs,
       item: store.buildNewItem(),
@@ -41,39 +41,39 @@ export default class App extends React.Component {
       help: false,
       config: false,
       isShowCover: false,
-      treeWidth: TREE_MIN_WIDTH
+      treeWidth: TREE_MIN_WIDTH,
     };
     ipcRenderer.on('windowShow', () => {
-      this.setState({ isShowCover: false })
-    })
+      this.setState({ isShowCover: false });
+    });
     this.mem = { editorCursorPositions: {} };
     this.debounceUpdateKeyword = _u.debounce((word) => {
-      this.setState({ keyword: word })
+      this.setState({ keyword: word });
     }, 300);
     this.debounceSave = _u.debounce((item) => {
-      store.store(item)
+      store.store(item);
     }, 300);
 
     this.updateConfig = this.updateConfig.bind(this);
     this.closeConfig = this.closeConfig.bind(this);
-    this.closeQR = this.closeQR.bind(this)
-    this.closeHelp = this.closeHelp.bind(this)
-    this.backToAll = this.backToAll.bind(this)
-    this.changeDir = this.changeDir.bind(this)
-    this.resizeTree = this.resizeTree.bind(this)
-    this.toggleStar = this.toggleStar.bind(this)
+    this.closeQR = this.closeQR.bind(this);
+    this.closeHelp = this.closeHelp.bind(this);
+    this.backToAll = this.backToAll.bind(this);
+    this.changeDir = this.changeDir.bind(this);
+    this.resizeTree = this.resizeTree.bind(this);
+    this.toggleStar = this.toggleStar.bind(this);
   }
 
   componentDidMount() {
-    this.history = this.refs.router.history
+    this.history = this.refs.router.history;
     this.history.listen((location) => {
-      let context
+      let context;
       if (context = matchPath(location.pathname, { path: '/edit/:id', exact: true })) {
-        this.setState({ item: store.load(context.params.id) })
-      } else if (context = matchPath(location.pathname, {path: '/new', exact: true})) {
-        this.setState({ item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) })})
+        this.setState({ item: store.load(context.params.id) });
+      } else if (context = matchPath(location.pathname, { path: '/new', exact: true })) {
+        this.setState({ item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) }) });
       }
-    })
+    });
     document.addEventListener('keydown', this.nativeKeyEvent.bind(this));
     document.addEventListener('keyup', this.nativeKeyup.bind(this));
   }
@@ -85,154 +85,153 @@ export default class App extends React.Component {
 
   nativeKeyup(e) {
     if (e.key === 'Alt') {
-      this.setState({isShowCover: false})
+      this.setState({ isShowCover: false });
     }
   }
 
   nativeKeyEvent(e, a) {
-
-    switch(e.key) {
+    switch (e.key) {
       case 'Escape':
-        if(matchPath(this.history.location.pathname, {path: '/', exact: true})) {
-          this.setState({keyword: ''})
-          this.setState({currentDir: ''})
-          this.setState({isOpenTree: false})
+        if (matchPath(this.history.location.pathname, { path: '/', exact: true })) {
+          this.setState({ keyword: '' });
+          this.setState({ currentDir: '' });
+          this.setState({ isOpenTree: false });
         }
         break;
       case 'Alt':
-        this.setState({isShowCover: true})
+        this.setState({ isShowCover: true });
         break;
-      return;
+
     }
 
-    if( e.metaKey || e.ctrlKey ) {
-      if( e.key >= '0' && e.key <= '9' ) {
-        let i = e.key
-        let item = store.list(this.state.keyword, this.state.currentDir)[i]
-        if( !item ) {
-          return
+    if (e.metaKey || e.ctrlKey) {
+      if (e.key >= '0' && e.key <= '9') {
+        const i = e.key;
+        const item = store.list(this.state.keyword, this.state.currentDir)[i];
+        if (!item) {
+          return;
         }
 
         // NOTE: Protect input number to textarea after move page.
-        let delay = 100
+        const delay = 100;
         setTimeout(() => {
-          this.setState({item: item})
+          this.setState({ item });
           this.history.replace(`/edit/${item.id}`);
         }, delay);
-        return
+        return;
       }
-      switch(e.key) {
+      switch (e.key) {
         case 'i':
-          this.toggleTree()
+          this.toggleTree();
           break;
         case 'f':
-          this.history.replace('/')
-          this.refs.keyword.setSelectionRange(0 , 999999)
-          this.refs.keyword.focus()
+          this.history.replace('/');
+          this.refs.keyword.setSelectionRange(0, 999999);
+          this.refs.keyword.focus();
           break;
         case 'n':
-          this.setState({item: store.buildNewItem()})
-          this.history.push('/new')
+          this.setState({ item: store.buildNewItem() });
+          this.history.push('/new');
           break;
         case 'Enter':
-          if(matchPath(this.history.location.pathname, {path: '/', exact: true})) {
-            this.moveEdit(this.state.item)
+          if (matchPath(this.history.location.pathname, { path: '/', exact: true })) {
+            this.moveEdit(this.state.item);
           } else {
-            this.moveList()
+            this.moveList();
           }
           break;
-        return
+
       }
     }
   }
 
   moveList() {
-    this.history.push(rootPath(this.state.keyword))
+    this.history.push(rootPath(this.state.keyword));
   }
 
   moveNew() {
-    this.history.push('/new')
+    this.history.push('/new');
   }
 
   moveEdit(item) {
-    this.history.push(`/edit/${item.id}`)
+    this.history.push(`/edit/${item.id}`);
   }
 
   changeText(body, title) {
-    let newItem = this.state.item
-    newItem.contents = body
-    newItem.path = title
-    newItem.modified_at = new Date()
-    this.setState({item: newItem})
-    this.debounceSave(newItem)
+    const newItem = this.state.item;
+    newItem.contents = body;
+    newItem.path = title;
+    newItem.modified_at = new Date();
+    this.setState({ item: newItem });
+    this.debounceSave(newItem);
   }
 
   quit() {
-    if(!confirm('終了しますか？')) {
-      return
+    if (!confirm('終了しますか？')) {
+      return;
     }
-    ipcRenderer.send('quit')
+    ipcRenderer.send('quit');
   }
-  closeHelp () {
+  closeHelp() {
   }
   updateKeyword(e) {
-    let word = e.target.value
-    this.setState({keyword: word})
-    this.debounceUpdateKeyword(word)
+    const word = e.target.value;
+    this.setState({ keyword: word });
+    this.debounceUpdateKeyword(word);
   }
 
   backToAll() {
-    this.setState({currentDir: ''})
+    this.setState({ currentDir: '' });
   }
 
   changeDir(dir) {
-    this.setState({isOpenTree: false })
-    this.setState({currentDir: dir})
+    this.setState({ isOpenTree: false });
+    this.setState({ currentDir: dir });
   }
 
   toggleTree() {
-    this.setState({isOpenTree: !this.state.isOpenTree})
+    this.setState({ isOpenTree: !this.state.isOpenTree });
   }
 
   resizeTree(width) {
-    if(width >= TREE_MIN_WIDTH) {
-      this.setState({treeWidth: width})
+    if (width >= TREE_MIN_WIDTH) {
+      this.setState({ treeWidth: width });
     }
   }
 
   toggleStar(id) {
-    let item = store.load(id)
-    item.pin = !item.pin
-    store.save(item)
-    this.setState({item: item})
+    const item = store.load(id);
+    item.pin = !item.pin;
+    store.save(item);
+    this.setState({ item });
   }
 
   updateConfig(configs) {
-    this.setState({ configs: configs })
-    configManager.save(configs)
+    this.setState({ configs });
+    configManager.save(configs);
   }
 
   openConfig() {
-    this.setState({ config: true })
+    this.setState({ config: true });
   }
 
   closeConfig() {
-    this.setState({ config: false })
+    this.setState({ config: false });
   }
 
   openQR() {
-    this.setState({ qr: true })
+    this.setState({ qr: true });
   }
   closeQR() {
-    this.setState({ qr: false })
+    this.setState({ qr: false });
   }
 
   openHelp() {
-    this.setState({ help: true })
+    this.setState({ help: true });
   }
 
   closeHelp() {
-    this.setState({ help: false })
+    this.setState({ help: false });
   }
 
   moveEditorCursor(startPosition, endPosition) {
@@ -240,7 +239,7 @@ export default class App extends React.Component {
   }
 
   selectEditorContents(selectingText) {
-    this.setState({selectingText: selectingText})
+    this.setState({ selectingText });
   }
 
   openLinkUrl(url) {
@@ -248,7 +247,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    let editorProps = {
+    const editorProps = {
       configs: this.state.configs,
       item: this.state.item,
       isEnableLink: this.state.isShowCover,
@@ -256,8 +255,8 @@ export default class App extends React.Component {
       onMoveCursor: this.moveEditorCursor.bind(this),
       onClickLink: this.openLinkUrl.bind(this),
       onChange: this.changeText.bind(this),
-      onSelectContents: this.selectEditorContents.bind(this)
-    }
+      onSelectContents: this.selectEditorContents.bind(this),
+    };
     return (
       <div>
         <HashRouter ref="router">
@@ -267,8 +266,8 @@ export default class App extends React.Component {
                 <Switch>
                   <Route exact path="/" >
                     <div>
-                    <li className="header-item"><a className="header-item-link" onClick={this.toggleTree.bind(this)} ><i className="fa fa-bars" /></a></li>
-                    <li className="header-item"><Link className="header-item-link" to="/new"><i className="fa fa-plus" /></Link></li>
+                      <li className="header-item"><a className="header-item-link" onClick={this.toggleTree.bind(this)} ><i className="fa fa-bars" /></a></li>
+                      <li className="header-item"><Link className="header-item-link" to="/new"><i className="fa fa-plus" /></Link></li>
                     </div>
                   </Route>
                   <Route path="/*">
@@ -279,7 +278,7 @@ export default class App extends React.Component {
 
               <Switch>
                 <Route exact path="/" >
-                  <input ref="keyword" className="keyword" type="text" placeholder={"keyword"} onChange={this.updateKeyword.bind(this)} value={this.state.keyword} />
+                  <input ref="keyword" className="keyword" type="text" placeholder={'keyword'} onChange={this.updateKeyword.bind(this)} value={this.state.keyword} />
                 </Route>
                 <Route path="/(edit)?(new)?" >
                   <span className="header-title">{this.state.item ? this.state.item.title() : ''}</span>
@@ -287,22 +286,22 @@ export default class App extends React.Component {
               </Switch>
 
               <ul className="header-group-right">
-              <Switch>
-                <Route exact path="/" >
-                  <div>
-                    <li className="header-item"><a className="header-item-link" onClick={this.openConfig.bind(this)}><i className="fa fa-cog" /></a></li>
-                    <li className="header-item"><a className="header-item-link" onClick={this.openHelp.bind(this)}><i className="fa fa-question-circle" /></a></li>
-                    <li className="header-item"><a className="header-item-link" onClick={this.quit.bind(this)}><i className="fa fa-power-off" /></a></li>
-                  </div>
-                </Route>
-                <Route path="/(edit)?(new)?" >
-                  <div>
-                    <li className="header-item"><a className="header-item-link" onClick={this.openQR.bind(this)}><i className="fa fa-qrcode" /></a></li>
-                    <li className="header-item"><a className="header-item-link" onClick={this.openHelp.bind(this)}><i className="fa fa-question-circle" /></a></li>
-                    <li className="header-item"><a className="header-item-link" onClick={this.quit.bind(this)}><i className="fa fa-power-off" /></a></li>
-                  </div>
-                </Route>
-              </Switch>
+                <Switch>
+                  <Route exact path="/" >
+                    <div>
+                      <li className="header-item"><a className="header-item-link" onClick={this.openConfig.bind(this)}><i className="fa fa-cog" /></a></li>
+                      <li className="header-item"><a className="header-item-link" onClick={this.openHelp.bind(this)}><i className="fa fa-question-circle" /></a></li>
+                      <li className="header-item"><a className="header-item-link" onClick={this.quit.bind(this)}><i className="fa fa-power-off" /></a></li>
+                    </div>
+                  </Route>
+                  <Route path="/(edit)?(new)?" >
+                    <div>
+                      <li className="header-item"><a className="header-item-link" onClick={this.openQR.bind(this)}><i className="fa fa-qrcode" /></a></li>
+                      <li className="header-item"><a className="header-item-link" onClick={this.openHelp.bind(this)}><i className="fa fa-question-circle" /></a></li>
+                      <li className="header-item"><a className="header-item-link" onClick={this.quit.bind(this)}><i className="fa fa-power-off" /></a></li>
+                    </div>
+                  </Route>
+                </Switch>
               </ul>
             </div>
 
@@ -311,17 +310,19 @@ export default class App extends React.Component {
                 <Route
                   exact
                   path="/edit/:id"
-                  render={(context) => <EditorPage {...context} {...editorProps} /> }
+                  render={context => <EditorPage {...context} {...editorProps} />}
                 />
                 <Route
                   exact
                   path="/new"
-                  render={(context) => <EditorPage {...context} {...editorProps} /> }
+                  render={context => <EditorPage {...context} {...editorProps} />}
                 />
-                <Route path="/" render={(context) => {
-                    const list = store.list(this.state.keyword, this.state.currentDir)
+                <Route
+                  path="/" render={(context) => {
+                    const list = store.list(this.state.keyword, this.state.currentDir);
                     return (
-                      <ListPage {...context}
+                      <ListPage
+                        {...context}
                         item={this.state.item}
                         keyword={this.state.keyword}
                         list={list}
@@ -336,17 +337,18 @@ export default class App extends React.Component {
                         onClickStar={this.toggleStar}
                         onClickClosePath={this.backToAll}
                       />
-                    )
+                    );
                   }
-                }/>
+                }
+                />
                 <Redirect from="*" to="/" />
               </Switch>
             </div>
 
             <Switch>
-              <Route exact path="/" render={ () => {
-                return ( true || this.state.currentDir === '' ) ? null : <div className="footer-bar" onClick={this.backToAll}>Path: {this.state.currentDir}<i className="fa fa-times" /></div>
-              } } />
+              <Route
+                exact path="/" render={() => (true || this.state.currentDir === '') ? null : <div className="footer-bar" onClick={this.backToAll}>Path: {this.state.currentDir}<i className="fa fa-times" /></div>}
+              />
             </Switch>
 
           </div>

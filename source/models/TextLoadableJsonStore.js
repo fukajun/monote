@@ -1,12 +1,12 @@
-import JsonStore from './JsonStore.js'
+import JsonStore from './JsonStore.js';
 
 export default class TextLoadableJsonStore extends JsonStore {
   _convertOnRead(contents) {
     // For JSON
-    if((contents || '')[0] === '{') {
-      return contents
+    if ((contents || '')[0] === '{') {
+      return contents;
     }
     // For Plain text
-    return JSON.stringify({path: '', contents: contents, ping: false})
+    return JSON.stringify({ path: '', contents, ping: false });
   }
 }

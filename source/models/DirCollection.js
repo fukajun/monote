@@ -1,64 +1,64 @@
-import _u from 'lodash'
+import _u from 'lodash';
 import Path from 'path';
 
 
 function pathLevel(path) {
-  return path.split('/').length - 1
+  return path.split('/').length - 1;
 }
 
 class Dir {
   constructor(path) {
-    this.path = path
-    this.items = []
+    this.path = path;
+    this.items = [];
   }
 
   level() {
-    return pathLevel(this.path)
+    return pathLevel(this.path);
   }
 
   basename() {
-    return Path.basename(this.path)
+    return Path.basename(this.path);
   }
   slashedBasename() {
-    return `/${this.basename()}`
+    return `/${this.basename()}`;
   }
   endSlashedBasename() {
-    return `${this.basename()}/`
+    return `${this.basename()}/`;
   }
 
 }
 
 export default class DirCollection {
   constructor(list) {
-    this.items = list
-    let checkDirs = {}
-    this.items.forEach((item)=> {
-      let itemDirpath = item.dirpath()
+    this.items = list;
+    const checkDirs = {};
+    this.items.forEach((item) => {
+      const itemDirpath = item.dirpath();
 
-      if(!checkDirs[itemDirpath]) {
+      if (!checkDirs[itemDirpath]) {
         // NOTE: Set all path valiation from item.dirpath
-        let dirpaths = this._pathsFromPath(itemDirpath)
+        const dirpaths = this._pathsFromPath(itemDirpath);
         dirpaths.forEach((dirpath) => {
-          if(!checkDirs[dirpath]) {
-            checkDirs[dirpath] = new Dir(dirpath)
+          if (!checkDirs[dirpath]) {
+            checkDirs[dirpath] = new Dir(dirpath);
           }
-        })
+        });
       }
 
-      checkDirs[itemDirpath].items.push(item)
-    })
-    this.list = _u.map(checkDirs, (k, v)=> k).sort((a,b)=> (a.path < b.path ? -1 : 1))
+      checkDirs[itemDirpath].items.push(item);
+    });
+    this.list = _u.map(checkDirs, (k, v) => k).sort((a, b) => (a.path < b.path ? -1 : 1));
   }
 
   _pathsFromPath(dirpath) {
-    let list = []
-    let level = pathLevel(dirpath)
-    for(let i = 0; i < level; i++) {
-      let currentDirPattern  = new RegExp(`(/[^\/]+){${i}}$`)
-      let result = dirpath.replace(currentDirPattern, '')
-      list.push(result)
+    const list = [];
+    const level = pathLevel(dirpath);
+    for (let i = 0; i < level; i++) {
+      const currentDirPattern = new RegExp(`(/[^\/]+){${i}}$`);
+      const result = dirpath.replace(currentDirPattern, '');
+      list.push(result);
     }
-    return list
+    return list;
   }
 }
 
