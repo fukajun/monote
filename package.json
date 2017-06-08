@@ -4,8 +4,8 @@
   "main": "main.js",
   "description": "Simple note app",
   "scripts": {
-    "dev": "webpack --watch",
     "start": "cd ./build && NODE_ENV=development electron ./",
+    "dev": "webpack --watch",
     "build": "./build.sh"
   },
   "repository": {
