@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: __dirname + '/source/index.js',
+    index: __dirname + '/source/index.jsx',
     main: __dirname + '/source/main.js',
   },
   output: {
@@ -23,7 +23,7 @@ module.exports = {
     rules: [
       {
         enforce: "pre",
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
@@ -32,7 +32,7 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: { presets: ['react', 'es2015'] }

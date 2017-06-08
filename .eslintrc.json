@@ -6,5 +6,9 @@
           "jsx": true
       }
   },
+  "globals": {
+    "document": true,
+    "history": true
+  },
   "extends" : "airbnb"
 }
