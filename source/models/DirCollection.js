@@ -47,14 +47,14 @@ export default class DirCollection {
 
       checkDirs[itemDirpath].items.push(item);
     });
-    this.list = _u.map(checkDirs, (k, v) => k).sort((a, b) => (a.path < b.path ? -1 : 1));
+    this.list = _u.map(checkDirs, (k, _) => k).sort((a, b) => (a.path < b.path ? -1 : 1));
   }
 
   _pathsFromPath(dirpath) {
     const list = [];
     const level = pathLevel(dirpath);
-    for (let i = 0; i < level; i++) {
-      const currentDirPattern = new RegExp(`(/[^\/]+){${i}}$`);
+    for (let i = 0; i < level; i += 1) {
+      const currentDirPattern = new RegExp(`(/[^/]+){${i}}$`);
       const result = dirpath.replace(currentDirPattern, '');
       list.push(result);
     }

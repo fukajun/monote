@@ -1,4 +1,4 @@
-import JsonStore from './JsonStore.js';
+import JsonStore from './JsonStore';
 
 export default class TextLoadableJsonStore extends JsonStore {
   _convertOnRead(contents) {

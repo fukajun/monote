@@ -1,7 +1,7 @@
 import fs from 'fs';
-import Store from '../models/TextLoadableJsonStore.js';
 import moment from 'moment';
 import _u from 'lodash';
+import Store from '../models/TextLoadableJsonStore';
 
 export default class m_20170523_RenameFiles {
   run() {

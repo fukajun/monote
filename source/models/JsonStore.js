@@ -1,8 +1,9 @@
 import fs from 'fs';
-import StoreBase from './StoreBase.js';
-const DIR = `${process.env['HOME']  }/.monotes`
-const ENCODING = 'utf-8';
 import _u from 'lodash';
+import StoreBase from './StoreBase';
+
+const DIR = `${process.env.HOME}/.monotes`;
+const ENCODING = 'utf-8';
 
 //
 // JsonStore
@@ -13,15 +14,13 @@ export default class JsonStore extends StoreBase {
     this._init(dirpath);
   }
 
-  _list(word) {
-    const list = fs.readdirSync(this.dirpath).map(
-      filename=> (this._read(filename)),
-    );
-    const words = word.replace(/[ 　]/g, ' ').split(' ');
-    const patterns = words.map(word=> new RegExp(word, 'i'));
+  _list(keyword) {
+    const list = fs.readdirSync(this.dirpath).map(filename => (this._read(filename)));
+    const words = keyword.replace(/[ \u3000]/g, ' ').split(' ');
+    const patterns = words.map(word => new RegExp(word, 'i'));
 
     return list.filter(
-      data=> _u.every(patterns, pattern=> ((data.contents || '') + (data.path || '')).match(pattern)),
+      data => _u.every(patterns, pattern => ((data.contents || '') + (data.path || '')).match(pattern))
     );
   }
 

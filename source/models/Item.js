@@ -1,4 +1,5 @@
 import Path from 'path';
+
 const TITLE_DELIMITER = '\n';
 const NOCONTENS_TITLE = '< Untitled >';
 
@@ -23,9 +24,7 @@ export default class Item {
   }
 
   body() {
-    let first,
-      last;
-    [first, ...last] = this._splitedContens();
+    const [_, ...last] = this._splitedContens();
     return last.join(TITLE_DELIMITER);
   }
 
@@ -82,9 +81,7 @@ export default class Item {
   }
 
   _titleFromContents() {
-    let first,
-      last;
-    [first, ...last] = this._splitedContens();
+    const [first, ..._] = this._splitedContens();
     return first.trim();
   }
 

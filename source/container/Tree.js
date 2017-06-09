@@ -6,12 +6,12 @@
 // Vendor
 import React from 'react';
 import { Link } from 'react-router-dom';
-import _u from 'lodash';
 import Path from 'path';
-import DirCollection from '../models/DirCollection.js';
+import DirCollection from '../models/DirCollection';
 
 const INDENT = '  ';
 const NEST_MARK = '└ ';
+
 export default class Tree extends React.Component {
   clickDir(dir) {
     this.props.onClick(dir);
@@ -27,7 +27,7 @@ export default class Tree extends React.Component {
           <span className="tree-link-title">
             {indent}{name}
           </span>
-          <span className="tree-link-item-size">{ length }</span>
+          <span className="tree-link-item-size">{length}</span>
         </a>
       </li>
     );

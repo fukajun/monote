@@ -1,7 +1,6 @@
-import sha1 from 'sha1';
-import Item from './Item.js';
 import _u from 'lodash';
 import moment from 'moment';
+import Item from './Item';
 
 //
 // StoreBase
@@ -12,7 +11,7 @@ export default class StoreBase {
   }
 
   store(item) {
-    const blankBodyPattern = /^[　 \n\r]*?$/;
+    const blankBodyPattern = /^[\u00A0\u3000 \n\r]*?$/;
     if (item.contents.match(blankBodyPattern)) {
       this.delete(item);
     } else {
