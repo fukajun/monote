@@ -10,5 +10,15 @@
     "document": true,
     "history": true
   },
-  "extends" : "airbnb"
+  "extends" : "airbnb",
+  "rules": {
+     "no-underscore-dangle": 0,
+     "no-unused-vars": 1,
+     "class-methods-use-this": 1,
+     "camelcase": 0,
+     "max-len": 1,
+     "react/prop-types": 1,
+     "arrow-parens": 0,
+     "react/jsx-filename-extension": 1
+   }
 }
