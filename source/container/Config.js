@@ -57,6 +57,13 @@ export default class Config extends React.Component {
                     <option value="blue">Blue</option>
                   </select>
                 </dd>
+                <dt>Display archived</dt>
+                <dd>{':'}
+                  <select name="isShowArchived">
+                    <option value="on">On</option>
+                    <option value="off">Off</option>
+                  </select>
+                </dd>
                 <dt>Rename</dt>
                 <dd>
                   <button onClick={(new m_20170523_RenameFiles()).run} >run</button>

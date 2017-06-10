@@ -13,6 +13,7 @@ export default class Item {
     this.modified_at = attrs.modified_at;
     this.updated_at = attrs.updated_at;
     this.created_at = attrs.created_at;
+    this.archived_at = attrs.archived_at;
   }
 
   title() {
