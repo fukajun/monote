@@ -29,7 +29,7 @@ export default class ConfigManager {
   }
 
   _defaultValues() {
-    return { pinColor: 'red', cursorPosition: 'top' };
+    return { pinColor: 'red', cursorPosition: 'top', isShowArchived: 'on' };
   }
 
   _filepath() {

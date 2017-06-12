@@ -62,6 +62,7 @@ export default class App extends React.Component {
     this.changeDir = this.changeDir.bind(this);
     this.resizeTree = this.resizeTree.bind(this);
     this.toggleStar = this.toggleStar.bind(this);
+    this.toggleArchiveMemo = this.toggleArchiveMemo.bind(this);
   }
 
   componentDidMount() {
@@ -157,8 +158,16 @@ export default class App extends React.Component {
     this.history.push(`/edit/${item.id}`);
   }
 
+  toggleArchiveMemo(item) {
+    let newItem = item;
+    newItem.archived_at = newItem.archived_at ?  null : new Date();
+    store.store(newItem);
+    this.setState({ keyword: this.state.keyword });
+  }
+
+
   changeText(body, title) {
-    const newItem = this.state.item;
+    let newItem = this.state.item;
     newItem.contents = body;
     newItem.path = title;
     newItem.modified_at = new Date();
@@ -319,7 +328,8 @@ export default class App extends React.Component {
                 />
                 <Route
                   path="/" render={(context) => {
-                    const list = store.list(this.state.keyword, this.state.currentDir);
+                    const list = store.list(this.state.keyword, this.state.currentDir, this.state.configs.isShowArchived === 'on');
+
                     return (
                       <ListPage
                         {...context}
@@ -329,13 +339,14 @@ export default class App extends React.Component {
                         configs={this.state.configs}
                         treeMinWidth={TREE_MIN_WIDTH}
                         treeWidth={this.state.treeWidth}
-                        fulllist={store.list()}
+                        fulllist={store.list('', '', this.state.configs.isShowArchived === 'on' )}
                         isOpenTree={this.state.isOpenTree}
                         currentDir={this.state.currentDir}
                         onClickDir={this.changeDir}
                         onResizeTree={this.resizeTree}
                         onClickStar={this.toggleStar}
                         onClickClosePath={this.backToAll}
+                        onClickArchive={this.toggleArchiveMemo}
                       />
                     );
                   }

@@ -14,13 +14,16 @@ export default class JsonStore extends StoreBase {
     this._init(dirpath);
   }
 
-  _list(keyword) {
+  _list(keyword, isArchived = false) {
     const list = fs.readdirSync(this.dirpath).map(filename => (this._read(filename)));
     const words = keyword.replace(/[ \u3000]/g, ' ').split(' ');
     const patterns = words.map(word => new RegExp(word, 'i'));
 
     return list.filter(
-      data => _u.every(patterns, pattern => ((data.contents || '') + (data.path || '')).match(pattern))
+      (data) => {
+        if (!isArchived && data.archived_at) return false;
+        return _u.every(patterns, pattern => ((data.contents || '') + (data.path || '')).match(pattern))
+      }
     );
   }
 
@@ -35,15 +38,16 @@ export default class JsonStore extends StoreBase {
       contents: json.contents,
       ctime: stat.ctime,
       pin: json.pin,
+      archived_at: json.archived_at ? new Date(json.archived_at) : null,
       modified_at: json.modified_at ? new Date(json.modified_at) : stat.ctime,
       updated_at: json.updated_at ? new Date(json.updated_at) : stat.ctime,
       created_at: json.created_at ? new Date(json.created_at) : stat.birthtime,
     };
   }
 
-  _write(id, path, contents, pin, modified_at, updated_at, created_at) {
+  _write(id, path, contents, pin, modified_at, archived_at, updated_at, created_at) {
     const filepath = this._filepath(id);
-    const json_body = JSON.stringify({ path, contents, pin, modified_at, updated_at, created_at });
+    const json_body = JSON.stringify({ path, contents, pin, modified_at, archived_at, updated_at, created_at });
     fs.writeFileSync(filepath, json_body, ENCODING);
   }
 

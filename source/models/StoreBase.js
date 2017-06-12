@@ -19,8 +19,8 @@ export default class StoreBase {
     }
   }
 
-  list(word = '', dir = '') {
-    let list = this._list(word).map((data => this._buildItem(data)));
+  list(word = '', dir = '', isShowArchive = false) {
+    let list = this._list(word, isShowArchive).map((data => this._buildItem(data)));
     list = list.sort((a, b) => (b.biggerThan(a) ? 1 : -1));
     if (dir === '') {
       return list;
@@ -35,7 +35,7 @@ export default class StoreBase {
 
   save(item) {
     const updated_at = this._now();
-    this._write(item.id, item.path, item.contents, item.pin, item.modified_at, updated_at, item.created_at);
+    this._write(item.id, item.path, item.contents, item.pin, item.modified_at, item.archived_at, updated_at, item.created_at);
   }
 
   delete(item) {
@@ -53,7 +53,7 @@ export default class StoreBase {
 
   _defaultAttributes() {
     const now = this._now();
-    return { id: this._newId(now), path: '', contents: '', pin: false, modified_at: now, updated_at: now, created_at: now };
+    return { id: this._newId(now), path: '', contents: '', pin: false, modified_at: now, archived_at: null, updated_at: now, created_at: now };
   }
 
   _newId(now = this._now()) {
