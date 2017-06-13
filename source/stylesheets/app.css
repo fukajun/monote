@@ -66,11 +66,30 @@ body {
 
 .tree-link-title {
   display: inline-block;
-  width: 80%;
+  width: 70%;
   white-space: pre;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.tree-item-edit-link {
+  float: right;
+  width: 15px;
+  display: inline-block;
+  height: 15px;
+  color: rgba(0,0,0,0.0);
+  margin-right: 5px;
+}
+
+.tree-item-edit-link i {
+  line-height: 15px;
+}
+.tree-item-edit-link:hover {
+  display: inline;
+  color: #999;
+  cursor: pointer;
+}
+
 .tree-link-item-size {
   text-align: center;
   display: inline-block;

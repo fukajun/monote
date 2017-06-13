@@ -16,6 +16,10 @@ export default class Tree extends React.Component {
   clickDir(dir) {
     this.props.onClick(dir);
   }
+  clickEdit(path, e) {
+    e.stopPropagation()
+    this.props.onClickEdit(path);
+  }
   createListItem(name, path, isCurrent, length, level) {
     let indent = '';
     if (level >= 2) {
@@ -28,6 +32,7 @@ export default class Tree extends React.Component {
             {indent}{name}
           </span>
           <span className="tree-link-item-size">{length}</span>
+          { path.length <= 1 ? null : <span className="tree-item-edit-link " onClick={this.clickEdit.bind(this, path)}><i className='fa fa-pencil' /></span> }
         </a>
       </li>
     );

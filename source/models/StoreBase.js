@@ -28,6 +28,17 @@ export default class StoreBase {
     return list.filter(item => item.dirpath() === dir);
   }
 
+  changeDirPath(oldPath, newPath) {
+    const updatedItems = this.list('', oldPath, true).map((item) => {
+      item.changeDirPath(newPath)
+      return item
+    });
+    // FIXME: Change to bulk save
+    _u.forEach(updatedItems, (item) => {
+      this.save(item)
+    });
+  }
+
   load(id) {
     const data = this._read(id);
     return this._buildItem(data);
