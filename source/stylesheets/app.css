@@ -384,68 +384,6 @@ body {
   outline: none !important;
 }
 
-.help-cover {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 11;
-}
-
-.qr-window {
-  width: 300px;
-  height: 400px;
-  background-color: #fefefe;
-  color: #333;
-  z-index: 12;
-  box-shadow: 0 0 5px #000;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.help {
-  position: fixed;
-  top: 5%;
-  left: 5%;
-  width: 90%;
-  height: 90%;
-  background-color: #fefefe;
-  color: #333;
-  z-index: 12;
-  box-shadow: 0 0 5px #000;
-}
-
-.help-contents dt, .help-contents dd {
-  line-height: 30px;
-}
-.help-contents dt {
-  width: 200px;
-  float: left;
-  clear: both;
-}
-
-.help-title {
-  font-size: 16px;
-}
-
-.help-contents {
-  font-size: 14px;
-  padding: 20px;
-}
-
-.help-close {
-  float: right;
-  margin-right: 10px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
 .footer-bar {
   cursor: pointer;
   background-color: rgba(200, 200,200, 0.3);
@@ -460,3 +398,86 @@ body {
   position: absolute;
 }
 
+/* window */
+.window-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 11;
+}
+.window {
+  background-color: #fefefe;
+  box-shadow: 0 0 5px #000;
+  color: #333;
+  position: fixed;
+  top: 5%;
+  height: 90%;
+  left: 5%;
+  width: 90%;
+  z-index: 12;
+}
+
+.window.qr {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 300px;
+  height: 400px;
+}
+
+.window.dirpath {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 300px;
+  height: 150px;
+}
+
+.window-close {
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.window-contents {
+  font-size: 14px;
+  padding: 20px;
+}
+.window-contents dt, .window-contents dd {
+  line-height: 30px;
+}
+.window-contents dt {
+  width: 200px;
+  float: left;
+  clear: both;
+}
+.window-contents input {
+  height: 30px;
+  padding: 5px;
+  width: 100%;
+  font-size: 12px;
+}
+.window-title {
+  font-size: 16px;
+}
+.window-contents li {
+  list-style: none;
+}
+.window-ok-button {
+  float: right;
+  width: 50px;
+  cursor: pointer;
+  border: 1px solid #dfdfdf;
+  border-radius: 4px;
+  text-align: center;
+}
