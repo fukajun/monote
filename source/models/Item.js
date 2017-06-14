@@ -54,16 +54,16 @@ export default class Item {
     return Path.dirname(this.fullpath());
   }
 
-  changeDirPath(newDirPath) {
+  changeDirPath(newDirPath, oldDirPath = null) {
     const trimedNewDirPath = newDirPath.trim()
-    const currentPathPattern = this._generatePathRegExp(this.dirpath())
+    const currentPathPattern = this._generatePathRegExp(oldDirPath || this.dirpath())
     this.path = this.path.replace(currentPathPattern, trimedNewDirPath)
     this.contents = this.contents.replace(currentPathPattern, trimedNewDirPath)
   }
 
   _generatePathRegExp(dirPath) {
-    let path = dirPath.replace(new RegExp("^ */"), '')
-    let pathPattern = new RegExp(`^ */?${path}(?=/)`)
+    const path = dirPath.replace(new RegExp("^ */"), '')
+    const pathPattern = new RegExp(`^ */?${path}(?=/)`)
     return pathPattern
   }
 

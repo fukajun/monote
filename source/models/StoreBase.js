@@ -19,18 +19,19 @@ export default class StoreBase {
     }
   }
 
-  list(word = '', dir = '', isShowArchive = false) {
+  list(word = '', dir = '', isShowArchive = false, options = {}) {
     let list = this._list(word, isShowArchive).map((data => this._buildItem(data)));
     list = list.sort((a, b) => (b.biggerThan(a) ? 1 : -1));
     if (dir === '') {
       return list;
     }
-    return list.filter(item => item.dirpath() === dir);
+    const pattern = this._generatePathPattern(dir, options.isRecursive)
+    return list.filter(item => item.dirpath().match(pattern));
   }
 
   changeDirPath(oldPath, newPath) {
-    const updatedItems = this.list('', oldPath, true).map((item) => {
-      item.changeDirPath(newPath)
+    const updatedItems = this.list('', oldPath, true, { isRecursive: true }).map((item) => {
+      item.changeDirPath(newPath, oldPath)
       return item
     });
     // FIXME: Change to bulk save
@@ -51,6 +52,11 @@ export default class StoreBase {
 
   delete(item) {
     this._delete(item.id);
+  }
+
+  _generatePathPattern(path, isRecursive = false) {
+    const pattern = isRecursive ? `^${path}.*$` : `^${path}$`;
+    return new RegExp(pattern);
   }
 
   _buildItem(attributes) {
