@@ -28,7 +28,7 @@ export default class ListPage extends React.Component {
       <div className="list">
         { this.props.isOpenTree ? (
           <Resizable onResize={this.resizeTree.bind(this)} minWidth={this.props.treeMinWidth} width={this.props.treeWidth}>
-            <Tree currentDir={this.props.currentDir} list={this.props.fulllist} onClick={this.props.onClickDir} />
+            <Tree currentDir={this.props.currentDir} onClickEdit={this.props.onClickEditPath} list={this.props.fulllist} onClick={this.props.onClickDir} />
           </Resizable>
           ) : [] }
         <div className="list-contents">

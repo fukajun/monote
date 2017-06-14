@@ -2,11 +2,11 @@ import React from 'react';
 
 export default function Help(props) {
   return (
-    <div className="help-cover" onClick={props.onClose}>
-      <div className="help">
-        <a className="help-close" onClick={props.onClose} ><i className="fa fa-close" /></a>
-        <div className="help-contents" >
-          <h2 className="help-title">Shortcut key</h2>
+    <div className="window-wrapper" onClick={props.onClose}>
+      <div className="window">
+        <a className="window-close" onClick={props.onClose} ><i className="fa fa-close" /></a>
+        <div className="window-contents" >
+          <h2 className="window-title">Shortcut key</h2>
           <dl>
             <dt>Ctrl + Shift + n </dt><dd>: Toggle window</dd>
             <dt>Command + f </dt><dd>: Focus keyword box</dd>

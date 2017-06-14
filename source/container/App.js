@@ -9,6 +9,7 @@ import EditorPage from './EditorPage';
 import ListPage from './ListPage';
 import QR from './QR';
 import Help from './Help';
+import InputWindow from './InputWindow';
 import Config from './Config';
 import ConfigManager from '../models/ConfigManager';
 
@@ -34,6 +35,7 @@ export default class App extends React.Component {
       configs,
       item: store.buildNewItem(),
       currentDir: '',
+      currentPath: '',
       isOpenTree: false,
       keyword: '',
       selectingText: '',
@@ -41,6 +43,7 @@ export default class App extends React.Component {
       help: false,
       config: false,
       isShowCover: false,
+      isShowInput: false,
       treeWidth: TREE_MIN_WIDTH,
     };
     ipcRenderer.on('windowShow', () => {
@@ -56,6 +59,9 @@ export default class App extends React.Component {
 
     this.updateConfig = this.updateConfig.bind(this);
     this.closeConfig = this.closeConfig.bind(this);
+    this.openInput = this.openInput.bind(this);
+    this.closeInput = this.closeInput.bind(this);
+    this.submitInput = this.submitInput.bind(this);
     this.closeQR = this.closeQR.bind(this);
     this.closeHelp = this.closeHelp.bind(this);
     this.backToAll = this.backToAll.bind(this);
@@ -228,6 +234,20 @@ export default class App extends React.Component {
     this.setState({ config: false });
   }
 
+  submitInput(newPath) {
+    let list = store.changeDirPath(this.state.currentPath, newPath);
+    this.setState({ isShowInput: false });
+  }
+
+  openInput(targetPath) {
+    this.setState({ currentPath: targetPath });
+    this.setState({ isShowInput: true });
+  }
+
+  closeInput() {
+    this.setState({ isShowInput: false });
+  }
+
   openQR() {
     this.setState({ qr: true });
   }
@@ -347,6 +367,7 @@ export default class App extends React.Component {
                         onClickStar={this.toggleStar}
                         onClickClosePath={this.backToAll}
                         onClickArchive={this.toggleArchiveMemo}
+                        onClickEditPath={this.openInput}
                       />
                     );
                   }
@@ -368,6 +389,7 @@ export default class App extends React.Component {
         { this.state.help ? <Help onClose={this.closeHelp} /> : null }
         { this.state.config ? <Config onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
         { this.state.qr ? <QR onClose={this.closeQR} value={this.state.selectingText} /> : null }
+        { this.state.isShowInput ? <InputWindow onClose={this.closeInput} onSubmit={this.submitInput} value={this.state.currentPath} /> : null }
       </div>
     );
   }

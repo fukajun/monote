@@ -36,11 +36,11 @@ export default class Config extends React.Component {
 
   render() {
     return (
-      <div className="help-cover" onClick={this.props.onClose}>
-        <div className="help" onClick={e => e.stopPropagation()}>
-          <a className="help-close" onClick={this.props.onClose} ><i className="fa fa-close" /></a>
-          <div className="help-contents" >
-            <h2 className="help-title">Settings</h2>
+      <div className="window-wrapper" onClick={this.props.onClose}>
+        <div className="window" onClick={e => e.stopPropagation()}>
+          <a className="window-close" onClick={this.props.onClose} ><i className="fa fa-close" /></a>
+          <div className="window-contents" >
+            <h2 className="window-title">Settings</h2>
             <FormFields type="update" values={this.props.configs} onChange={this.props.onChange}>
               <div>
                 <dt>Default cursor position</dt>

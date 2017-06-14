@@ -54,6 +54,19 @@ export default class Item {
     return Path.dirname(this.fullpath());
   }
 
+  changeDirPath(newDirPath, oldDirPath = null) {
+    const trimedNewDirPath = newDirPath.trim()
+    const currentPathPattern = this._generatePathRegExp(oldDirPath || this.dirpath())
+    this.path = this.path.replace(currentPathPattern, trimedNewDirPath)
+    this.contents = this.contents.replace(currentPathPattern, trimedNewDirPath)
+  }
+
+  _generatePathRegExp(dirPath) {
+    const path = dirPath.replace(new RegExp("^ */"), '')
+    const pathPattern = new RegExp(`^ */?${path}(?=/)`)
+    return pathPattern
+  }
+
   _hasPath() {
     return this._trimdPath().length >= 1;
   }
