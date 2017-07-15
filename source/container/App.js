@@ -420,7 +420,7 @@ export default class App extends React.Component {
         </HashRouter>
 
         { this.state.help ? <HelpWindow onClose={this.closeHelp} /> : null }
-        { this.state.config ? <ConfigDialog onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
+        { this.state.config ? <ConfigWindow onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
         { this.state.qr ? <QRWindow onClose={this.closeQR} value={this.state.selectingText} /> : null }
         { this.state.isShowInput ? <InputWindow onClose={this.closeInput} onSubmit={this.submitInput} value={this.state.currentPath} /> : null }
       </div>
