@@ -76,15 +76,16 @@ export default class App extends React.Component {
     this.toggleArchiveMemo = this.toggleArchiveMemo.bind(this);
   }
 
-  openPrev() {
-    this.mem.itemIndex = (this.mem.itemIndex - 1) >= 0 ? this.mem.itemIndex - 1 : 0
-    const item = this.mem.itemHistories[this.mem.itemIndex]
-    this.moveEdit(item)
+  openPrevHistoryItem() {
+    this.mem.itemIndex = (this.mem.itemIndex - 1) >= 0 ? this.mem.itemIndex - 1 : 0;
+    const item = this.mem.itemHistories[this.mem.itemIndex];
+    this.moveEdit(item);
   }
-  openNext() {
-    this.mem.itemIndex = (this.mem.itemIndex + 1) < this.mem.itemHistories.length ? this.mem.itemIndex + 1 : this.mem.itemHistories.length - 1
-    const item = this.mem.itemHistories[this.mem.itemIndex]
-    this.moveEdit(item)
+
+  openNextHistoryItem() {
+    this.mem.itemIndex = (this.mem.itemIndex + 1) < this.mem.itemHistories.length ? this.mem.itemIndex + 1 : this.mem.itemHistories.length - 1;
+    const item = this.mem.itemHistories[this.mem.itemIndex];
+    this.moveEdit(item);
   }
 
   componentDidMount() {
@@ -102,12 +103,12 @@ export default class App extends React.Component {
         this.setState({ item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) }) });
       }
     });
-    document.addEventListener('keydown', this.nativeKeyEvent.bind(this));
+    document.addEventListener('keydown', this.nativeKeyDown.bind(this));
     document.addEventListener('keyup', this.nativeKeyup.bind(this));
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.nativeKeyEvent.bind(this));
+    document.removeEventListener('keydown', this.nativeKeyDown.bind(this));
     document.removeEventListener('keyup', this.nativeKeyup.bind(this));
   }
 
@@ -117,7 +118,7 @@ export default class App extends React.Component {
     }
   }
 
-  nativeKeyEvent(e, a) {
+  nativeKeyDown(e, a) {
     switch (e.key) {
       case 'Escape':
         if (matchPath(this.history.location.pathname, { path: '/', exact: true })) {
@@ -135,10 +136,10 @@ export default class App extends React.Component {
     if (e.metaKey && e.altKey) {
       switch (e.key) {
         case 'ArrowLeft':
-          this.openPrev()
+          this.openPrevHistoryItem()
           break;
         case 'ArrowRight':
-          this.openNext()
+          this.openNextHistoryItem()
           break;
       }
       return
