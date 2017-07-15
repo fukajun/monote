@@ -9,9 +9,9 @@ class FormFields extends React.Component {
     this.props.onChange(values);
   }
   render() {
-    return <div>{this.r(this.props.children)}</div>;
+    return <div>{this.renderChildren(this.props.children)}</div>;
   }
-  r(children) {
+  renderChildren(children) {
     return React.Children.map(children, (child) => {
       const cProps = {};
       if (React.isValidElement(child)) {
@@ -22,13 +22,14 @@ class FormFields extends React.Component {
         }
       }
       if (child.props) {
-        cProps.children = this.r(child.props.children);
+        cProps.children = this.renderChildren(child.props.children);
         return React.cloneElement(child, cProps);
       }
       return child;
     });
   }
 }
+
 export default class Config extends React.Component {
   constructor(props) {
     super(props);
