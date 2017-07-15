@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { shell } from 'electron';
 import _u from 'lodash';

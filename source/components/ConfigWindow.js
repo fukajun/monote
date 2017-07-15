@@ -1,8 +1,10 @@
 import React from 'react';
 import _u from 'lodash';
+
 import m_20170523_RenameFiles from '../migrate/m_20170523_RenameFiles.js';
 
 const TYPES = ['input', 'select'];
+
 class FormFields extends React.Component {
   change() {
     const values = _u.reduce(this.refs, (h, el) => { h[el.name] = el.value; return h; }, {});

@@ -3,8 +3,6 @@ import { ipcRenderer, shell } from 'electron';
 import { IndexRoute, Link, BrowserRouter, HashRouter, Route, Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
 import _u from 'lodash';
 
-//
-// Lib
 import Store from '../models/TextLoadableJsonStore';
 import EditorPage from './EditorPage';
 import ListPage from './ListPage';
