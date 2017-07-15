@@ -8,10 +8,10 @@ import _u from 'lodash';
 import Store from '../models/TextLoadableJsonStore';
 import EditorPage from './EditorPage';
 import ListPage from './ListPage';
-import QRWindow from './QRWindow';
-import HelpWindow from './HelpWindow';
-import InputWindow from './InputWindow';
-import ConfigWindow from './ConfigWindow';
+import QRWindow from '../components/QRWindow';
+import HelpWindow from '../components/HelpWindow';
+import InputWindow from '../components/InputWindow';
+import ConfigWindow from '../components/ConfigWindow';
 import ConfigManager from '../models/ConfigManager';
 
 const TREE_MIN_WIDTH = 180;
