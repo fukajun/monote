@@ -11,7 +11,7 @@ import ListPage from './ListPage';
 import QR from './QR';
 import Help from './Help';
 import InputWindow from './InputWindow';
-import Config from './Config';
+import ConfigDialog from './ConfigDialog';
 import ConfigManager from '../models/ConfigManager';
 
 const TREE_MIN_WIDTH = 180;
@@ -421,7 +421,7 @@ export default class App extends React.Component {
         </HashRouter>
 
         { this.state.help ? <Help onClose={this.closeHelp} /> : null }
-        { this.state.config ? <Config onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
+        { this.state.config ? <ConfigDialog onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
         { this.state.qr ? <QR onClose={this.closeQR} value={this.state.selectingText} /> : null }
         { this.state.isShowInput ? <InputWindow onClose={this.closeInput} onSubmit={this.submitInput} value={this.state.currentPath} /> : null }
       </div>
