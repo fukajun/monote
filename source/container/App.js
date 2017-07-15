@@ -89,6 +89,9 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    document.addEventListener('keydown', this.nativeKeyDown.bind(this));
+    document.addEventListener('keyup', this.nativeKeyup.bind(this));
+
     this.history = this.refs.router.history;
     this.history.listen((location) => {
       let context;
@@ -103,8 +106,6 @@ export default class App extends React.Component {
         this.setState({ item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) }) });
       }
     });
-    document.addEventListener('keydown', this.nativeKeyDown.bind(this));
-    document.addEventListener('keyup', this.nativeKeyup.bind(this));
   }
 
   componentWillUnmount() {
@@ -117,7 +118,6 @@ export default class App extends React.Component {
       this.setState({ isShowCover: false });
     }
   }
-
   nativeKeyDown(e, a) {
     switch (e.key) {
       case 'Escape':
