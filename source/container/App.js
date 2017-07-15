@@ -2,6 +2,7 @@ import React from 'react';
 import { ipcRenderer, shell } from 'electron';
 import { IndexRoute, Link, BrowserRouter, HashRouter, Route, Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
 import _u from 'lodash';
+
 //
 // Lib
 import Store from '../models/TextLoadableJsonStore';
@@ -49,7 +50,11 @@ export default class App extends React.Component {
     ipcRenderer.on('windowShow', () => {
       this.setState({ isShowCover: false });
     });
-    this.mem = { editorCursorPositions: {} };
+    this.mem = {
+      editorCursorPositions: {},
+      itemHistories: [],
+      itemIndex: 0,
+    };
     this.debounceUpdateKeyword = _u.debounce((word) => {
       this.setState({ keyword: word });
     }, 300);
@@ -71,12 +76,28 @@ export default class App extends React.Component {
     this.toggleArchiveMemo = this.toggleArchiveMemo.bind(this);
   }
 
+  openPrev() {
+    this.mem.itemIndex = (this.mem.itemIndex - 1) >= 0 ? this.mem.itemIndex - 1 : 0
+    const item = this.mem.itemHistories[this.mem.itemIndex]
+    this.moveEdit(item)
+  }
+  openNext() {
+    this.mem.itemIndex = (this.mem.itemIndex + 1) < this.mem.itemHistories.length ? this.mem.itemIndex + 1 : this.mem.itemHistories.length - 1
+    const item = this.mem.itemHistories[this.mem.itemIndex]
+    this.moveEdit(item)
+  }
+
   componentDidMount() {
     this.history = this.refs.router.history;
     this.history.listen((location) => {
       let context;
       if (context = matchPath(location.pathname, { path: '/edit/:id', exact: true })) {
-        this.setState({ item: store.load(context.params.id) });
+        const item = store.load(context.params.id)
+        if(location.search.length === 0) {
+          this.mem.itemIndex = this.mem.itemHistories.length - 1
+          this.mem.itemHistories.push(item)
+        }
+        this.setState({ item:  item });
       } else if (context = matchPath(location.pathname, { path: '/new', exact: true })) {
         this.setState({ item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) }) });
       }
@@ -109,6 +130,18 @@ export default class App extends React.Component {
         this.setState({ isShowCover: true });
         break;
 
+    }
+
+    if (e.metaKey && e.altKey) {
+      switch (e.key) {
+        case 'ArrowLeft':
+          this.openPrev()
+          break;
+        case 'ArrowRight':
+          this.openNext()
+          break;
+      }
+      return
     }
 
     if (e.metaKey || e.ctrlKey) {
@@ -161,7 +194,8 @@ export default class App extends React.Component {
   }
 
   moveEdit(item) {
-    this.history.push(`/edit/${item.id}`);
+    console.log(item)
+    this.history.push(`/edit/${item.id}?a=1`);
   }
 
   toggleArchiveMemo(item) {
