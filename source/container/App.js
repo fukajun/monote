@@ -8,10 +8,10 @@ import _u from 'lodash';
 import Store from '../models/TextLoadableJsonStore';
 import EditorPage from './EditorPage';
 import ListPage from './ListPage';
-import QR from './QR';
-import Help from './Help';
+import QRWindow from './QRWindow';
+import HelpWindow from './HelpWindow';
 import InputWindow from './InputWindow';
-import ConfigDialog from './ConfigDialog';
+import ConfigWindow from './ConfigWindow';
 import ConfigManager from '../models/ConfigManager';
 
 const TREE_MIN_WIDTH = 180;
@@ -420,9 +420,9 @@ export default class App extends React.Component {
           </div>
         </HashRouter>
 
-        { this.state.help ? <Help onClose={this.closeHelp} /> : null }
+        { this.state.help ? <HelpWindow onClose={this.closeHelp} /> : null }
         { this.state.config ? <ConfigDialog onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
-        { this.state.qr ? <QR onClose={this.closeQR} value={this.state.selectingText} /> : null }
+        { this.state.qr ? <QRWindow onClose={this.closeQR} value={this.state.selectingText} /> : null }
         { this.state.isShowInput ? <InputWindow onClose={this.closeInput} onSubmit={this.submitInput} value={this.state.currentPath} /> : null }
       </div>
     );
