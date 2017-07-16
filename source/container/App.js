@@ -46,7 +46,7 @@ export default class App extends React.Component {
       treeWidth: TREE_MIN_WIDTH,
     };
     ipcRenderer.on('windowShow', () => {
-      this.setState({ isShowCover: false });
+      this.hideCover();
     });
     this.mem = {
       editorCursorPositions: {},
@@ -113,20 +113,21 @@ export default class App extends React.Component {
 
   nativeKeyup(e) {
     if (e.key === 'Alt') {
-      this.setState({ isShowCover: false });
+      this.hideCover();
     }
   }
+
   nativeKeyDown(e, a) {
     switch (e.key) {
       case 'Escape':
         if (matchPath(this.history.location.pathname, { path: '/', exact: true })) {
           this.setState({ keyword: '' });
           this.setState({ currentDir: '' });
-          this.setState({ isOpenTree: false });
+          this.closeTree();
         }
         break;
       case 'Alt':
-        this.setState({ isShowCover: true });
+        this.showCover();
         break;
 
     }
