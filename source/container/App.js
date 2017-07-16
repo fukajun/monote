@@ -118,14 +118,6 @@ export default class App extends React.Component {
     }
   }
 
-  convertKey(key) {
-    if (key >= '0' && key <= '9') {
-      return '_num_';
-    } else {
-      return key;
-    }
-  }
-
   nativeKeyDown(e, a) {
     if (e.key === 'Alt') {
       this.showCover();
@@ -147,15 +139,21 @@ export default class App extends React.Component {
 
     // For command
     if (e.metaKey || e.ctrlKey) {
-      switch (this.convertKey(e.key)) {
-        case '_num_': // 0 - 9
+      switch (e.key) {
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
           const item = store.list(this.state.keyword, this.state.currentDir)[e.key];
           if (!item) { return; }
           // NOTE: Protect input number to textarea after move page.
-          const delay = 100;
-          setTimeout(() => {
-            this.moveEdit(item);
-          }, delay);
+          setTimeout(() => this.moveEdit(item), 100);
           break;
         case 'i':
           this.toggleTree();
