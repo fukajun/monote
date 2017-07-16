@@ -54,7 +54,7 @@ export default class App extends React.Component {
       itemIndex: 0,
     };
     this.debounceUpdateKeyword = _u.debounce((word) => {
-      this.setState({ keyword: word });
+      this.searchNotes(word)
     }, 300);
     this.debounceSave = _u.debounce((item) => {
       store.store(item);
@@ -152,7 +152,7 @@ export default class App extends React.Component {
         case '9':
           const item = store.list(this.state.keyword, this.state.currentDir)[e.key];
           if (!item) { return; }
-          // NOTE: Protect input number to textarea after move page.
+          // NOTE: Protect entering number in textarea after moving edit page.
           setTimeout(() => this.moveEdit(item), 100);
           break;
         case 'i':
@@ -178,6 +178,13 @@ export default class App extends React.Component {
     }
   }
 
+  //
+  // Actions
+  searchNotes(word) {
+    // TODO: setState notes
+    this.setState({ keyword: word });
+  }
+
   moveList() {
     this.history.push(rootPath(this.state.keyword));
   }
@@ -187,7 +194,7 @@ export default class App extends React.Component {
   }
 
   moveEdit(item) {
-    this.history.push(`/edit/${item.id}?a=1`);
+    this.history.push(`/edit/${item.id}`);
   }
 
   toggleArchiveMemo(item) {
@@ -220,8 +227,7 @@ export default class App extends React.Component {
     }
     ipcRenderer.send('quit');
   }
-  closeHelp() {
-  }
+
   updateKeyword(e) {
     const word = e.target.value;
     this.setState({ keyword: word });
@@ -307,6 +313,7 @@ export default class App extends React.Component {
   openLinkUrl(url) {
     shell.openExternal(url);
   }
+
 
   render() {
     const editorProps = {
