@@ -114,24 +114,25 @@ export default class App extends React.Component {
   nativeKeyup(e) {
     if (e.key === 'Alt') {
       this.hideCover();
+      return;
+    }
+  }
+
+  convertKey(key) {
+    if (key >= '0' && key <= '9') {
+      return '_num_';
+    } else {
+      return key;
     }
   }
 
   nativeKeyDown(e, a) {
-    switch (e.key) {
-      case 'Escape':
-        if (matchPath(this.history.location.pathname, { path: '/', exact: true })) {
-          this.setState({ keyword: '' });
-          this.setState({ currentDir: '' });
-          this.closeTree();
-        }
-        break;
-      case 'Alt':
-        this.showCover();
-        break;
-
+    if (e.key === 'Alt') {
+      this.showCover();
+      return;
     }
 
+    // For command + options
     if (e.metaKey && e.altKey) {
       switch (e.key) {
         case 'ArrowLeft':
@@ -141,26 +142,21 @@ export default class App extends React.Component {
           this.openNextHistoryItem()
           break;
       }
-      return
+      return;
     }
 
+    // For command
     if (e.metaKey || e.ctrlKey) {
-      if (e.key >= '0' && e.key <= '9') {
-        const i = e.key;
-        const item = store.list(this.state.keyword, this.state.currentDir)[i];
-        if (!item) {
-          return;
-        }
-
-        // NOTE: Protect input number to textarea after move page.
-        const delay = 100;
-        setTimeout(() => {
-          this.setState({ item });
-          this.history.replace(`/edit/${item.id}`);
-        }, delay);
-        return;
-      }
-      switch (e.key) {
+      switch (this.convertKey(e.key)) {
+        case '_num_': // 0 - 9
+          const item = store.list(this.state.keyword, this.state.currentDir)[e.key];
+          if (!item) { return; }
+          // NOTE: Protect input number to textarea after move page.
+          const delay = 100;
+          setTimeout(() => {
+            this.moveEdit(item);
+          }, delay);
+          break;
         case 'i':
           this.toggleTree();
           break;
@@ -180,7 +176,6 @@ export default class App extends React.Component {
             this.moveList();
           }
           break;
-
       }
     }
   }
@@ -194,7 +189,6 @@ export default class App extends React.Component {
   }
 
   moveEdit(item) {
-    console.log(item)
     this.history.push(`/edit/${item.id}?a=1`);
   }
 
