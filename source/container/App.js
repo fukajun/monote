@@ -118,7 +118,7 @@ export default class App extends React.Component {
     }
   }
 
-  nativeKeyDown(e, a) {
+  nativeKeyDown(e) {
     if (e.key === 'Alt') {
       this.showCover();
       return;
@@ -197,6 +197,13 @@ export default class App extends React.Component {
     this.setState({ keyword: this.state.keyword });
   }
 
+  hideCover() {
+    this.setState({ isShowCover: false });
+  }
+
+  showCover() {
+    this.setState({ isShowCover: true });
+  }
 
   changeText(body, title) {
     let newItem = this.state.item;
