@@ -1,10 +1,8 @@
-
-
 import React from 'react';
 import { shell } from 'electron';
 import _u from 'lodash';
 
-import RichTextarea from './RichTextarea.js';
+import RichTextarea from '../components/RichTextarea.js';
 
 export default class EditorPage extends React.Component {
   constructor(props) {

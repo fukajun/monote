@@ -1,16 +1,9 @@
-//
-// Renderer
-
-
-//
-// Vendor
 import React from 'react';
 import Resizable from 'react-resizable-box';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import Tree from './Tree.js';
-//
-// Lib
+
+import Tree from '../components/Tree.js';
 import Store from '../models/JsonStore.js';
 
 const store = new Store();

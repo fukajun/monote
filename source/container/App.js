@@ -3,15 +3,13 @@ import { ipcRenderer, shell } from 'electron';
 import { IndexRoute, Link, BrowserRouter, HashRouter, Route, Switch, Redirect, browserHistory, matchPath } from 'react-router-dom';
 import _u from 'lodash';
 
-//
-// Lib
 import Store from '../models/TextLoadableJsonStore';
 import EditorPage from './EditorPage';
 import ListPage from './ListPage';
-import QR from './QR';
-import Help from './Help';
-import InputWindow from './InputWindow';
-import Config from './Config';
+import QRWindow from '../components/QRWindow';
+import HelpWindow from '../components/HelpWindow';
+import InputWindow from '../components/InputWindow';
+import ConfigWindow from '../components/ConfigWindow';
 import ConfigManager from '../models/ConfigManager';
 
 const TREE_MIN_WIDTH = 180;
@@ -48,7 +46,7 @@ export default class App extends React.Component {
       treeWidth: TREE_MIN_WIDTH,
     };
     ipcRenderer.on('windowShow', () => {
-      this.setState({ isShowCover: false });
+      this.hideCover();
     });
     this.mem = {
       editorCursorPositions: {},
@@ -56,7 +54,7 @@ export default class App extends React.Component {
       itemIndex: 0,
     };
     this.debounceUpdateKeyword = _u.debounce((word) => {
-      this.setState({ keyword: word });
+      this.searchNotes(word)
     }, 300);
     this.debounceSave = _u.debounce((item) => {
       store.store(item);
@@ -76,18 +74,22 @@ export default class App extends React.Component {
     this.toggleArchiveMemo = this.toggleArchiveMemo.bind(this);
   }
 
-  openPrev() {
-    this.mem.itemIndex = (this.mem.itemIndex - 1) >= 0 ? this.mem.itemIndex - 1 : 0
-    const item = this.mem.itemHistories[this.mem.itemIndex]
-    this.moveEdit(item)
+  openPrevHistoryItem() {
+    this.mem.itemIndex = (this.mem.itemIndex - 1) >= 0 ? this.mem.itemIndex - 1 : 0;
+    const item = this.mem.itemHistories[this.mem.itemIndex];
+    this.moveEdit(item);
   }
-  openNext() {
-    this.mem.itemIndex = (this.mem.itemIndex + 1) < this.mem.itemHistories.length ? this.mem.itemIndex + 1 : this.mem.itemHistories.length - 1
-    const item = this.mem.itemHistories[this.mem.itemIndex]
-    this.moveEdit(item)
+
+  openNextHistoryItem() {
+    this.mem.itemIndex = (this.mem.itemIndex + 1) < this.mem.itemHistories.length ? this.mem.itemIndex + 1 : this.mem.itemHistories.length - 1;
+    const item = this.mem.itemHistories[this.mem.itemIndex];
+    this.moveEdit(item);
   }
 
   componentDidMount() {
+    document.addEventListener('keydown', this.nativeKeyDown.bind(this));
+    document.addEventListener('keyup', this.nativeKeyup.bind(this));
+
     this.history = this.refs.router.history;
     this.history.listen((location) => {
       let context;
@@ -102,65 +104,57 @@ export default class App extends React.Component {
         this.setState({ item: store.buildNewItem({ path: currentItemPath(this.state.currentDir) }) });
       }
     });
-    document.addEventListener('keydown', this.nativeKeyEvent.bind(this));
-    document.addEventListener('keyup', this.nativeKeyup.bind(this));
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.nativeKeyEvent.bind(this));
+    document.removeEventListener('keydown', this.nativeKeyDown.bind(this));
     document.removeEventListener('keyup', this.nativeKeyup.bind(this));
   }
 
   nativeKeyup(e) {
     if (e.key === 'Alt') {
-      this.setState({ isShowCover: false });
+      this.hideCover();
+      return;
     }
   }
 
-  nativeKeyEvent(e, a) {
-    switch (e.key) {
-      case 'Escape':
-        if (matchPath(this.history.location.pathname, { path: '/', exact: true })) {
-          this.setState({ keyword: '' });
-          this.setState({ currentDir: '' });
-          this.setState({ isOpenTree: false });
-        }
-        break;
-      case 'Alt':
-        this.setState({ isShowCover: true });
-        break;
-
+  nativeKeyDown(e) {
+    if (e.key === 'Alt') {
+      this.showCover();
+      return;
     }
 
+    // For command + options
     if (e.metaKey && e.altKey) {
       switch (e.key) {
         case 'ArrowLeft':
-          this.openPrev()
+          this.openPrevHistoryItem()
           break;
         case 'ArrowRight':
-          this.openNext()
+          this.openNextHistoryItem()
           break;
       }
-      return
+      return;
     }
 
+    // For command
     if (e.metaKey || e.ctrlKey) {
-      if (e.key >= '0' && e.key <= '9') {
-        const i = e.key;
-        const item = store.list(this.state.keyword, this.state.currentDir)[i];
-        if (!item) {
-          return;
-        }
-
-        // NOTE: Protect input number to textarea after move page.
-        const delay = 100;
-        setTimeout(() => {
-          this.setState({ item });
-          this.history.replace(`/edit/${item.id}`);
-        }, delay);
-        return;
-      }
       switch (e.key) {
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          const item = store.list(this.state.keyword, this.state.currentDir)[e.key];
+          if (!item) { return; }
+          // NOTE: Protect entering number in textarea after moving edit page.
+          setTimeout(() => this.moveEdit(item), 100);
+          break;
         case 'i':
           this.toggleTree();
           break;
@@ -180,9 +174,15 @@ export default class App extends React.Component {
             this.moveList();
           }
           break;
-
       }
     }
+  }
+
+  //
+  // Actions
+  searchNotes(word) {
+    // TODO: setState notes
+    this.setState({ keyword: word });
   }
 
   moveList() {
@@ -194,8 +194,7 @@ export default class App extends React.Component {
   }
 
   moveEdit(item) {
-    console.log(item)
-    this.history.push(`/edit/${item.id}?a=1`);
+    this.history.push(`/edit/${item.id}`);
   }
 
   toggleArchiveMemo(item) {
@@ -205,6 +204,13 @@ export default class App extends React.Component {
     this.setState({ keyword: this.state.keyword });
   }
 
+  hideCover() {
+    this.setState({ isShowCover: false });
+  }
+
+  showCover() {
+    this.setState({ isShowCover: true });
+  }
 
   changeText(body, title) {
     let newItem = this.state.item;
@@ -221,8 +227,7 @@ export default class App extends React.Component {
     }
     ipcRenderer.send('quit');
   }
-  closeHelp() {
-  }
+
   updateKeyword(e) {
     const word = e.target.value;
     this.setState({ keyword: word });
@@ -308,6 +313,7 @@ export default class App extends React.Component {
   openLinkUrl(url) {
     shell.openExternal(url);
   }
+
 
   render() {
     const editorProps = {
@@ -420,9 +426,9 @@ export default class App extends React.Component {
           </div>
         </HashRouter>
 
-        { this.state.help ? <Help onClose={this.closeHelp} /> : null }
-        { this.state.config ? <Config onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
-        { this.state.qr ? <QR onClose={this.closeQR} value={this.state.selectingText} /> : null }
+        { this.state.help ? <HelpWindow onClose={this.closeHelp} /> : null }
+        { this.state.config ? <ConfigWindow onChange={this.updateConfig} configs={this.state.configs} onClose={this.closeConfig} /> : null }
+        { this.state.qr ? <QRWindow onClose={this.closeQR} value={this.state.selectingText} /> : null }
         { this.state.isShowInput ? <InputWindow onClose={this.closeInput} onSubmit={this.submitInput} value={this.state.currentPath} /> : null }
       </div>
     );

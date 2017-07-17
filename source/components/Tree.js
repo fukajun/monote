@@ -1,12 +1,7 @@
-//
-// Renderer
-
-
-//
-// Vendor
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Path from 'path';
+
 import DirCollection from '../models/DirCollection';
 
 const INDENT = '  ';
