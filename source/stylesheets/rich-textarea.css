@@ -1,0 +1,80 @@
+.rich-textarea {
+  box-sizing: border-box;
+  width: 100%
+}
+.editor-bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+.editor-fg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.editor-input-contents {
+  background-color: #fefefe;
+  border-width: 0;
+  box-sizing: border-box;
+  font-family: "VL-Gothic-Regular", "Osaka−等幅","Osaka-Mono";
+  font-size: 12px;
+  height: 100%;
+  line-height: 20px;
+  overflow-y: scroll;
+  padding: 15px;
+  resize: none;
+  width: 100%;
+}
+.editor-input-contents.active {
+  color: #444;
+}
+.editor-input-contents.disable {
+  color: rgba(0,0,0,0);
+}
+
+.editor-input-contents:focus {
+    outline: none !important;
+    border:0px solid;
+}
+.editor-cover-contents {
+  background-color: transparent;
+  border-width: 0;
+  box-sizing: border-box;
+  font-family: "VL-Gothic-Regular", "Osaka−等幅","Osaka-Mono";
+  font-size: 12px;
+  height: 100%;
+  line-height: 20px;
+  overflow-y: scroll;
+  padding: 15px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.editor-cover-contents::-webkit-scrollbar {
+  display: none;
+}
+.editor-cover-contents.disable {
+  color: rgba(0,0,0,0.0);
+}
+.editor-cover-contents.active {
+  color: #444;
+}
+
+/*cover-contents-item*/
+.editor-cover-contents-url {
+  color: #66f;
+}
+.editor-cover-contents-url.active {
+  pointer-events: auto;
+  text-decoration: none;
+}
+.editor-cover-contents-url.active:hover {
+  pointer-events: auto;
+  text-decoration: underline;
+}
+.editor-cover-contents-url.disable {
+  pointer-events: none;
+  text-decoration: none;
+}
