@@ -2,7 +2,9 @@ import React from 'react';
 import _u from 'lodash';
 
 // NOTE: pattern match as https://localhost:3000, https//192.168.1.1:3000, https://example.com
+const LINK_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.?[-a-zA-Z0-9@:%_+.~#?&//=]*| #[^ ]{2,32} )/;
 const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.?[-a-zA-Z0-9@:%_+.~#?&//=]*)/;
+const ID_PATTERN = /( #[^ ]{2,32} )/;
 
 export default class RichTextarea extends React.Component {
   constructor(props) {
@@ -19,6 +21,7 @@ export default class RichTextarea extends React.Component {
     this._changeContents = this._changeContents.bind(this);
     this._syncScrollPositionFromCover = this._syncScrollPositionFromCover.bind(this);
     this._handleOnLinkClick = this._handleOnLinkClick.bind(this);
+    this._handleOnIdLinkClick = this._handleOnIdLinkClick.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +53,11 @@ export default class RichTextarea extends React.Component {
   _handleOnLinkClick(e) {
     e.preventDefault();
     this.props.onClickLink(e.target.href);
+  }
+
+  _handleOnIdLinkClick(e) {
+    e.preventDefault();
+    this.props.onClickIdLink(e.target.href);
   }
 
   _setCursorPosition(pos) {
@@ -84,9 +92,12 @@ export default class RichTextarea extends React.Component {
 
     return (
       this.props.value.split('\n').map((str) => {
-        const lineElements = str.split(URL_PATTERN).map((el) => {
+        const lineElements = str.split(LINK_PATTERN).map((el) => {
           if (el.match(URL_PATTERN)) {
             return <a key={key()} href={el} className={`editor-cover-contents-url ${urlStateClassName}`} onClick={this._handleOnLinkClick}>{el}</a>;
+          } else if (el.match(ID_PATTERN)) {
+            console.log(el)
+            return <a key={key()} href={el} className={`editor-cover-contents-url ${urlStateClassName}`} onClick={this._handleOnIdLinkClick}>{el}</a>;
           }
           return <span key={key()} >{el}</span>;
         });
