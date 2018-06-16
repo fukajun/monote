@@ -11,6 +11,10 @@ export default class EditorPage extends React.Component {
     this.startPosition = this.props.startPosition || defaultCursorPosition;
   }
 
+  componentDidMount(){
+     this.refs.inputContents.focus();
+  }
+
   _changeContents(contents) {
     this.props.onChange(this.refs.inputContents.value, this.refs.inputPath.value);
   }

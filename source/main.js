@@ -17,6 +17,9 @@ let menubarOptions = { icon: NOTIFY_ICON, minWidth: 500, width: 600, height: 600
 if (process.env.NODE_ENV === 'development') {
   menubarOptions = _u.assign(menubarOptions, { showDockIcon: true });
 }
+if(false) {
+  mb.setOption('alwaysOnTop', true);
+}
 
 const mb = menubar(menubarOptions);
 const switchIconOpen = () => {
