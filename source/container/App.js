@@ -321,6 +321,16 @@ export default class App extends React.Component {
     this.moveEdit({id: id})
   }
 
+  openLinkNewItem(str) {
+    const item = store.buildNewItem({ path: currentItemPath(this.state.currentDir) });
+    let fromItem = this.state.item;
+    item.contents = `${fromItem.title()}から`;
+    store.store(item);
+    fromItem.contents = fromItem.contents.replace('#new', `#${item.id}`);
+    store.store(fromItem);
+    this.moveEdit({id: item.id})
+  }
+
   render() {
     const editorProps = {
       configs: this.state.configs,
@@ -330,6 +340,7 @@ export default class App extends React.Component {
       onMoveCursor: this.moveEditorCursor.bind(this),
       onClickLink: this.openLinkUrl.bind(this),
       onClickIdLink: this.openLinkItem.bind(this),
+      onClickNewLink: this.openLinkNewItem.bind(this),
       onChange: this.changeText.bind(this),
       onSelectContents: this.selectEditorContents.bind(this),
     };
