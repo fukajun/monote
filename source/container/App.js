@@ -314,6 +314,22 @@ export default class App extends React.Component {
     shell.openExternal(url);
   }
 
+  openLinkItem(str) {
+    // TODO: find item
+    const id = str.replace(/..*#/, '')
+    console.log(`#${id}#`)
+    this.moveEdit({id: id})
+  }
+
+  openLinkNewItem(str) {
+    const item = store.buildNewItem({ path: currentItemPath(this.state.currentDir) });
+    let fromItem = this.state.item;
+    item.contents = `${fromItem.title()}から`;
+    store.store(item);
+    fromItem.contents = fromItem.contents.replace('#new', `#${item.id}`);
+    store.store(fromItem);
+    this.moveEdit({id: item.id})
+  }
 
   render() {
     const editorProps = {
@@ -323,6 +339,8 @@ export default class App extends React.Component {
       startPosition: this.mem.editorCursorPositions[this.state.item.id],
       onMoveCursor: this.moveEditorCursor.bind(this),
       onClickLink: this.openLinkUrl.bind(this),
+      onClickIdLink: this.openLinkItem.bind(this),
+      onClickNewLink: this.openLinkNewItem.bind(this),
       onChange: this.changeText.bind(this),
       onSelectContents: this.selectEditorContents.bind(this),
     };
@@ -350,7 +368,7 @@ export default class App extends React.Component {
                   <input ref="keyword" className="keyword" type="text" placeholder={'keyword'} onChange={this.updateKeyword.bind(this)} value={this.state.keyword} />
                 </Route>
                 <Route path="/(edit)?(new)?" >
-                  <span className="header-title">{this.state.item ? this.state.item.title() : ''}</span>
+                  <span className="header-title">{this.state.item ? `${this.state.item.title()} ( ${this.state.item.id} )` : ''}</span>
                 </Route>
               </Switch>
 

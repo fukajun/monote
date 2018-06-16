@@ -271,6 +271,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   left: -10px;
+  -webkit-user-select: text;
 }
 
 .header-group-left {
