@@ -157,7 +157,7 @@ export default class App extends React.Component {
           // NOTE: Protect entering number in textarea after moving edit page.
           setTimeout(() => this.moveEdit(item), 100);
           break;
-        case 'i':
+        case 't':
           this.toggleTree();
           break;
         case 'f':
