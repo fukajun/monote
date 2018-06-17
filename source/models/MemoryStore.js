@@ -61,7 +61,10 @@ export default class MemoryStore {
   }
 
   delete(item) {
-    this._items =  _u.reject(this._items, (_item)=> _item.id === item.id )
+    const i = _u.indexOf(this._items, item)
+    if (i >= 0) {
+      this._items.splice(i, 1);
+    }
     this._store.delete(item)
   }
 
