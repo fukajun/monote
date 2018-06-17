@@ -4,6 +4,7 @@ import { IndexRoute, Link, BrowserRouter, HashRouter, Route, Switch, Redirect, b
 import _u from 'lodash';
 
 import Store from '../models/TextLoadableJsonStore';
+import MemoryStore from '../models/MemoryStore';
 import EditorPage from './EditorPage';
 import ListPage from './ListPage';
 import QRWindow from '../components/QRWindow';
@@ -14,6 +15,7 @@ import ConfigManager from '../models/ConfigManager';
 
 const TREE_MIN_WIDTH = 180;
 const store = new Store();
+const memoryStore = new MemoryStore(store);
 const configManager = new ConfigManager();
 
 // TODO: To helper
@@ -32,7 +34,7 @@ export default class App extends React.Component {
     const configs = configManager.load();
     this.state = {
       configs,
-      item: store.buildNewItem(),
+      item: memoryStore.buildNewItem(),
       currentDir: '',
       currentPath: '',
       isOpenTree: false,
@@ -57,7 +59,7 @@ export default class App extends React.Component {
       this.searchNotes(word)
     }, 300);
     this.debounceSave = _u.debounce((item) => {
-      store.store(item);
+      memoryStore.store(item);
     }, 300);
 
     this.updateConfig = this.updateConfig.bind(this);
@@ -94,7 +96,7 @@ export default class App extends React.Component {
     this.history.listen((location) => {
       let context;
       if (context = matchPath(location.pathname, { path: '/edit/:id', exact: true })) {
-        const item = store.load(context.params.id)
+        const item = memoryStore.load(context.params.id)
         if(location.search.length === 0) {
           this.mem.itemIndex = this.mem.itemHistories.length - 1
           this.mem.itemHistories.push(item)
@@ -150,7 +152,7 @@ export default class App extends React.Component {
         case '7':
         case '8':
         case '9':
-          const item = store.list(this.state.keyword, this.state.currentDir)[e.key];
+          const item = memoryStore.list(this.state.keyword, this.state.currentDir)[e.key];
           if (!item) { return; }
           // NOTE: Protect entering number in textarea after moving edit page.
           setTimeout(() => this.moveEdit(item), 100);
@@ -164,7 +166,9 @@ export default class App extends React.Component {
           this.refs.keyword.focus();
           break;
         case 'n':
-          this.setState({ item: store.buildNewItem() });
+          let newItem = memoryStore.buildNewItem()
+          this.setState({ item: newItem });
+          memoryStore.save(newItem)
           this.history.push('/new');
           break;
         case 'Enter':
@@ -200,7 +204,7 @@ export default class App extends React.Component {
   toggleArchiveMemo(item) {
     let newItem = item;
     newItem.archived_at = newItem.archived_at ?  null : new Date();
-    store.store(newItem);
+    memoryStore.store(newItem);
     this.setState({ keyword: this.state.keyword });
   }
 
@@ -254,9 +258,9 @@ export default class App extends React.Component {
   }
 
   toggleStar(id) {
-    const item = store.load(id);
+    const item = memoryStore.load(id);
     item.pin = !item.pin;
-    store.save(item);
+    memoryStore.save(item);
     this.setState({ item });
   }
 
@@ -274,7 +278,7 @@ export default class App extends React.Component {
   }
 
   submitInput(newPath) {
-    let list = store.changeDirPath(this.state.currentPath, newPath);
+    let list = memoryStore.changeDirPath(this.state.currentPath, newPath);
     this.setState({ isShowInput: false });
   }
 
@@ -322,12 +326,12 @@ export default class App extends React.Component {
   }
 
   openLinkNewItem(str) {
-    const item = store.buildNewItem({ path: currentItemPath(this.state.currentDir) });
+    const item = memoryStore.buildNewItem({ path: currentItemPath(this.state.currentDir) });
     let fromItem = this.state.item;
     item.contents = `${fromItem.title()}から`;
-    store.store(item);
+    memoryStore.store(item);
     fromItem.contents = fromItem.contents.replace('#new', `#${item.id}`);
-    store.store(fromItem);
+    momoryStore.store(fromItem);
     this.moveEdit({id: item.id})
   }
 
@@ -406,7 +410,7 @@ export default class App extends React.Component {
                 />
                 <Route
                   path="/" render={(context) => {
-                    const list = store.list(this.state.keyword, this.state.currentDir, this.state.configs.isShowArchived === 'on');
+                    const list = memoryStore.list(this.state.keyword, this.state.currentDir, this.state.configs.isShowArchived === 'on');
 
                     return (
                       <ListPage
@@ -417,7 +421,7 @@ export default class App extends React.Component {
                         configs={this.state.configs}
                         treeMinWidth={TREE_MIN_WIDTH}
                         treeWidth={this.state.treeWidth}
-                        fulllist={store.list('', '', this.state.configs.isShowArchived === 'on' )}
+                        fulllist={memoryStore.list('', '', this.state.configs.isShowArchived === 'on' )}
                         isOpenTree={this.state.isOpenTree}
                         currentDir={this.state.currentDir}
                         onClickDir={this.changeDir}
