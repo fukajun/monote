@@ -10,7 +10,7 @@ export default function Help(props) {
           <dl>
             <dt>Ctrl + Shift + n </dt><dd>: Toggle window</dd>
             <dt>Command + f </dt><dd>: Focus keyword box</dd>
-            <dt>Command + i </dt><dd>: Toggle tree</dd>
+            <dt>Command + t </dt><dd>: Toggle tree</dd>
             <dt>Command + Enter </dt><dd>: Back to List page</dd>
             <dt>Command + n </dt><dd>: Create new note</dd>
             <dt>Command + 0 〜 9 </dt><dd>: Open each note</dd>
