@@ -3,9 +3,9 @@ import _u from 'lodash';
 
 // NOTE: pattern match as https://localhost:3000, https//192.168.1.1:3000, https://example.com
 //       pattern match as #new, #20181231235930
-const LINK_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.?[-a-zA-Z0-9@:%_+.~#?&//=]*|^#new|^#[^ ]{2,32}| #new| #[^ ]{2,32})/;
+const LINK_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.?[-a-zA-Z0-9@:%_+.~#?&//=]*|^#new|^#[0-9]{17,17}| #new| #[0-9]{17,17})/;
 const URL_PATTERN = /(https?:\/\/[-a-zA-Z0-9@:%._+~#=]{2,256}\.?[-a-zA-Z0-9@:%_+.~#?&//=]*)/;
-const ID_PATTERN = /( #[^ ]{2,32}|^#[^ ]{2,32})/;
+const ID_PATTERN = /( #[0-9]{17,17}|^#[0-9]{17,17})/;
 const NEW_ID_PATTERN = /( #new|^#new)/;
 
 export default class RichTextarea extends React.Component {
