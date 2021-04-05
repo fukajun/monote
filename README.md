@@ -1,6 +1,6 @@
-# 245cloud app
+# monote
 
-**245cloud run on your pc and mac**
+**Simple memo app in menu**
 
 # development
 
