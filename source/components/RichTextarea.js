@@ -119,7 +119,7 @@ export default class RichTextarea extends React.Component {
 
   render() {
     const inputStateClassName = this._isHideInputContents() ? 'disable' : 'active';
-    const coverStateClassName = 'active';
+    const coverStateClassName = this._isHideInputContents() ? 'active' : 'disable';
 
     return (
       <div className="rich-textarea">
