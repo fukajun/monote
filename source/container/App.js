@@ -190,6 +190,7 @@ export default class App extends React.Component {
   }
 
   moveList() {
+    memoryStore.store(this.state.item)
     this.history.push(rootPath(this.state.keyword));
   }
 
@@ -331,7 +332,7 @@ export default class App extends React.Component {
     item.contents = `${fromItem.title()}から`;
     memoryStore.store(item);
     fromItem.contents = fromItem.contents.replace('#new', `#${item.id}`);
-    momoryStore.store(fromItem);
+    memoryStore.store(fromItem);
     this.moveEdit({id: item.id})
   }
 
